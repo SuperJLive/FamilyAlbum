@@ -244,7 +244,7 @@ return [
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            //'can'  => 'manage-blog',
         ],
         [
             'text'        => 'pages',
@@ -263,6 +263,23 @@ return [
             'text' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
+        ],
+        [
+            'text' => 'Account setting',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu'=>[
+                [
+                'text' => 'Account List',
+                'url'  => 'admin/AccountList',
+                ],
+                [
+                    'text' => 'Account Add',
+                    'url'  => 'admin/AccountAdd',
+                    ],
+
+            ]
+            
+
         ],
         [
             'text'    => 'multilevel',
