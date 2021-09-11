@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\WeApp\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,3 +20,11 @@ Route::get('/', function () {
 Route::get('admin/AccountAdd', function () {
     return view('Account.AccountAdd');
 });
+
+//Route::get('wxprog/onlogin/{code}', [UserController::class, 'onLogin']);
+
+Route::prefix('WeApp')->group(function () {
+    Route::get('onlogin/{code}', [UserController::class, 'onLogin']);
+});
+Route::get('WeApp/test', [UserController::class, 'test']);
+

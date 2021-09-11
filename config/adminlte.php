@@ -237,9 +237,45 @@ return [
         ],
 
         // Sidebar items:
+        
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+        ],
+        ['header' => '相册管理'],
+        [
+            'text' => '相册管理',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu'=>[
+                [
+                'text' => '相册列表',
+                'url'  => 'admin/AccountList',
+                ],
+                [
+                    'text' => '新建相册',
+                    'url'  => 'admin/AccountAdd',
+                ],
+
+            ]
+            
+
+        ],
+        [
+            'text' => '图片管理',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu'=>[
+                [
+                'text' => '图片列表',
+                'url'  => 'admin/AccountList',
+                ],
+                [
+                    'text' => '图片上传',
+                    'url'  => 'admin/AccountAdd',
+                ],
+
+            ]
+            
+
         ],
         [
             'text' => 'blog',
