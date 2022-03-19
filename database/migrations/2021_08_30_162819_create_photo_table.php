@@ -13,9 +13,10 @@ class CreatePhotoTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('photo');
         Schema::create('photo', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreign('album_id');//->references('id')->on('albums')->onDelete('cascade');
+            $table->bigInteger('album_id');//->references('id')->on('albums')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->timestamps();
         });

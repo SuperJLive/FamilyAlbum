@@ -242,6 +242,11 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
+        [
+            'text' => '测试页',
+            'url'  => 'WeApp/test',
+            //'can'  => 'manage-blog',
+        ],
         ['header' => '相册管理'],
         [
             'text' => '相册管理',

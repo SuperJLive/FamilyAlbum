@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\WeApp;
 
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+//use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     //
@@ -25,22 +25,50 @@ class UserController extends Controller
         $authurl='https://api.weixin.qq.com/sns/jscode2session';
         //$authurl='http://127.0.0.1:8000/wxprog/test';
         $temp = $this->send_get($authurl,$query_data);
-        $result = json_decode($temp,true);
-        return $result;
-        // if($result.errcode==0)
-        // {
-        //     // openid	string	用户唯一标识
-        //     // session_key	string	会话密钥
-        //     // unionid	string	用户在开放平台的唯一标识符，若当前小程序已绑定到微信开放平台帐号下会返回，详见 UnionID 机制说明。
-        //     // errcode	number	错误码
-        //     // errmsg	string	错误信息
-        //     $result.openid
-        // }
+        $result = json_decode($temp);
+        
+        if(!property_exists($result,'errcode'))
+        {
+            // openid	string	用户唯一标识
+            // session_key	string	会话密钥
+            // unionid	string	用户在开放平台的唯一标识符，若当前小程序已绑定到微信开放平台帐号下会返回，详见 UnionID 机制说明。
+            // errcode	number	错误码
+            // errmsg	string	错误信息
+            $unionid = null;
+            if(property_exists($result,'unionid'))
+            {
+                    $unionid=$result.unionid;
+            }
+            $user=DB::table('user')->where('openid','=',$result->openid)->first();
+            if($user!=null){
+                $useId=DB::table('user')->insertGetId(
+                    [
+                        'openid'=>$result->openid,
+                        'session_key'=>$result->session_key,
+                         'unionid'=>$unionid
+                    ]);
+            }else{
+                DB::table('user')->where('openid',$result->openid)
+                ->update(['session_key',$result->session_key,'unionid'=>$unionid]);
+            }
+
+            //$user=User::
+           
+                
+            //$result.openid;
+        }
+        else{
+            return $result;
+        }
     }
-    function test(Request $request)
+    public function SaveUserInfo()
+    {
+
+    }
+    function test()
     {
         //$name = Request::input('appid');
-        $name = $request->Input('appid');
+        $name = phpinfo();
         return $name;
     }
     private function send_get($url, $query_data) {
