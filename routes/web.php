@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeApp\UserController;
+use App\Http\Controllers\AlbumController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +26,9 @@ Route::get('admin/AccountAdd', function () {
 
 Route::prefix('WeApp')->group(function () {
     Route::get('onlogin/{code}', [UserController::class, 'onLogin']);
+});
+Route::prefix('Admin')->group(function () {
+    Route::get('Album/Create', [AlbumController::class, 'Create']);
 });
 Route::get('WeApp/test', [UserController::class, 'test']);
 
