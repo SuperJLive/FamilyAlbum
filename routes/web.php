@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeApp\UserController;
 use App\Http\Controllers\AlbumController;
+use App\Http\Controllers\AlbumOwnerController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\PermissionController;
+//use phpDocumentor\Reflection\Types\Resource_;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +34,14 @@ Route::prefix('WeApp')->group(function () {
 });
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);
+    //Route::resource('Account', 'AccountController');
+    Route::get('Account/Create', [AccountController::class, 'Create']);
+
+    Route::get('AlbumOwner/Create', [AlbumOwnerController::class, 'Create']);
+
+    Route::get('Permission/Index', [PermissionController::class, 'Index']);
 });
 Route::get('WeApp/test', [UserController::class, 'test']);
+
+
 

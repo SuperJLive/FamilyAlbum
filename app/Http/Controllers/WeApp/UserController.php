@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\WeApp;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-//use App\Http\Controllers\Controller;
+
 class UserController extends Controller
 {
     //
@@ -12,9 +12,9 @@ class UserController extends Controller
 
     public function onLogin(string $code)
     {
-        
+
         //https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
-        //AppID(小程序ID)wx224848dcd0a8cf8b	
+        //AppID(小程序ID)wx224848dcd0a8cf8b
         //AppSecret(小程序密钥)b23a6352c88384e3de1da7da649b890a
         $query_data = array(
             'appid' => 'wx224848dcd0a8cf8b',
@@ -26,7 +26,7 @@ class UserController extends Controller
         //$authurl='http://127.0.0.1:8000/wxprog/test';
         $temp = $this->send_get($authurl,$query_data);
         $result = json_decode($temp);
-        
+
         if(!property_exists($result,'errcode'))
         {
             // openid	string	用户唯一标识
@@ -37,7 +37,7 @@ class UserController extends Controller
             $unionid = null;
             if(property_exists($result,'unionid'))
             {
-                    $unionid=$result.unionid;
+                    //$unionid=$result.unionid;
             }
             $user=DB::table('user')->where('openid','=',$result->openid)->first();
             if($user!=null){
@@ -53,8 +53,8 @@ class UserController extends Controller
             }
 
             //$user=User::
-           
-                
+
+
             //$result.openid;
         }
         else{

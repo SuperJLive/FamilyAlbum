@@ -17,9 +17,9 @@
             <form class="form-horizontal">
               <div class="card-body">
                 <div class="form-group row">
-                  <label for="inputTitle" class="col-sm-2 col-form-label">相册标题</label>
+                  <label for="title" class="col-sm-2 col-form-label">相册标题</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputTitle" placeholder="请填写标题">
+                    <input type="text" class="form-control" id="title" placeholder="请填写标题">
                   </div>
                 </div>
                 <div class="form-group row">

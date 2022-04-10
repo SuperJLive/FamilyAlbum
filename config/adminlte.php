@@ -237,55 +237,14 @@ return [
         ],
 
         // Sidebar items:
-        
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
         [
-            'text' => '测试页',
-            'url'  => 'WeApp/test',
-            //'can'  => 'manage-blog',
-        ],
-        ['header' => '相册管理'],
-        [
-            'text' => '相册管理',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu'=>[
-                [
-                'text' => '相册列表',
-                'url'  => 'admin/AccountList',
-                ],
-                [
-                    'text' => '新建相册',
-                    'url'  => 'admin/AccountAdd',
-                ],
-
-            ]
-            
-
-        ],
-        [
-            'text' => '图片管理',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu'=>[
-                [
-                'text' => '图片列表',
-                'url'  => 'admin/AccountList',
-                ],
-                [
-                    'text' => '图片上传',
-                    'url'  => 'admin/AccountAdd',
-                ],
-
-            ]
-            
-
-        ],
-        [
             'text' => 'blog',
             'url'  => 'admin/blog',
-            //'can'  => 'manage-blog',
+            'can'  => 'manage-blog',
         ],
         [
             'text'        => 'pages',
@@ -304,23 +263,6 @@ return [
             'text' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
-            'text' => 'Account setting',
-            'icon' => 'fas fa-fw fa-user',
-            'submenu'=>[
-                [
-                'text' => 'Account List',
-                'url'  => 'admin/AccountList',
-                ],
-                [
-                    'text' => 'Account Add',
-                    'url'  => 'admin/AccountAdd',
-                    ],
-
-            ]
-            
-
         ],
         [
             'text'    => 'multilevel',
@@ -487,6 +429,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | IFrame
+    |--------------------------------------------------------------------------
+    |
+    | Here we change the IFrame mode configuration. Note these changes will
+    | only apply to the view that extends and enable the IFrame mode.
+    |
+    | For detailed instructions you can look the iframe mode section here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/IFrame-Mode-Configuration
+    |
+    */
+
+    'iframe' => [
+        'default_tab' => [
+            'url' => null,
+            'title' => null,
+        ],
+        'buttons' => [
+            'close' => true,
+            'close_all' => true,
+            'close_all_other' => true,
+            'scroll_left' => true,
+            'scroll_right' => true,
+            'fullscreen' => true,
+        ],
+        'options' => [
+            'loading_screen' => 1000,
+            'auto_show_new_tab' => true,
+            'use_navbar_items' => true,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Livewire
     |--------------------------------------------------------------------------
     |
@@ -494,6 +469,7 @@ return [
     |
     | For detailed instructions you can look the livewire here:
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
+    |
     */
 
     'livewire' => false,

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateUserTable extends Migration
 {
@@ -32,10 +33,11 @@ class CreateUserTable extends Migration
             $table->string('username',50)->nullable();
             $table->string('password',50)->nullable();
             $table->string('relation',50)->nullable();
-            $table->boolean('is_alow_login')->default(true);
-            $table->timestamp('first_login_time')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->boolean('alow_login')->default(true);
+            $table->timestamp('first_login_time')->nullable()->useCurrent();
+            //$table->timestamp('first_login_time')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('last_login_time')->nullable()->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            
+
         });
     }
 
