@@ -40,6 +40,7 @@ Route::prefix('Admin')->group(function () {
     Route::get('AlbumOwner/Create', [AlbumOwnerController::class, 'Create']);
 
     Route::get('Permission/Index', [PermissionController::class, 'Index']);
+    Route::post('Permission/Store', [PermissionController::class, 'Store']);
 });
 Route::get('WeApp/test', [UserController::class, 'test']);
 

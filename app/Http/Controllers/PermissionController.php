@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class PermissionController extends Controller
 {
@@ -16,7 +17,9 @@ class PermissionController extends Controller
     public function index()
     {
         //
-        return view("Admin.Permission.Index");
+        $db = DB::table('permission');
+        $permissions=$db->get();
+        return view("Admin.Permission.Index",['permissions'=>$permissions]);
     }
 
     /**
@@ -38,21 +41,28 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'permissionName' => 'string|required|max:100',
-            'description' =>'string|max:500',
-            'isUsable' => 'required|boolean',
-            'order'=>'digits:5|required',
-        ]);
+        $rule=[
+            'permissionName' => 'required|string|max:100',
+            'description' => 'string|nullable|max:500',
+            'isUsable' => 'required|bool',
+            'order' => 'required|integer'
+        ];
+        $message=[
+            'permissionName.required'=>'权限名称必须填写！'
+        ];
+        $validatedData = $request->validate($rule);
+
         $db = DB::table('permission');
-        $db->insert([
+        $result=$db->insert([
             [
-                'permission_name' => $request['permissionName'],
-                'description' => $request['description'],
-                'is_usable' => $request['isUsable'],
-                'sorting_order' => $request['order']
+                'permission_name' => $validatedData['permissionName'],
+                'description' => $validatedData['description'],
+                'is_usable' => $validatedData['isUsable'],
+                'sorting_order' => $validatedData['order']
             ]
         ]);
+        //echo $request['permissionName'];
+        return redirect('Admin/Permission/Index');
     }
 
     /**

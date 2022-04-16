@@ -2,3 +2,8 @@
 {
     padding-top: 8px;
 }
+
+.input-group-prepend-validate
+{
+    height: calc(2.25rem + 2px);
+}

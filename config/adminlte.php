@@ -253,6 +253,12 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        ['header' => '相册设置'],
+        [
+            'text' => '访问权限设置',
+            'url'  => 'Admin/Permission/Index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

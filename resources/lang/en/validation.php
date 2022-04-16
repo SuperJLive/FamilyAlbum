@@ -151,6 +151,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        //'permissionName'=>'权限名称'
+    ],
 
 ];
