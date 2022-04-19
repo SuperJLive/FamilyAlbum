@@ -62,6 +62,7 @@
 
                     </div>
                 </form>
+                <input type="hidden" value="{{$item->id}}">
                 @foreach ($permissions as $item)
                 <div class="row form-group">
                     <div class="col-2 input-group">
