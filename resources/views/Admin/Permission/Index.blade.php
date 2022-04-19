@@ -26,22 +26,22 @@
                                 <span class="input-group-text">@</span>
                             </div>
                             <input type="text" class="form-control @error('permissionName') is-invalid @enderror"
-                                id="permissionName" name="permissionName" placeholder="访问权限名称"
-                                value={{old('permissionName')}}>
+                                id="permissionName" name="permissionName" placeholder="访问权限名称" value="{{old('
+                                permissionName')}}">
                             @error('permissionName')
                             <span id="permissionName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-6">
                             <input type="text" class="form-control @error('description') is-invalid @enderror"
-                                id="description" name="description" placeholder="访问权限说明" value={{old('description')}}>
+                                id="description" name="description" placeholder="访问权限说明" value="{{old('description')}}">
                             @error('description')
                             <span id="description-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-1">
                             <input type="text" class="form-control @error('order') is-invalid @enderror" id="order"
-                                name="order" placeholder="排序" value={{old('order')}}>
+                                name="order" placeholder="排序" value="{{old('order')}}">
                             @error('order')
                             <span id="order-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -64,7 +64,9 @@
                 </form>
                 @foreach ($permissions as $item)
                 <div class="row form-group">
+                    <input type="hidden" name="permissionId" value="{{$item->id}}">
                     <div class="col-2 input-group">
+
                         <div class="input-group-prepend input-group-prepend-validate">
                             <span class="input-group-text">{{$item->id}}</span>
                         </div>
@@ -140,7 +142,7 @@
                     },
                     order : {
                         required: true,
-                        
+
                     }
                 },
                 messages:{
@@ -170,37 +172,40 @@
      });
         $(".btnUpdate").on("click", function () {
             var parentElement=$(this).parent().parent();
-            var permissionId = parentElement.find(".permission-id").val();
-            var permissionName = parentElement.find(".permission-name").val();
-            var order = parentElement.find("order").val();
-            var isUsable = parentElement.find("is-usable").prop("checked");
-            console.log(isUsable);
-            $.post("/Admin/BaseInfo/EditDept/" + DeptNo,
-                { DeptName: deptName, DeptNo: DeptNo,IsUsable:isUsable },
-                function (result) {
-                    if (result.succeed) {
+            var permissionId = parentElement.find("input[name='permissionId']").val();
+            var permissionName = parentElement.find("input[name='permissionNameEdit']").val();
+            var description = parentElement.find("input[name='descriptionEdit']").val();
+            var order = parentElement.find("input[name='orderEdit']").val();
+            var isUsable = parentElement.find("input[name='isUsableEdit']").prop("checked");
+            console.log(permissionId+permissionName+description+order+isUsable);
+            $.ajax({url: "/Admin/Permission/Update/" + permissionId,
+                type:'POST',
+                headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
+                data:{ 'permissionName': permissionName,'description':description, 'order': order,'isUsable':isUsable },
+                success:function (result) {
+                    if (result.success) {
                         window.location.reload();
                     }
                 }
-
-            );
+            });
         });
-        $(".btnDestroy").on("click", function () {
+        $(".btnDelete").on("click", function () {
+            //console.log($("meta[name='csrf-token']").attr('content'));
+
             var parentElement=$(this).parent().parent();
-            var permissionId = parentElement.find(".permission-id").val();
-            var permissionName = parentElement.find(".permission-name").val();
-            var order = parentElement.find("order").val();
-            var isUsable = parentElement.find("is-usable").prop("checked");
-            console.log(isUsable);
-            $.post("/Admin/BaseInfo/EditDept/" + DeptNo,
-                { DeptName: deptName, DeptNo: DeptNo,IsUsable:isUsable },
-                function (result) {
-                    if (result.succeed) {
+            var permissionId = parentElement.find("input[name='permissionId']").val();
+            console.log(permissionId);
+            $.ajax({url:"/Admin/Permission/Destroy",
+                data:{ 'id': permissionId },
+                type:'POST',
+                //dataType: "json",
+                headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
+                success:function (result) {
+                    if (result.success) {
                         window.location.reload();
                     }
                 }
-
-            );
+            });
         });
     </script>
 
