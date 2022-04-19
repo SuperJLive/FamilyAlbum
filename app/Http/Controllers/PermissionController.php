@@ -16,6 +16,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
+        //echo phpinfo();
         //
         $db = DB::table('permission');
         $permissions=$db->get();
@@ -97,6 +98,8 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         //
+        $id=$request->get('id');
+
     }
 
     /**
@@ -105,8 +108,15 @@ class PermissionController extends Controller
      * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Permission $permission)
+    public function destroy(Request $request)
     {
         //
+        $db = DB::table('permission');
+
+        $id=$request->get('id');
+        Permission::destroy($id);
+        return response()->json([
+            'success' => 1
+        ]);
     }
 }

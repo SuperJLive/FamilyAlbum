@@ -41,6 +41,8 @@ Route::prefix('Admin')->group(function () {
 
     Route::get('Permission/Index', [PermissionController::class, 'Index']);
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
+    Route::post('Permission/Destroy', [PermissionController::class, 'Destroy']);
+    Route::post('Permission/Update/{id}', [PermissionController::class, 'Update']);
 });
 Route::get('WeApp/test', [UserController::class, 'test']);
 
