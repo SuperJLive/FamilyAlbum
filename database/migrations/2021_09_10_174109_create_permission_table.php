@@ -19,9 +19,10 @@ class CreatePermissionTable extends Migration
             $table->string('permission_name');
             $table->string('description',1000)->nullable();
             $table->boolean('is_usable')->default(true);
-            $table->integer('sorting_order')->default(0);
+            $table->integer('sorting_order');
             $table->timestamps();
         });
+
     }
 
     /**

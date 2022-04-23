@@ -259,6 +259,11 @@ return [
             'url'  => 'Admin/Permission/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
+        [
+            'text' => '创建相册所有者',
+            'url'  => 'Admin/AlbumOwner/Create',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

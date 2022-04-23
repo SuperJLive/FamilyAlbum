@@ -26,8 +26,7 @@
                                 <span class="input-group-text">@</span>
                             </div>
                             <input type="text" class="form-control @error('permissionName') is-invalid @enderror"
-                                id="permissionName" name="permissionName" placeholder="访问权限名称" value="{{old('
-                                permissionName')}}">
+                                id="permissionName" name="permissionName" placeholder="访问权限名称" value="{{old('permissionName')}}">
                             @error('permissionName')
                             <span id="permissionName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -41,7 +40,7 @@
                         </div>
                         <div class="col-1">
                             <input type="text" class="form-control @error('order') is-invalid @enderror" id="order"
-                                name="order" placeholder="排序" value="{{old('order')}}">
+                                name="order" placeholder="排序" value="{{old('order')==null?$maxOrder:old('order')}}">
                             @error('order')
                             <span id="order-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -62,54 +61,55 @@
 
                     </div>
                 </form>
-                <input type="hidden" value="{{$item->id}}">
-                @foreach ($permissions as $item)
-                <div class="row form-group">
-                    <input type="hidden" name="permissionId" value="{{$item->id}}">
-                    <div class="col-2 input-group">
+                <div id="edit">
+                    @foreach ($permissions as $item)
+                    <div class="row form-group">
+                        <input type="hidden" name="permissionId" value="{{$item->id}}">
+                        <div class="col-2 input-group">
 
-                        <div class="input-group-prepend input-group-prepend-validate">
-                            <span class="input-group-text">{{$item->id}}</span>
+                            <div class="input-group-prepend input-group-prepend-validate">
+                                <span class="input-group-text">{{$item->id}}</span>
+                            </div>
+                            <input type="text" class="form-control @error('permissionNameEdit') is-invalid @enderror"
+                                id="permissionNameEdit" name="permissionNameEdit" placeholder="访问权限名称"
+                                value={{$item->permission_name}}>
+                            @error('permissionNameEdit')
+                            <span id="permissionNameEdit-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <input type="text" class="form-control @error('permissionNameEdit') is-invalid @enderror"
-                            id="permissionNameEdit" name="permissionNameEdit" placeholder="访问权限名称"
-                            value={{$item->permission_name}}>
-                        @error('permissionNameEdit')
-                        <span id="permissionNameEdit-error" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-6">
-                        <input type="text" class="form-control @error('descriptionEdit') is-invalid @enderror"
-                            id="descriptionEdit" name="descriptionEdit" placeholder="访问权限说明"
-                            value={{$item->description}}>
-                        @error('descriptionEdit')
-                        <span id="descriptionEdit-error" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="col-1">
-                        <input type="text" class="form-control @error('orderEdit') is-invalid @enderror" id="orderEdit"
-                            name="orderEdit" placeholder="排序" value={{$item->sorting_order}}>
-                        @error('orderEdit')
-                        <span id="orderEdit-error" class="error invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control @error('descriptionEdit') is-invalid @enderror"
+                                id="descriptionEdit" name="descriptionEdit" placeholder="访问权限说明"
+                                value={{$item->description}}>
+                            @error('descriptionEdit')
+                            <span id="descriptionEdit-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-1">
+                            <input type="text" class="form-control @error('orderEdit') is-invalid @enderror" id="orderEdit"
+                                name="orderEdit" placeholder="排序" value={{$item->sorting_order}}>
+                            @error('orderEdit')
+                            <span id="orderEdit-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
 
-                    <div class="col-1">
-                        <div class="form-group clearfix  icheck-center">
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="isUsableEdit" name="isUsableEdit" value="1" id="order"
-                                    checked>
-                                <label for="isUsableEdit">
-                                </label>
+                        <div class="col-1">
+                            <div class="form-group clearfix  icheck-center">
+                                <div class="icheck-primary d-inline">
+                                    <input type="checkbox" id="isUsableEdit{{$item->id}}" name="isUsableEdit" value="1" id="order"
+                                        {{$item->getIsUsableChecked()}}>
+                                    <label for="isUsableEdit{{$item->id}}">
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-info btnUpdate">编辑</button>
+                            <button type="submit" class="btn btn-info btnDelete">删除</button>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-info btnUpdate">编辑</button>
-                        <button type="submit" class="btn btn-info btnDelete">删除</button>
-                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -119,6 +119,7 @@
 
         </div>
     </div>
+</div>
     @stop
 
     @section('css')
@@ -130,6 +131,7 @@
     <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
     <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
     <script type="text/javascript">
+    
         $("#form-permission-create1").validate({
             debug:false,
             rules:{
@@ -171,18 +173,53 @@
                 }
 
      });
+    //  $("input[name='permissionNameEdit']").each(function(){
+    //         $(this).rules("add",{required:true,minlength:1,maxlength:100,messages:{required:"权限名称必须填写"}});
+    //      });
+     //$("input[name='permissionNameEdit']").rules("add",{required:true,minlength:1,maxlength:100,messages:{required:"权限名称必须填写"}});
         $(".btnUpdate").on("click", function () {
+            
+            // var validator =$("#edit").validate();
+            // console.log(validator);
+            // validator.element($("#permissionNameEdit1"));
             var parentElement=$(this).parent().parent();
-            var permissionId = parentElement.find("input[name='permissionId']").val();
-            var permissionName = parentElement.find("input[name='permissionNameEdit']").val();
-            var description = parentElement.find("input[name='descriptionEdit']").val();
-            var order = parentElement.find("input[name='orderEdit']").val();
-            var isUsable = parentElement.find("input[name='isUsableEdit']").prop("checked");
-            console.log(permissionId+permissionName+description+order+isUsable);
+            var ePermissionId = parentElement.find("input[name='permissionId']");
+            var ePermissionName = parentElement.find("input[name='permissionNameEdit']");
+            var eDescription = parentElement.find("input[name='descriptionEdit']");
+            var eOrder = parentElement.find("input[name='orderEdit']");
+            var eIsUsable = parentElement.find("input[name^='isUsableEdit']");
+
+            var permissionId = ePermissionId.val();
+            var permissionName = ePermissionName.val();
+            var description = eDescription.val();
+            var order = eOrder.val();
+            var isUsable = (eIsUsable.prop("checked"))?1:0;
             $.ajax({url: "/Admin/Permission/Update/" + permissionId,
                 type:'POST',
                 headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
                 data:{ 'permissionName': permissionName,'description':description, 'order': order,'isUsable':isUsable },
+                error:function(jqXHR,textStatus,errorThrown )
+                {
+                    $.each(jqXHR.responseJSON.errors,function(name,value) {
+                        switch(name){
+                            case "permissionName":
+                                ePermissionName.addClass("is-invalid");
+                                break;
+                            case "order":
+                                eOrder.addClass("is-invalid");
+                                break;
+                            case "description":
+                                eDescription.addClass("is-invalid");
+                                break;
+                        }
+                    });
+                    
+                },
+                // statusCode:{
+                //     422:function(result){
+                //         console.log(result.responseJSON.errors);
+                //     }
+                // },
                 success:function (result) {
                     if (result.success) {
                         window.location.reload();

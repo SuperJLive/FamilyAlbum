@@ -27,6 +27,7 @@ class AlbumOwnerController extends Controller
     public function create()
     {
         //
+        
         return view("Admin.AlbumOwner.Create");
     }
 

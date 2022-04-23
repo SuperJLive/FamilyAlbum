@@ -16,11 +16,11 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //echo phpinfo();
         //
-        $db = DB::table('permission');
-        $permissions=$db->get();
-        return view("Admin.Permission.Index",['permissions'=>$permissions]);
+        //$db = DB::table('permission');
+        $maxOrder=Permission::count()+1;
+        $permissions=Permission::orderBy('sorting_order','asc')->get();
+        return view("Admin.Permission.Index",['permissions'=>$permissions,'maxOrder'=>$maxOrder]);
     }
 
     /**
@@ -45,23 +45,26 @@ class PermissionController extends Controller
         $rule=[
             'permissionName' => 'required|string|max:100',
             'description' => 'string|nullable|max:500',
-            'isUsable' => 'required|bool',
+            'isUsable'=>'bool',
             'order' => 'required|integer'
         ];
         $message=[
             'permissionName.required'=>'权限名称必须填写！'
         ];
         $validatedData = $request->validate($rule);
-
-        $db = DB::table('permission');
-        $result=$db->insert([
+        
+        if(!$request->has('isUsable'))
+        {
+            $validatedData['isUsable']=false;
+        }
+        $rowNum = Permission::create(
             [
                 'permission_name' => $validatedData['permissionName'],
                 'description' => $validatedData['description'],
                 'is_usable' => $validatedData['isUsable'],
                 'sorting_order' => $validatedData['order']
             ]
-        ]);
+        );
         //echo $request['permissionName'];
         return redirect('Admin/Permission/Index');
     }
@@ -95,11 +98,29 @@ class PermissionController extends Controller
      * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request)
     {
         //
-        $id=$request->get('id');
-
+        $dddd=$request->isUsable;
+        $rule=[
+            'permissionName' => 'required|string|max:100',
+            'description' => 'string|nullable|max:500',
+            'isUsable' => 'required|boolean',
+            'order' => 'required|integer'
+        ];
+        $validatedData = $request->validate($rule);
+        $id=$request->route('id');
+        $db = DB::table('permission');
+        $db->where('id','=',$id)->update([
+            'permission_name' => $validatedData['permissionName'],
+            'description' => $validatedData['description'],
+            'is_usable' => $validatedData['isUsable'],
+            'sorting_order' => $validatedData['order'],
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        return response()->json([
+            'success' => 1
+        ]);
     }
 
     /**
