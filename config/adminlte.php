@@ -264,6 +264,11 @@ return [
             'url'  => 'Admin/AlbumOwner/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
+        [
+            'text' => '用户管理',
+            'url'  => 'Admin/User/Index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

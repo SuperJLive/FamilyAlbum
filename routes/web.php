@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WeApp\UserController;
+use App\Http\Controllers\WeApp\UserController as WeUserController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\AlbumOwnerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
 //use phpDocumentor\Reflection\Types\Resource_;
 
 /*
@@ -43,8 +44,8 @@ Route::prefix('Admin')->group(function () {
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
     Route::post('Permission/Destroy', [PermissionController::class, 'Destroy']);
     Route::post('Permission/Update/{id}', [PermissionController::class, 'Update']);
+
+    Route::get('User/Index',[UserController::class, 'Index']);
+    Route::post('User/GetList',[UserController::class, 'GetList']);
 });
 Route::get('WeApp/test', [UserController::class, 'test']);
-
-
-

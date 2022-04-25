@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreatePermissionTable extends Migration
 {
     /**
@@ -20,7 +20,9 @@ class CreatePermissionTable extends Migration
             $table->string('description',1000)->nullable();
             $table->boolean('is_usable')->default(true);
             $table->integer('sorting_order');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+
         });
 
     }
