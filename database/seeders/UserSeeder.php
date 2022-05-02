@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
-        for($i=0;$i<50;$i++)
+        for($i=0;$i<75;$i++)
         {
             DB::table('user')->insert([
             'openid' => Str::random(64),

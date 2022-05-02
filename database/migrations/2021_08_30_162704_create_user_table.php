@@ -32,7 +32,7 @@ class CreateUserTable extends Migration
             $table->string('identity',50)->nullable();
             $table->string('username',50)->nullable();
             $table->string('password',50)->nullable();
-            $table->string('relation',50)->nullable();
+            $table->string('permission',50)->nullable();
             $table->boolean('alow_login')->default(true);
             $table->timestamp('first_login_time')->nullable()->useCurrent();
             //$table->timestamp('first_login_time')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
