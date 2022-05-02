@@ -26,7 +26,8 @@
                                 <span class="input-group-text">@</span>
                             </div>
                             <input type="text" class="form-control @error('permissionName') is-invalid @enderror"
-                                id="permissionName" name="permissionName" placeholder="访问权限名称" value="{{old('permissionName')}}">
+                                id="permissionName" name="permissionName" placeholder="访问权限名称"
+                                value="{{old('permissionName')}}">
                             @error('permissionName')
                             <span id="permissionName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -86,8 +87,8 @@
                             @enderror
                         </div>
                         <div class="col-1">
-                            <input type="text" class="form-control @error('orderEdit') is-invalid @enderror" id="orderEdit"
-                                name="orderEdit" placeholder="排序" value={{$item->sorting_order}}>
+                            <input type="text" class="form-control @error('orderEdit') is-invalid @enderror"
+                                id="orderEdit" name="orderEdit" placeholder="排序" value={{$item->sorting_order}}>
                             @error('orderEdit')
                             <span id="orderEdit-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -96,8 +97,8 @@
                         <div class="col-1">
                             <div class="form-group clearfix  icheck-center">
                                 <div class="icheck-primary d-inline">
-                                    <input type="checkbox" id="isUsableEdit{{$item->id}}" name="isUsableEdit" value="1" id="order"
-                                        {{$item->getIsUsableChecked()}}>
+                                    <input type="checkbox" id="isUsableEdit{{$item->id}}" name="isUsableEdit" value="1"
+                                        id="order" {{$item->getIsUsableChecked()}}>
                                     <label for="isUsableEdit{{$item->id}}">
                                     </label>
                                 </div>
@@ -120,19 +121,18 @@
         </div>
     </div>
 </div>
-    @stop
+@stop
 
-    @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    @stop
+@section('css')
+<link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+@stop
 
-    @section('js')
-    <script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
-    <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
-    <script type="text/javascript">
-    
-        $("#form-permission-create1").validate({
+@section('js')
+<script src="/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="/plugins/jquery-validation/additional-methods.min.js"></script>
+<script type="text/javascript">
+    $("#form-permission-create").validate({
             debug:false,
             rules:{
                     permissionName:{
@@ -178,7 +178,7 @@
     //      });
      //$("input[name='permissionNameEdit']").rules("add",{required:true,minlength:1,maxlength:100,messages:{required:"权限名称必须填写"}});
         $(".btnUpdate").on("click", function () {
-            
+
             // var validator =$("#edit").validate();
             // console.log(validator);
             // validator.element($("#permissionNameEdit1"));
@@ -213,7 +213,7 @@
                                 break;
                         }
                     });
-                    
+
                 },
                 // statusCode:{
                 //     422:function(result){
@@ -245,6 +245,6 @@
                 }
             });
         });
-    </script>
+</script>
 
-    @stop
+@stop
