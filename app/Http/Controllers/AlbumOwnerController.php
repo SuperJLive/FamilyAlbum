@@ -31,6 +31,10 @@ class AlbumOwnerController extends Controller
         return view("Admin.AlbumOwner.Create");
     }
 
+    public function selectUser()
+    {
+        
+    }
     /**
      * Store a newly created resource in storage.
      *

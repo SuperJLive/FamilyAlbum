@@ -32,6 +32,22 @@ class UserController extends Controller
         ];
         return json_encode($data);
     }
+    public function GetUserSelect(Request $request)
+    {
+        $keyword=$request->input('search');
+        $keyword = str_replace('%','\%',$keyword);
+        $keyword = str_replace('_','\_',$keyword);
+        $query=User::Where('nick_name','like','%'.$keyword.'%');
+        $users=$query->get();
+        $user=array();
+        foreach($users as $item){
+            $user[]= array(
+                'id'=>$item->id,
+                'text'=>$item->nick_name
+            );
+        }
+        return response()->json($user);
+    }
     /**
      * Show the form for creating a new resource.
      *

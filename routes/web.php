@@ -7,6 +7,8 @@ use App\Http\Controllers\AlbumOwnerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use App\Models\AlbumOwner;
+use Illuminate\Support\Facades\File;
 //use phpDocumentor\Reflection\Types\Resource_;
 
 /*
@@ -28,6 +30,9 @@ Route::get('admin/AccountAdd', function () {
     return view('Account.AccountAdd');
 });
 
+Route::get('/',function(){
+    return File::get(public_path() . '/index.html');
+});
 //Route::get('wxprog/onlogin/{code}', [UserController::class, 'onLogin']);
 
 Route::prefix('WeApp')->group(function () {
@@ -47,5 +52,10 @@ Route::prefix('Admin')->group(function () {
 
     Route::get('User/Index',[UserController::class, 'Index']);
     Route::post('User/GetList',[UserController::class, 'GetList']);
+
+    Route::post('/User/GetUserSelect',[UserController::class,'GetUserSelect']);
+
+
 });
+
 Route::get('WeApp/test', [UserController::class, 'test']);
