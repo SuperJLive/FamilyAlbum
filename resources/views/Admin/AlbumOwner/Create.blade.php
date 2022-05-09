@@ -19,8 +19,8 @@
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写">
+                            <input type="text" class="form-control" id="albumName" name="albumName" placeholder="请填写标题"
+                                required data-msg-required="相册名称必须填写">
                         </div>
                     </div>
                     <div class="form-group row">
