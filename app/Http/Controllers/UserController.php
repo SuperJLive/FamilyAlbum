@@ -18,7 +18,7 @@ class UserController extends Controller
         return view('Admin.User.Index');
     }
 
-    public function GetList(Request $request)
+    public function getList(Request $request)
     {
         //
         $draw=$request->input('draw');
@@ -32,7 +32,7 @@ class UserController extends Controller
         ];
         return json_encode($data);
     }
-    public function GetUserSelect(Request $request)
+    public function getUserSelect(Request $request)
     {
         $keyword=$request->input('search');
         $keyword = str_replace('%','\%',$keyword);

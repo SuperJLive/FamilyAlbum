@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AlbumOwner;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +17,8 @@ class AlbumOwnerController extends Controller
     public function index()
     {
         //
-        return view("Admin.AlbumOwner.Create");
+        $permission=$this->getPermissionSelect();
+        return view("Admin.AlbumOwner.Create",['permission'=>$permission]);
     }
 
     /**
@@ -30,10 +32,18 @@ class AlbumOwnerController extends Controller
         
         return view("Admin.AlbumOwner.Create");
     }
-
-    public function selectUser()
+    protected function getPermissionSelect()
     {
-        
+        $query=Permission::where('is_usable','=','1');
+        $permissions=$query->get();
+        $permission=array();
+        foreach($permissions as $item){
+            $permission[]= array(
+                'id'=>$item->id,
+                'text'=>$item->permission_name
+            );
+        }
+        return $permission;
     }
     /**
      * Store a newly created resource in storage.

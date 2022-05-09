@@ -25,19 +25,21 @@
                     <div class="form-group row">
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册所有者</label>
                         <div class="col-sm-6">
-                            <select id="AlbumOwner" class="form-control" style="width: 100%;"></select>
+                            <select id="albumOwner" class="form-control" style="width: 100%;"></select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="owner" placeholder="请填写标题">
+                        <div class="col-sm-6">
+                            <select id="permission" class="form-control" style="width: 100%;">
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="password" placeholder="访问密码">
+                        <div class="col-sm-4">
+                            <input type="password" class="form-control" id="password" placeholder="请填写密码">
                         </div>
                     </div>
                 </div>
@@ -64,7 +66,7 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script type="text/javascript">
-        $('#AlbumOwner').select2({
+        $('#albumOwner').select2({
             theme: 'bootstrap4',
             language:'zh-CN',
             minimumInputLength :2,
