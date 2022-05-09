@@ -14,41 +14,59 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal">
+            <form class="form-horizontal" id="form-create">
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="title" placeholder="请填写标题">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题" required
+                                data-msg-required="相册名称必须填写">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册所有者</label>
                         <div class="col-sm-6">
-                            <select id="albumOwner" class="form-control" style="width: 100%;"></select>
+                            <select id="albumOwner" class="form-control" style="width: 100%;" required
+                                data-msg-required="请选择相册所有人"></select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
                         <div class="col-sm-6">
                             <select id="permission" class="form-control" style="width: 100%;">
-                                @foreach($permission as $item)
-
-                                @endfor
+                                @foreach ($permissions as $item)
+                                <option value="{{$item['id']}}">{{$item['text']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <input type="password" class="form-control" id="password" placeholder="请填写密码">
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group clearfix  icheck-center">
+                                <div class="icheck-primary d-inline">
+                                    <input type="checkbox" id="onlyPassword" name="onlyPassword" value="1">
+                                    <label for="onlyPassword">
+                                        只用密码即可访问
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label text-right">简介</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="3" placeholder="输入简介"></textarea>
                         </div>
                     </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-info">Sign in</button>
-                    <button type="submit" class="btn btn-default float-right">Cancel</button>
+                    <button type="submit" class="btn btn-info">提交</button>
+                    <button type="reset" class="btn btn-default float-right">取消</button>
                 </div>
                 <!-- /.card-footer -->
             </form>
@@ -60,6 +78,7 @@
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     @stop
 
     @section('js')
@@ -68,6 +87,48 @@
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script type="text/javascript">
+        $(function(){
+            $('#form-create').validate({
+                // rules:{
+                //     // title:{
+                //     //     required:true,
+                //     //     minlength:2,
+                //     //     maxlength:100
+                //     // },
+                //     // description:{
+                //     //     maxlength:500,
+                //     // }
+                // },
+                // messages:{
+                //     title:{
+                //         required:'相册名称必须填写',
+                //         maxlength:'最大长度不能超过100'
+                //     },
+                //     description:{
+                //         maxlength:'最大长度不能超过500'
+                //     }
+                // },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('div[class^="col"]').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                }
+            });
+            console.log('validate');
+        });
+
+        $('#permission').select2({
+            theme: 'bootstrap4',
+            language:'zh-CN',
+            minimumResultsForSearch: -1
+        });
+
         $('#albumOwner').select2({
             theme: 'bootstrap4',
             language:'zh-CN',
@@ -83,7 +144,7 @@
                 console.log(params);
             var query = {
                 search: params.term
-                
+
             };
             return query;
             },

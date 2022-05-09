@@ -98,7 +98,7 @@
                             <div class="form-group clearfix  icheck-center">
                                 <div class="icheck-primary d-inline">
                                     <input type="checkbox" id="isUsableEdit{{$item->id}}" name="isUsableEdit" value="1"
-                                        id="order" {{$item->getIsUsableChecked()}}>
+                                        {{$item->getIsUsableChecked()}}>
                                     <label for="isUsableEdit{{$item->id}}">
                                     </label>
                                 </div>

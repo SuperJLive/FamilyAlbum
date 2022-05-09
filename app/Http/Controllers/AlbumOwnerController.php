@@ -17,8 +17,8 @@ class AlbumOwnerController extends Controller
     public function index()
     {
         //
-        $permission=$this->getPermissionSelect();
-        return view("Admin.AlbumOwner.Create",['permission'=>$permission]);
+        $permissions=$this->getPermissionSelect();
+        return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
     }
 
     /**
@@ -29,21 +29,21 @@ class AlbumOwnerController extends Controller
     public function create()
     {
         //
-        
-        return view("Admin.AlbumOwner.Create");
+        $permissions=$this->getPermissionSelect();
+        return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
     }
     protected function getPermissionSelect()
     {
-        $query=Permission::where('is_usable','=','1');
+        $query=Permission::where('is_usable','=','1')->orderby('sorting_order');
         $permissions=$query->get();
-        $permission=array();
+        $arraPermission=array();
         foreach($permissions as $item){
-            $permission[]= array(
+            $arraPermission[]= array(
                 'id'=>$item->id,
                 'text'=>$item->permission_name
             );
         }
-        return $permission;
+        return $arraPermission;
     }
     /**
      * Store a newly created resource in storage.

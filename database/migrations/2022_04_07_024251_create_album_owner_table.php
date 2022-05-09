@@ -19,6 +19,8 @@ class CreateAlbumOwnerTable extends Migration
             $table->string('album_name')->default('');
             $table->boolean('public')->default(false);
             $table->string('password')->nullable();
+            $table->boolean('only_password')->default(false);
+            $table->string('description',500)->default('');
             $table->timestamps();
         });
     }
