@@ -32,7 +32,9 @@
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
                         <div class="col-sm-6">
                             <select id="permission" class="form-control" style="width: 100%;">
+                                @foreach($permission as $item)
 
+                                @endfor
                             </select>
                         </div>
                     </div>
