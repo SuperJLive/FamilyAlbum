@@ -34,12 +34,12 @@ class UserController extends Controller
     }
     public function getUserSelect(Request $request)
     {
-        // $keyword=$request->input('search');
-        // $keyword = str_replace('%','\%',$keyword);
-        // $keyword = str_replace('_','\_',$keyword);
-        // $query=User::where('nick_name','like','%'.$keyword.'%');
-        // $users=$query->get();
-        $users=User::where('nick_name','like','%uh%');
+        $keyword=$request->input('search');
+        $keyword = str_replace('%','\%',$keyword);
+        $keyword = str_replace('_','\_',$keyword);
+        $query=User::where('nick_name','like','%'.$keyword.'%');
+        $users=$query->get();
+        //$users=User::where('nick_name','like','%uh%');
         $user=array();
         foreach($users as $item){
             $user[]= array(
