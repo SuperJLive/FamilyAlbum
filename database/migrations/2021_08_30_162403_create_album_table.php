@@ -30,11 +30,11 @@ class CreateAlbumTable extends Migration
             $table->bigIncrements('id');
             $table->string('title', 128)->default('');//标题
             $table->bigInteger('cover_id')->default(0);//封面图片
-            $table->integer('owner_id')->default(0);//所有者
+            $table->bigInteger('owner_id')->default(0);//所有者
             $table->bigInteger('related_album_id')->default(null);//关联相册
             $table->string('tags')->nullable();
             $table->text('description')->nullable();//相册概述
-            $table->bigInteger('permission_id');//权限
+            $table->Integer('permission');//权限
             $table->string('password', 100)->nullable()->default(null);//密码
             $table->timestamps();
         });

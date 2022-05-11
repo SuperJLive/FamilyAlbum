@@ -16,7 +16,7 @@ class CreateUserTable extends Migration
     {
         Schema::dropIfExists('user');
         Schema::create('user', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('openid',128);
             $table->string('session_key',128)->nullable();
             $table->string('unionid',128)->nullable();
