@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class AlbumOwnerController extends Controller
@@ -53,8 +54,38 @@ class AlbumOwnerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //$value = $request->get('approved', 0); // 注意第二个参数 0 为默认值
+        $rule=[
+            'albumName' => 'required|string|max:100',
+            'albumOwner'=> 'required|integer',
+            'permissionId'=>'required|integer',
+            'password'=>'string|nullable|max:20',
+            'description' => 'string|nullable|max:500',
+            'onlyPassword' =>'bool'
+        ];
+        $message=[
+            'albumName.required'=>'相册名称必须填写！'
+        ];
+        $validator = Validator::make($request->all(), $rule,$message);
+        if ($validator->fails()) {
+            return redirect('post/create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
+        // 获取通过验证的数据...
+        $validated = $validator->validated();
+        $rowNum = AlbumOwner::create(
+            [
+                'album_name' => $validated['permissionName'],
+                'owner_id' => $validated['owner_id'],
+                'description' => $validated['description'],
+                'is_usable' => $validated['isUsable'],
+                'sorting_order' => $validated['order']
+            ]
+        );
+        //echo $request['permissionName'];
+        return redirect('Admin/AlbumUser/Index');
     }
 
     /**

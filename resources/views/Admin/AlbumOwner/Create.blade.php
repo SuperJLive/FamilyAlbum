@@ -14,7 +14,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="form-create">
+            <form class="form-horizontal" id="form-create" method="post" action="/Admin/AlbumOwner/Store">
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
