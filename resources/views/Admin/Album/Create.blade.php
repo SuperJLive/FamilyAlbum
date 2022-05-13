@@ -99,6 +99,7 @@
                 language:'zh-CN',
                 minimumResultsForSearch: -1
             });
+            //dropzone
         });
     </script>
     @stop
