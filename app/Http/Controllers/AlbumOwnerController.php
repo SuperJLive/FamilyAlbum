@@ -7,6 +7,7 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Utility\PermissionDic;
+use Illuminate\Notifications\Action;
 use Illuminate\Support\Facades\DB;
 
 class AlbumOwnerController extends Controller
@@ -19,9 +20,22 @@ class AlbumOwnerController extends Controller
     public function index()
     {
         //
-        
+        return view('Admin.AlbumOwner.Index');
     }
-
+    public function getList(Request $request)
+    {
+        $draw=$request->input('draw');
+        $query=AlbumOwner::from('album_owner as a')->join('user as b','a.owner_id','=','b.id')->orderByDesc('a.id')
+        ->select('a.id','a.album_name','b.nick_name','a.permission','a.created_at','a.updated_at');
+        $albumOwners=$query->get();
+        $data=[
+            'draw'=>$draw,
+            'data'=>$albumOwners,
+            'recordsTotal'=>$query->count(),
+            'recordsFiltered'=>$query->count()
+        ];
+        return json_encode($data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -30,6 +44,7 @@ class AlbumOwnerController extends Controller
     public function create()
     {
         //
+
         $permissions=PermissionDic::permissionSelect();
         return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
     }
@@ -54,9 +69,7 @@ class AlbumOwnerController extends Controller
         ];
         $validator = Validator::make($request->all(), $rule,$message);
         if ($validator->fails()) {
-            return //redirect('/Admin/AlbumOwner/Create')
-
-                        back()->withErrors($validator)
+            return back()->withErrors($validator)
                         ->withInput();
         }
 
@@ -72,7 +85,8 @@ class AlbumOwnerController extends Controller
             ]
         );
         //echo $request['permissionName'];
-        return redirect('Admin/AlbumUser/Index');
+        return redirect()->action([$this::class,'Index']);
+        //return redirect()->action([AlbumOwnerController::class,'Index']);
     }
 
     /**

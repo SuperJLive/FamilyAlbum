@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Utility\PermissionDic;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -24,8 +25,8 @@ class AlbumController extends Controller
      */
     public function create()
     {
-
-        return view("Admin.Album.Create");
+        $permissions=PermissionDic::permissionSelect();
+        return view("Admin.Album.Create",['permissions'=>$permissions]);
     }
 
     /**

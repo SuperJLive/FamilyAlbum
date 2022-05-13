@@ -260,8 +260,18 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
+            'text' => '创建相册',
+            'url'  => 'Admin/Album/Create',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
             'text' => '创建相册所有者',
             'url'  => 'Admin/AlbumOwner/Create',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => '相册所有人管理',
+            'url'  => 'Admin/AlbumOwner/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
