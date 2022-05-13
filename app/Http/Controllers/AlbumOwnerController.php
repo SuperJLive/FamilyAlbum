@@ -6,6 +6,7 @@ use App\Models\AlbumOwner;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Utility\PermissionDic;
 use Illuminate\Support\Facades\DB;
 
 class AlbumOwnerController extends Controller
@@ -18,8 +19,7 @@ class AlbumOwnerController extends Controller
     public function index()
     {
         //
-        $permissions=$this->getPermissionSelect();
-        return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
+        
     }
 
     /**
@@ -30,21 +30,8 @@ class AlbumOwnerController extends Controller
     public function create()
     {
         //
-        $permissions=$this->getPermissionSelect();
+        $permissions=PermissionDic::permissionSelect();
         return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
-    }
-    protected function getPermissionSelect()
-    {
-        $query=Permission::where('is_usable','=','1')->orderby('sorting_order');
-        $permissions=$query->get();
-        $arraPermission=array();
-        foreach($permissions as $item){
-            $arraPermission[]= array(
-                'id'=>$item->id,
-                'text'=>$item->permission_name
-            );
-        }
-        return $arraPermission;
     }
     /**
      * Store a newly created resource in storage.
@@ -58,18 +45,18 @@ class AlbumOwnerController extends Controller
         $rule=[
             'albumName' => 'required|string|max:100',
             'albumOwner'=> 'required|integer',
-            'permissionId'=>'required|integer',
+            'permission'=>'required|integer',
             'password'=>'string|nullable|max:20',
-            'description' => 'string|nullable|max:500',
-            'onlyPassword' =>'bool'
+            'description' => 'string|nullable|max:500'
         ];
         $message=[
             'albumName.required'=>'相册名称必须填写！'
         ];
         $validator = Validator::make($request->all(), $rule,$message);
         if ($validator->fails()) {
-            return redirect('post/create')
-                        ->withErrors($validator)
+            return //redirect('/Admin/AlbumOwner/Create')
+
+                        back()->withErrors($validator)
                         ->withInput();
         }
 
@@ -77,11 +64,11 @@ class AlbumOwnerController extends Controller
         $validated = $validator->validated();
         $rowNum = AlbumOwner::create(
             [
-                'album_name' => $validated['permissionName'],
-                'owner_id' => $validated['owner_id'],
+                'album_name' => $validated['albumName'],
+                'owner_id' => $validated['albumOwner'],
+                'permission'=>$validated['permission'],
                 'description' => $validated['description'],
-                'is_usable' => $validated['isUsable'],
-                'sorting_order' => $validated['order']
+                'password' => $validated['password']
             ]
         );
         //echo $request['permissionName'];

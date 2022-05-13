@@ -44,6 +44,7 @@ Route::prefix('Admin')->group(function () {
     Route::get('Account/Create', [AccountController::class, 'Create']);
 
     Route::get('AlbumOwner/Create', [AlbumOwnerController::class, 'Create']);
+    Route::post('AlbumOwner/Store', [AlbumOwnerController::class, 'Store']);
 
     Route::get('Permission/Index', [PermissionController::class, 'Index']);
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
