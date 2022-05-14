@@ -14,7 +14,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal">
+            <form class="form-horizontal dropzone">
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
@@ -99,7 +99,8 @@
                 language:'zh-CN',
                 minimumResultsForSearch: -1
             });
-            //dropzone temp
+
+            $("div#myId").dropzone({ url: "/Admin/Album/UploadFile" });
         });
     </script>
     @stop
