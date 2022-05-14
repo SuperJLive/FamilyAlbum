@@ -14,7 +14,8 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal">
+            <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/Admin/Album/FileUpload"
+                id="form-create">
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
@@ -66,6 +67,7 @@
                             <textarea class="form-control" rows="3" placeholder="输入简介"></textarea>
                         </div>
                     </div>
+                    <div id="dropzoneUpload" class="dropzone"></div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -93,6 +95,7 @@
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script src="/plugins/dropzone/min/dropzone.min.js"></script>
     <script type="text/javascript">
+        Dropzone.autoDiscover = false;
         $(function(){
             $('#permission').select2({
                 theme: 'bootstrap4',
@@ -100,6 +103,24 @@
                 minimumResultsForSearch: -1
             });
             //dropzone temp
+
+            var dropzoneMedia = new Dropzone("#dropzoneUpload", {
+                url: "/Admin/Album/Create"
+                // dictDefaultMessage: '拖动文件至此或者点击上传',
+                // paramName: "mediaFile",
+                // autoProcessQueue: false
+            });
+
+            // $('#dropzoneUpload').dropzone({
+            //     url: "/Admin/Album/Create"
+            // });
+            // Dropzone.options.dropzoneUpload = {
+            //     url: "/Admin/Album/Create",
+            //     dictDefaultMessage: '拖动文件至此或者点击上传',
+            //     paramName: "mediaFile",
+            //     autoProcessQueue: false
+            // };
+
         });
     </script>
     @stop
