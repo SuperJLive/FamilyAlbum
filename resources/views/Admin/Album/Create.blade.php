@@ -14,66 +14,72 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal dropzone">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="owner" class="col-sm-2 col-form-label text-right">相册封面</label>
-                        <div class="col-sm-6">
-                            <div class="btn-group w-100">
-                                <span class="btn btn-success col fileinput-button">
-                                    <i class="fas fa-plus"></i>
-                                    <span>Add files</span>
-                                </span>
-                                <button type="submit" class="btn btn-primary col start">
-                                    <i class="fas fa-upload"></i>
-                                    <span>Start upload</span>
-                                </button>
-                                <button type="reset" class="btn btn-warning col cancel">
-                                    <i class="fas fa-times-circle"></i>
-                                    <span>Cancel upload</span>
-                                </button>
+            <<<<<<< HEAD <form class="form-horizontal dropzone">
+                =======
+                <form class="form-horizontal" method="POST" enctype="multipart/form-data"
+                    action="/Admin/Album/FileUpload" id="form-create">
+                    >>>>>>> b7b36e27cb9d47277596b964d786bc3c58d1c7b5
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题"
+                                    required data-msg-required="相册名称必须填写">
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
-                        <div class="col-sm-6">
-                            <select id="permission" name="permission" class="form-control" style="width: 100%;">
-                                @foreach ($permissions as $item)
-                                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
-                                    {{$item['text']}}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-group row">
+                            <label for="owner" class="col-sm-2 col-form-label text-right">相册封面</label>
+                            <div class="col-sm-6">
+                                <div class="btn-group w-100">
+                                    <span class="btn btn-success col fileinput-button">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add files</span>
+                                    </span>
+                                    <button type="submit" class="btn btn-primary col start">
+                                        <i class="fas fa-upload"></i>
+                                        <span>Start upload</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-warning col cancel">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>Cancel upload</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="password" placeholder="请填写密码">
+                        <div class="form-group row">
+                            <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
+                            <div class="col-sm-6">
+                                <select id="permission" name="permission" class="form-control" style="width: 100%;">
+                                    @foreach ($permissions as $item)
+                                    <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : ''
+                                        }}>
+                                        {{$item['text']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
+                            <div class="col-sm-4">
+                                <input type="password" class="form-control" id="password" placeholder="请填写密码">
+                            </div>
 
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label text-right">简介</label>
-                        <div class="col-sm-6">
-                            <textarea class="form-control" rows="3" placeholder="输入简介"></textarea>
                         </div>
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label text-right">简介</label>
+                            <div class="col-sm-6">
+                                <textarea class="form-control" rows="3" placeholder="输入简介"></textarea>
+                            </div>
+                        </div>
+                        <div id="dropzoneUpload" class="dropzone"></div>
                     </div>
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-info">Sign in</button>
-                    <button type="submit" class="btn btn-default float-right">Cancel</button>
-                </div>
-                <!-- /.card-footer -->
-            </form>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info">Sign in</button>
+                        <button type="submit" class="btn btn-default float-right">Cancel</button>
+                    </div>
+                    <!-- /.card-footer -->
+                </form>
         </div>
     </div>
     @stop
@@ -93,14 +99,32 @@
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script src="/plugins/dropzone/min/dropzone.min.js"></script>
     <script type="text/javascript">
+        Dropzone.autoDiscover = false;
         $(function(){
             $('#permission').select2({
                 theme: 'bootstrap4',
                 language:'zh-CN',
                 minimumResultsForSearch: -1
             });
+            //dropzone temp
 
-            $("div#myId").dropzone({ url: "/Admin/Album/UploadFile" });
+            var dropzoneMedia = new Dropzone("#dropzoneUpload", {
+                url: "/Admin/Album/Create"
+                // dictDefaultMessage: '拖动文件至此或者点击上传',
+                // paramName: "mediaFile",
+                // autoProcessQueue: false
+            });
+
+            // $('#dropzoneUpload').dropzone({
+            //     url: "/Admin/Album/Create"
+            // });
+            // Dropzone.options.dropzoneUpload = {
+            //     url: "/Admin/Album/Create",
+            //     dictDefaultMessage: '拖动文件至此或者点击上传',
+            //     paramName: "mediaFile",
+            //     autoProcessQueue: false
+            // };
+
         });
     </script>
     @stop
