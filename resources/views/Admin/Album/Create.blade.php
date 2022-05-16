@@ -14,11 +14,10 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <<<<<<< HEAD <form class="form-horizontal dropzone">
-                =======
-                <form class="form-horizontal" method="POST" enctype="multipart/form-data"
-                    action="/Admin/Album/FileUpload" id="form-create">
-                    >>>>>>> b7b36e27cb9d47277596b964d786bc3c58d1c7b5
+            <form class="form-horizontal">
+
+                <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/Admin/Album/Store"
+                    id="form-create">
                     <div class="card-body">
                         <div class="form-group row">
                             <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
@@ -28,22 +27,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="owner" class="col-sm-2 col-form-label text-right">相册封面</label>
+                            <label for="owner" class="col-sm-2 col-form-label text-right">上传图片</label>
                             <div class="col-sm-6">
-                                <div class="btn-group w-100">
-                                    <span class="btn btn-success col fileinput-button">
-                                        <i class="fas fa-plus"></i>
-                                        <span>Add files</span>
-                                    </span>
-                                    <button type="submit" class="btn btn-primary col start">
-                                        <i class="fas fa-upload"></i>
-                                        <span>Start upload</span>
-                                    </button>
-                                    <button type="reset" class="btn btn-warning col cancel">
-                                        <i class="fas fa-times-circle"></i>
-                                        <span>Cancel upload</span>
-                                    </button>
-                                </div>
+                                <div id="dropzoneUpload" class="dropzone"></div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -71,7 +57,7 @@
                                 <textarea class="form-control" rows="3" placeholder="输入简介"></textarea>
                             </div>
                         </div>
-                        <div id="dropzoneUpload" class="dropzone"></div>
+
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -85,11 +71,12 @@
     @stop
 
     @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <link rel="stylesheet" href="/plugins/dropzone/min/dropzone.min.css">
+    <link rel="stylesheet" href="/css/admin_custom.css">
     @stop
 
     @section('js')
@@ -99,7 +86,8 @@
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script src="/plugins/dropzone/min/dropzone.min.js"></script>
     <script type="text/javascript">
-        Dropzone.autoDiscover = false;
+        //Dropzone.autoDiscover = false;
+        Dropzone.options.dropzoneUpload = false
         $(function(){
             $('#permission').select2({
                 theme: 'bootstrap4',
@@ -109,10 +97,10 @@
             //dropzone temp
 
             var dropzoneMedia = new Dropzone("#dropzoneUpload", {
-                url: "/Admin/Album/Create"
-                // dictDefaultMessage: '拖动文件至此或者点击上传',
-                // paramName: "mediaFile",
-                // autoProcessQueue: false
+                url: "/Admin/Album/Store",
+                dictDefaultMessage: '新建相册的同时可以上传最多8张图片，也可以只上传封面或先不上传！',
+                paramName: "mediaFile",
+                autoProcessQueue: false
             });
 
             // $('#dropzoneUpload').dropzone({
@@ -126,5 +114,6 @@
             // };
 
         });
+        
     </script>
     @stop
