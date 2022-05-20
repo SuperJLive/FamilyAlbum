@@ -15,14 +15,16 @@ class CreateAlbumOwnerTable extends Migration
     {
         Schema::create('album_owner', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('owner_id')->default(0);
             $table->string('album_name')->default('');
+            $table->bigInteger('owner_id')->default(0);
             $table->integer('permission')->default(0);
+            $table->boolean('is_visible')->default(true);
+            $table->boolean('is_usable')->default(true);
             $table->boolean('downloadable')->default(false);
             $table->boolean('shareable')->default(false);
             $table->string('password',100)->nullable();
             $table->string('description',500)->nullable();
-
+            $table->integer('sorting_order')->default(0);
             $table->timestamps();
         });
     }
