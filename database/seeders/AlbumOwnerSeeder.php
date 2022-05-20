@@ -15,5 +15,6 @@ class AlbumOwnerSeeder extends Seeder
     public function run()
     {
         //
+
     }
 }

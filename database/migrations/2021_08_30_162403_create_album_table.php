@@ -37,8 +37,8 @@ class CreateAlbumTable extends Migration
             $table->Integer('permission');//权限
             $table->timestamp('min_takestamp')->nullable();
 			$table->timestamp('max_takestamp')->nullable();
-            $table->boolean('downloadable')->default(false);
-            $table->boolean('shareable')->default(false);
+            $table->integer('downloadable')->default(0);
+            $table->integer('shareable')->default(0);
             $table->bigInteger('user_id')->default(0);//创建人
             $table->string('password', 100)->nullable()->default(null);//密码
             $table->timestamps();

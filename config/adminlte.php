@@ -265,6 +265,11 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
+            'text' => '增加图片',
+            'url'  => 'Admin/Photo/Create',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
             'text' => '创建相册所有者',
             'url'  => 'Admin/AlbumOwner/Create',
             'icon' => 'fas fa-fw fa-user',

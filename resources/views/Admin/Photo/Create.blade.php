@@ -1,8 +1,8 @@
 @extends('adminlte::page')
-@section('title', '创建相册')
+@section('title', '添加图片')
 
 @section('content_header')
-<h1>创建相册</h1>
+<h1>添加图片</h1>
 @stop
 
 @section('content')
@@ -18,25 +18,7 @@
                 {{-- enctype="multipart/form-data"> --}}
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label text-right">相册标题</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="title" name="title" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label text-right">相册归属人</label>
-                        <div class="col-sm-6">
-                            <select id="albumOwner" name="albumOwner" required data-msg-required="请选择相册所有人"
-                                class="form-control @error('albumOwner') is-invalid @enderror" style="width: 100%;">
-                                @if(old('albumOwner')!==null)
-                                <option value="{{old('albumOwner')}}" selected>{{old('albumOwnerText')}}</option>
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
+                        <label for="owner" class="col-sm-2 col-form-label text-right">图片权限</label>
                         <div class="col-sm-6">
                             <select id="permission" name="permission" class="form-control" style="width: 100%;">
                                 @foreach ($permissions as $item)
@@ -60,14 +42,6 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
-                        <div class="col-sm-4">
-                            <input type="password" name="password" class="form-control" id="password"
-                                placeholder="请填写密码">
-                        </div>
-
                     </div>
 
                     <div class="form-group row">
@@ -95,6 +69,7 @@
     <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="/plugins/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="/css/admin_custom.css">
     <link rel="stylesheet" href="{{ asset('css/label.css') }}">
     @stop
@@ -104,6 +79,7 @@
     <script src="/plugins/jquery-validation/additional-methods.min.js"></script>
     <script src="/plugins/select2/js/select2.full.min.js"></script>
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
+    <script src="/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
     <script type="text/javascript">
         //Dropzone.autoDiscover = false;
         $(function(){

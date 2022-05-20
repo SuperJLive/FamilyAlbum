@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Album;
 use App\Utility\PermissionDic;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -37,7 +38,37 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rule=[
+            'title' => 'required|string|max:100',
+            'permission'=>'required|integer',
+            'password'=>'string|nullable|max:20',
+            'shareable'=>'required|bool',
+            'downloadable'=>'required|bool',
+            'description' => 'string|nullable|max:500'
+        ];
+
+        $validator = Validator::make($request->all(), $rule);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                        ->withInput();
+        }
+
+        // 获取通过验证的数据...
+        $validated = $validator->validated();
+        $rowNum = Album::create(
+            [
+                'title' => $validated['title'],
+                'owner_id' => $validated['albumOwner'],
+                'permission'=>$validated['permission'],
+                'shareable' => $validated['shareable'],
+                'downloadable' => $validated['downloadable'],
+                'password' => $validated['password'],
+                'description' => $validated['description']
+            ]
+        );
+        //echo $request['permissionName'];
+        return redirect()->action([$this::class,'Index']);
+
     }
 
     /**

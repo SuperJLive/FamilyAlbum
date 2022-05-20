@@ -18,8 +18,11 @@ class CreateAlbumOwnerTable extends Migration
             $table->bigInteger('owner_id')->default(0);
             $table->string('album_name')->default('');
             $table->integer('permission')->default(0);
+            $table->boolean('downloadable')->default(false);
+            $table->boolean('shareable')->default(false);
             $table->string('password',100)->nullable();
             $table->string('description',500)->nullable();
+
             $table->timestamps();
         });
     }
