@@ -67,7 +67,6 @@
                             <input type="password" name="password" class="form-control" id="password"
                                 placeholder="请填写密码">
                         </div>
-
                     </div>
 
                     <div class="form-group row">
