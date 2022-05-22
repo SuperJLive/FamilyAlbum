@@ -5,7 +5,17 @@ namespace App\Utility;
 
 class PermissionDic
 {
-    public static function permissionSelect()
+    public static function permissionSelectNoInherit()
+    {
+        $arrayPermission=PermissionDic::permissionSelect(false);
+        return $arrayPermission;
+    }
+    public static function permissionSelectAll()
+    {
+        $arrayPermission=PermissionDic::permissionSelect(true);
+        return $arrayPermission;
+    }
+    public static function permissionSelect(bool $inherit)
     {
         //-1禁止访问（仅自己与管理员可以访问）
         //0继承自上级权限
@@ -17,11 +27,13 @@ class PermissionDic
         //6符合权限后回答问题才可以访问
 
         //不可以访问人员及用户组
-        
-        $arrayPermission[] = array(
-            'id' => 0,
-            'text' => '继承'
-        );
+        if($inherit===true)
+        {
+            $arrayPermission[] = array(
+                'id' => 0,
+                'text' => '继承'
+            );
+        }
         $arrayPermission[] = array(
             'id'=>1,
             'text'=>'所有人可访问'

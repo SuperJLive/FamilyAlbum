@@ -45,7 +45,7 @@ class AlbumOwnerController extends Controller
     {
         //
 
-        $permissions=PermissionDic::permissionSelect();
+        $permissions=PermissionDic::permissionSelectNoInherit();
         return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
     }
     /**
@@ -59,13 +59,20 @@ class AlbumOwnerController extends Controller
         //$value = $request->get('approved', 0); // 注意第二个参数 0 为默认值
         $rule=[
             'albumName' => 'required|string|max:100',
-            'albumOwner'=> 'required|integer',
+            'albumOwner'=> 'integer',
             'permission'=>'required|integer',
             'password'=>'string|nullable|max:20',
-            'description' => 'string|nullable|max:500'
+            'isVisible'=>'required|Boolean',
+            'isUsable'=>'required|Boolean',
+            'shareable'=>'required|Boolean',
+            'downloadable'=>'required|Boolean',
+            'maxShowAge'=>'required|integer|min:0|max:150',
+            'birthday'=>'date',
+            'order'=>'required|integer|min:0|max:9999',
+            'description' => 'string|nullable|max:500',
         ];
         $message=[
-            'albumName.required'=>'相册名称必须填写！'
+            //'albumName.required'=>'相册名称必须填写！'
         ];
         $validator = Validator::make($request->all(), $rule,$message);
         if ($validator->fails()) {
@@ -80,8 +87,15 @@ class AlbumOwnerController extends Controller
                 'album_name' => $validated['albumName'],
                 'owner_id' => $validated['albumOwner'],
                 'permission'=>$validated['permission'],
+                'password' => $validated['password'],
+                'is_visible'=> $validated['isVisible'],
+                'is_usable'=> $validated['isUsable'],
+                'shareable'=> $validated['shareable'],
+                'downloadable'=> $validated['downloadable'],
+                'birthday'=> $validated['birthday'],
+                'max_show_age'=> $validated['maxShowAge'],
+                'sorting_order' => $validated['order'],
                 'description' => $validated['description'],
-                'password' => $validated['password']
             ]
         );
         //echo $request['permissionName'];
