@@ -30,6 +30,7 @@
                         <div class="col-sm-6">
                             <select id="albumOwner" name="albumOwner" required data-msg-required="请选择相册所有人"
                                 class="form-control @error('albumOwner') is-invalid @enderror" style="width: 100%;">
+                                <option></option>
                                 @foreach ($albumOwners as $item)
                                 <option value="{{$item['id']}}" {{old('albumOwner')==$item['id'] ? 'selected' : '' }}>
                                     {{$item['text']}}</option>
@@ -64,11 +65,13 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label text-right">拍摄区间</label>
                         <div class="col-sm-2">
-                            <input type="text" name="tags" class="form-control" id="tags" placeholder="最小拍摄时间">
+                            <input type="text" name="min_takestamp" class="form-control" id="min_takestamp"
+                                placeholder="最小拍摄时间">
                         </div>
 
                         <div class="col-sm-2">
-                            <input type="text" name="tags" class="form-control" id="tags" placeholder="最大拍摄时间">
+                            <input type="text" name="max_takestamp" class="form-control" id="max_takestamp"
+                                placeholder="最大拍摄时间">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -76,18 +79,15 @@
                         <div class="col-sm-2">
                             <select id="shareable" name="shareable"
                                 class="form-control @error('shareable') is-invalid @enderror" style="width: 100%;">
-
                             </select>
                             @error('shareable')
                             <span id="shareable-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
-
                         <label for="downloadable" class="col-sm-1 col-form-label text-right">允许下载</label>
                         <div class="col-sm-2">
                             <select id="downloadable" name="downloadable"
                                 class="form-control @error('downloadable') is-invalid @enderror" style="width: 100%;">
-
                             </select>
                             @error('downloadable')
                             <span id="downloadable-error" class="error invalid-feedback">{{ $message }}</span>
@@ -136,6 +136,36 @@
                 theme: 'bootstrap4',
                 language:'zh-CN',
                 minimumResultsForSearch: -1
+            });
+            $('#albumOwner').select2({
+                theme: 'bootstrap4',
+                language:'zh-CN',
+                minimumResultsForSearch: -1,
+                placeholder: "Select a state",
+            });
+
+            $('#albumOwner').on('select2:select', function (e) {
+                var data = e.params.data;
+                console.log(data.id);
+                $.ajax({url:"/Admin/Album/getSDSelectItem/"+ data.id,
+                type:'GET',
+                //dataType: "json",
+                headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
+                success:function (result) {
+                    $('#shareable').select2({
+                        theme: 'bootstrap4',
+                        language:'zh-CN',
+                        minimumResultsForSearch: -1,
+                        data:result.shareable
+                    });
+                    $('#downloadable').select2({
+                        theme: 'bootstrap4',
+                        language:'zh-CN',
+                        minimumResultsForSearch: -1,
+                        data:result.downloadable
+                    });
+                }
+            });
             });
         });
 

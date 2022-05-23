@@ -22,7 +22,7 @@ class AlbumOwnerSeeder extends Seeder
                 [
                     'album_name' => '宝宝相册',
                     'owner_id'=>0,
-                    
+
                     'permission' => 1,
                     'is_usable' => true,
                     'is_visible' => true,
@@ -37,12 +37,12 @@ class AlbumOwnerSeeder extends Seeder
                 [
                     'album_name' => '宝妈相册',
                     'owner_id'=>0,
-                    
+
                     'permission' => 1,
                     'is_usable' => true,
                     'is_visible' => true,
-                    'downloadable' => false,
-                    'shareable' => false,
+                    'downloadable' => true,
+                    'shareable' => true,
                     'password' => null,
                     'birthday'=>null,
                     'max_show_age'=>0,
