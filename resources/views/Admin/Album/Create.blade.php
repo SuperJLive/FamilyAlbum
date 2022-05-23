@@ -15,6 +15,7 @@
             <!-- /.card-header -->
             <!-- form start -->
             <form id="form-create" action="/Admin/Album/Store" class="form-horizontal dropzone" method="POST">
+                @csrf
                 {{-- enctype="multipart/form-data"> --}}
                 <div class="card-body">
                     <div class="form-group row">
@@ -29,9 +30,10 @@
                         <div class="col-sm-6">
                             <select id="albumOwner" name="albumOwner" required data-msg-required="请选择相册所有人"
                                 class="form-control @error('albumOwner') is-invalid @enderror" style="width: 100%;">
-                                @if(old('albumOwner')!==null)
-                                <option value="{{old('albumOwner')}}" selected>{{old('albumOwnerText')}}</option>
-                                @endif
+                                @foreach ($albumOwners as $item)
+                                <option value="{{$item['id']}}" {{old('albumOwner')==$item['id'] ? 'selected' : '' }}>
+                                    {{$item['text']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -47,25 +49,49 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label text-right">其它选项</label>
-                        <div class="col-sm-6 icheck-center">
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="shareable" name="shareable" value="1" id="order">
-                                <label for="shareable">可分享
-                                </label>
-                            </div>
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="downloadable" name="downloadable" value="1" id="order">
-                                <label for="downloadable">可下载
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
                         <div class="col-sm-4">
                             <input type="password" name="password" class="form-control" id="password"
                                 placeholder="请填写密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="tags" class="col-sm-2 col-form-label text-right">标签</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="tags" class="form-control" id="tags" placeholder="选择标签">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="" class="col-sm-2 col-form-label text-right">拍摄区间</label>
+                        <div class="col-sm-2">
+                            <input type="text" name="tags" class="form-control" id="tags" placeholder="最小拍摄时间">
+                        </div>
+
+                        <div class="col-sm-2">
+                            <input type="text" name="tags" class="form-control" id="tags" placeholder="最大拍摄时间">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="shareable" class="col-sm-2 col-form-label text-right">允许分享</label>
+                        <div class="col-sm-2">
+                            <select id="shareable" name="shareable"
+                                class="form-control @error('shareable') is-invalid @enderror" style="width: 100%;">
+
+                            </select>
+                            @error('shareable')
+                            <span id="shareable-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <label for="downloadable" class="col-sm-1 col-form-label text-right">允许下载</label>
+                        <div class="col-sm-2">
+                            <select id="downloadable" name="downloadable"
+                                class="form-control @error('downloadable') is-invalid @enderror" style="width: 100%;">
+
+                            </select>
+                            @error('downloadable')
+                            <span id="downloadable-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 

@@ -21,33 +21,33 @@ class AlbumOwnerSeeder extends Seeder
             [
                 [
                     'album_name' => '宝宝相册',
-                    'description' => '属于宝宝的相册',
+                    'owner_id'=>0,
+                    
                     'permission' => 1,
                     'is_usable' => true,
                     'is_visible' => true,
                     'downloadable' => false,
                     'shareable' => false,
                     'password' => null,
+                    'birthday'=>'2019-01-01',
+                    'max_show_age'=>18,
                     'description' => '属于宝宝的相册',
+                    'sorting_order' => 1
+                ],
+                [
+                    'album_name' => '宝妈相册',
+                    'owner_id'=>0,
+                    
+                    'permission' => 1,
+                    'is_usable' => true,
+                    'is_visible' => true,
+                    'downloadable' => false,
+                    'shareable' => false,
+                    'password' => null,
+                    'birthday'=>null,
+                    'max_show_age'=>0,
+                    'description' => '属于宝妈的相册',
                     'sorting_order' => 2
-                ],
-                [
-                    'group_name' => '家人',
-                    'description' => '家人权限访问',
-                    'is_usable' => true, // password
-                    'sorting_order' => 2
-                ],
-                [
-                    'group_name' => '朋友',
-                    'description' => '朋友权限访问',
-                    'is_usable' => true, // password
-                    'sorting_order' => 3
-                ],
-                [
-                    'group_name' => '同事',
-                    'description' => '同事权限访问',
-                    'is_usable' => true, // password
-                    'sorting_order' => 4
                 ],
             ]
         );

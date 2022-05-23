@@ -18,14 +18,14 @@ class CreateAlbumOwnerTable extends Migration
             $table->string('album_name')->default('');
             $table->bigInteger('owner_id')->default(0);
             $table->integer('permission')->default(0);
+            $table->string('password',100)->nullable();
             $table->boolean('is_visible')->default(true);
             $table->boolean('is_usable')->default(true);
             $table->boolean('downloadable')->default(false);
             $table->boolean('shareable')->default(false);
-            $table->string('password',100)->nullable();
-            $table->string('description',500)->nullable();
             $table->timestamp('birthday')->nullable();
             $table->integer('max_show_age')->default(0);//0永远显示，-1不显示
+            $table->string('description',500)->nullable();
             $table->integer('sorting_order')->default(0);
             $table->timestamps();
         });

@@ -6,16 +6,16 @@ class AlbumOwnerBLL
 {
     public static function getSelect()
     {
-        $query=AlbumOwner::where('is_usable');
+        $query=AlbumOwner::where('is_usable','=','1');
         $owners=$query->get();
         //$users=User::where('nick_name','like','%uh%');
-        $ownerSelect=array();
+        //$ownerSelect=array();
         foreach($owners as $item){
             $ownerSelect[]= array(
                 'id'=>$item->id,
-                'text'=>$item->nick_name
+                'text'=>$item->album_name
             );
         }
-        return response()->json($ownerSelect);
+        return $ownerSelect;
     }
 }

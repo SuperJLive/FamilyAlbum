@@ -45,10 +45,14 @@ class AlbumController extends Controller
     {
         $rule=[
             'title' => 'required|string|max:100',
+            'albumOwner' => 'required|integer|min:1',
             'permission'=>'required|integer',
             'password'=>'string|nullable|max:20',
-            'shareable'=>'required|bool',
-            'downloadable'=>'required|bool',
+            'tags'=>'string',
+            'minTakestamp'=>'date',
+            'maxTakestamp'=>'date',
+            'shareable'=>'required|integer|min:-1|max:1',
+            'downloadable'=>'required|integer|min:-1|max:1',
             'description' => 'string|nullable|max:500'
         ];
 
@@ -65,9 +69,12 @@ class AlbumController extends Controller
                 'title' => $validated['title'],
                 'owner_id' => $validated['albumOwner'],
                 'permission'=>$validated['permission'],
+                'password' => $validated['password'],
+                'tags'=>$validated['tags'],
+                'min_takestamp'=>$validated['minTakestamp'],
+                'max_takestamp'=>$validated['maxTakestamp'],
                 'shareable' => $validated['shareable'],
                 'downloadable' => $validated['downloadable'],
-                'password' => $validated['password'],
                 'description' => $validated['description']
             ]
         );

@@ -41,7 +41,7 @@ Route::prefix('WeApp')->group(function () {
 });
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);
-
+    Route::post('Album/Store', [AlbumController::class, 'Store']);
 
     Route::get('Photo/Create',[PhotoController::class, 'Create']);
 

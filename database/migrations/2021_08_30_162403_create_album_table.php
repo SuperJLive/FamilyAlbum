@@ -32,8 +32,8 @@ class CreateAlbumTable extends Migration
             //$table->bigInteger('cover_id')->default(0);//封面图片 放到图片里
             $table->bigInteger('owner_id')->default(0);//所有者
             //$table->bigInteger('related_album_id')->default(null);//关联相册 改为多对多
-            $table->string('tags')->nullable();
             $table->Integer('permission');//权限
+            $table->string('tags')->nullable();
             $table->timestamp('min_takestamp')->nullable();
 			$table->timestamp('max_takestamp')->nullable();
             $table->integer('downloadable')->default(0);
