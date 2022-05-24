@@ -30,7 +30,7 @@ class PermissionDic
         if($inherit===true)
         {
             $arrayPermission[] = array(
-                'id' => 0,
+                'id' => -1,
                 'text' => '继承'
             );
         }
@@ -59,7 +59,7 @@ class PermissionDic
             'text'=>'符合权限后回答问题才可以访问'
         );
         $arrayPermission[] = array(
-            'id' => -1,
+            'id' => 0,
             'text' => '禁止访问'
         );
         return $arrayPermission;

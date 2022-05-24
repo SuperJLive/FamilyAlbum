@@ -42,7 +42,8 @@ Route::prefix('WeApp')->group(function () {
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);
     Route::post('Album/Store', [AlbumController::class, 'Store']);
-    Route::any('Album/getSDSelectItem/{ownerId}', [AlbumController::class, 'getSDSelectItem']);
+    Route::get('Album/Index', [AlbumController::class, 'Index']);
+    Route::get('Album/getSDSelectItem/{ownerId}', [AlbumController::class, 'getSDSelectItem']);
 
     Route::get('Photo/Create',[PhotoController::class, 'Create']);
 

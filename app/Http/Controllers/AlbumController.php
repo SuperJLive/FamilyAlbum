@@ -18,7 +18,10 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        //
+        $albumOwners=Album::join('album_owner')
+        {}
+        return view("Admin.Album.Index");
+
     }
 
     /**
@@ -95,9 +98,9 @@ class AlbumController extends Controller
             'albumOwner' => 'required|integer|min:1',
             'permission' => 'required|integer',
             'password' => 'string|nullable|max:20',
-            'tags' => 'string',
-            'minTakestamp' => 'date',
-            'maxTakestamp' => 'date',
+            'tags' => 'string|nullable',
+            'minTakestamp' => 'date|nullable',
+            'maxTakestamp' => 'date|nullable',
             'shareable' => 'required|integer|min:-1|max:1',
             'downloadable' => 'required|integer|min:-1|max:1',
             'description' => 'string|nullable|max:500'
