@@ -14,7 +14,8 @@ class PhotoController extends Controller
     public function index()
     {
         //
-        echo 'index';
+
+        return view('Admin.Photo.Index');
     }
 
     /**

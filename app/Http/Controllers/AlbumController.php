@@ -18,9 +18,10 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $albumOwners=Album::join('album_owner')
-        {}
-        return view("Admin.Album.Index");
+        $query=Album::from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        ->orderByDesc('a.id');
+        $albums=$query->get();
+        return view("Admin.Album.Index",['albums'=>$albums]);
 
     }
 

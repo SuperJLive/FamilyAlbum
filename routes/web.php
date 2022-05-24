@@ -46,7 +46,7 @@ Route::prefix('Admin')->group(function () {
     Route::get('Album/getSDSelectItem/{ownerId}', [AlbumController::class, 'getSDSelectItem']);
 
     Route::get('Photo/Create',[PhotoController::class, 'Create']);
-
+    Route::get('Photo/Index/{AlbumId}',[PhotoController::class, 'Index']);
 
     Route::get('Account/Create', [AccountController::class, 'Create']);
 

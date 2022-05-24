@@ -13,94 +13,17 @@
                 <h3 class="card-title">相册</h3>
             </div>
             <div class="card-body row">
+                @foreach($albums as $item)
                 <div class="col-sm-2">
                     <div class="card">
                         <img class="card-img-top" src="/images/image-1.jpg" alt="Card image cap">
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
+                            <p class="card-text">{{$item->title}}</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-2.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-3.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-4.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-5.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-6.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-1.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-2">
-                    <div class="card">
-                        <img class="card-img-top" src="/images/image-1.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's
-                                content.</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </div>
