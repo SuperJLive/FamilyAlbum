@@ -208,9 +208,7 @@
                     minimumResultsForSearch: -1
                 });
             }
-            permissionSelect2();
-            shareableSelect2();
-            downloadableSelect2();
+
             var showInheritInfo=function(id)
             {
                 console.log(typeof(id));
@@ -262,7 +260,10 @@
                     }
                 });
             }
-            //initSDSelect($('#albumOwner').val());
+            permissionSelect2();
+            shareableSelect2();
+            downloadableSelect2();
+            showInheritInfo($('#albumOwner').val())
             $('#albumOwner').on('select2:select', function (e) {
                 var data = e.params.data;
                 showInheritInfo(data.id);

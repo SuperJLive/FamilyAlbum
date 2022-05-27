@@ -38,7 +38,7 @@ class AlbumOwnerSeeder extends Seeder
                     'album_name' => '宝妈相册',
                     'owner_id'=>0,
 
-                    'permission' => 1,
+                    'permission' => 2,
                     'is_usable' => true,
                     'is_visible' => true,
                     'downloadable' => true,

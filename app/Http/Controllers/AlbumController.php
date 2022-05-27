@@ -45,7 +45,6 @@ class AlbumController extends Controller
             'downloads'=>$downloads
         ]);
     }
-    
 
     /**
      * Store a newly created resource in storage.

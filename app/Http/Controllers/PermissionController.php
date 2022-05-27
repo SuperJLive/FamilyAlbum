@@ -54,7 +54,7 @@ class PermissionController extends Controller
             'permissionName.required'=>'权限名称必须填写！'
         ];
         $validatedData = $request->validate($rule);
-        
+
         if(!$request->has('isUsable'))
         {
             $validatedData['isUsable']=false;
@@ -219,8 +219,12 @@ class PermissionController extends Controller
         );
         return response()->json($sd);
     }
-    public function getPhotoPermissionText()
+    public function getPhotoInheritText()
     {
-        
+
+    }
+    public function getPhotoInheritSelect()
+    {
+
     }
 }

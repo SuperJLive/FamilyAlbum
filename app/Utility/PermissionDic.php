@@ -2,7 +2,7 @@
 
 namespace App\Utility;
 
-use App\Models\Permission;
+use App\Models\Album;
 
 class PermissionDic
 {
@@ -10,7 +10,7 @@ class PermissionDic
     {
         $permission = $this->permissionCollect();
         $permission=$permission->where('id','!=',0)->all();
-        
+
         return $permission;
     }
     public function permissionAlbumSelect()
@@ -116,7 +116,7 @@ class PermissionDic
         return $arrayShareable;
     }
     /**
-     * 
+     *
      */
     public function getParentPermissionText(int $id)
     {
@@ -132,8 +132,42 @@ class PermissionDic
     }
     public function getParentShareableText(int $id)
     {
-        $col = $this->permissionCollect();
+        $col = $this->shareableCollect();
         $text = $col->where('id', '=', $id)->first()['text'];
         return $text;
+    }
+    public function getPhotoPermissionSelect(int $albumId)
+    {
+        //在继承后加上继承的哪个权限
+        $data=Album::from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        ->where('a.id','=',$albumId)->select('a.permission','a.shareable','a.downloadable',
+        'b.permission as ownerPermission','b.shareable as ownerShareable','b.downloadable as ownerDownloadable')->first();
+        if($data->permission==0){
+            $permissionId=$data->ownerPermission;
+        }
+        else{
+            $permissionId=$data->permission;
+        }
+        $permissionText=$this->getParentPermissionText($permissionId);
+        if($data->shareable==0){
+            $shareableId=$data->ownerShareable==0?-1:1;//最顶层权限是否可分享为BOOL值1可分享，0为禁止分享转成-1
+        }
+        else{
+            $shareableId=$data->shareable;
+        }
+
+        $shareableText=$this->getParentShareableText($shareableId);
+        if($data->downloadable==0){
+            $downloadableId=$data->ownerDownloadable==0?-1:1;//最顶层权限是否可下载为BOOL值1可下载，0为禁止下载转成-1
+        }
+        else{
+            $downloadableId=$data->downloadable;
+        }
+        $downloadableText=$this->getParentDownloadableText($downloadableId);
+
+        $this->permissionCollect()[0]['text'].='11';
+        $aa=$this->permissionCollect()[0]['text'];
+        //.='('.$permissionText.')'
+        dd($aa);
     }
 }
