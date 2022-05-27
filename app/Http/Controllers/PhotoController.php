@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\BLL\Downloadable;
 use Illuminate\Http\Request;
+use App\Models\Album;
+use App\Models\AlbumOwner;
+use App\Models\Permission;
 
 class PhotoController extends Controller
 {
@@ -11,13 +15,27 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
 
         return view('Admin.Photo.Index');
     }
-
+    /**
+     * 
+     */
+    public function getPermissionSelect($albumId)
+    {
+        //get parent permission
+        $data=Album::from('album as a')->join('AlbumOwner as b','a.owner_id','b.id')
+        ->where('a.id','=',$albumId)->select('a.permission','a.shareable','a.downloadable',
+        'b.permission as ownerPermission','b.shareable as ownerShareable','b.downloadable as ownerDownloadable')->first();
+        if($data->permission==-1)
+        {
+            $permissionText=
+        }
+        else
+    }
     /**
      * Show the form for creating a new resource.
      *

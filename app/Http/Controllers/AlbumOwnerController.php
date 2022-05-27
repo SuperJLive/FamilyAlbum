@@ -44,8 +44,8 @@ class AlbumOwnerController extends Controller
     public function create()
     {
         //
-
-        $permissions=PermissionDic::permissionSelectNoInherit();
+        $pd=new PermissionDic();
+        $permissions=$pd->permissionOwnerSelect();
         return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
     }
     /**

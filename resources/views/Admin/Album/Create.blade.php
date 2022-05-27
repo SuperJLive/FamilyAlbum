@@ -106,6 +106,10 @@
                         <div class="col-sm-2">
                             <select id="shareable" name="shareable" data-old="{{old('shareable')}}"
                                 class="form-control @error('shareable') is-invalid @enderror" style="width: 100%;">
+                                @foreach ($shares as $item)
+                                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                                    {{$item['text']}}</option>
+                                @endforeach
                             </select>
                             @error('shareable')
                             <span id="shareable-error" class="error invalid-feedback">{{ $message }}</span>
@@ -115,6 +119,10 @@
                         <div class="col-sm-2">
                             <select id="downloadable" name="downloadable" data-old="{{old('downloadable')}}"
                                 class="form-control @error('downloadable') is-invalid @enderror" style="width: 100%;">
+                                @foreach ($downloads as $item)
+                                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                                    {{$item['text']}}</option>
+                                @endforeach
                             </select>
                             @error('downloadable')
                             <span id="downloadable-error" class="error invalid-feedback">{{ $message }}</span>
@@ -173,57 +181,91 @@
     <script type="text/javascript">
         //Dropzone.autoDiscover = false;
         $(function(){
-            $('#permission').select2({
-                theme: 'bootstrap4',
-                language:'zh-CN',
-                minimumResultsForSearch: -1
-            });
             $('#albumOwner').select2({
                 theme: 'bootstrap4',
                 language:'zh-CN',
                 minimumResultsForSearch: -1,
                 placeholder: "请选择一个相册集",
             });
-            var initSDSelect=function(id)
+            var shareableSelect2=function(){
+                $('#shareable').select2({
+                    theme: 'bootstrap4',
+                    language:'zh-CN',
+                    minimumResultsForSearch: -1,
+                });
+            }
+            var downloadableSelect2=function(){
+                $('#downloadable').select2({
+                    theme: 'bootstrap4',
+                    language:'zh-CN',
+                    minimumResultsForSearch: -1,
+                });
+            }
+            var permissionSelect2=function(){
+                $('#permission').select2({
+                    theme: 'bootstrap4',
+                    language:'zh-CN',
+                    minimumResultsForSearch: -1
+                });
+            }
+            permissionSelect2();
+            shareableSelect2();
+            downloadableSelect2();
+            var showInheritInfo=function(id)
             {
                 console.log(typeof(id));
                 if(!id){
                     return;
                 }
-                $.ajax({url:"/Admin/Album/getSDSelectItem/"+ id,
+                $.ajax({url:"/Admin/Permission/getAlbumInheritText/"+ id,
                     type:'GET',
                     //dataType: "json",
                     headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
                     success:function (result) {
-                        $('#shareable').empty();
-                        $('#downloadable').empty();
-                        var oldShareable=$('#shareable').data('old');
-                        var oldDownloadable=$('#downloadable').data('old');
-                        $('#shareable').select2({
-                            theme: 'bootstrap4',
-                            language:'zh-CN',
-                            minimumResultsForSearch: -1,
-                            data:result.shareable
-                        });
-                        $('#downloadable').select2({
-                            theme: 'bootstrap4',
-                            language:'zh-CN',
-                            minimumResultsForSearch: -1,
-                            data:result.downloadable
-                        });
-                        if(oldShareable!==''){
-                            $('#shareable').val(oldShareable).trigger('change');
-                        }
-                        if(oldDownloadable!==''){
-                            $('#downloadable').val(oldDownloadable).trigger('change');
-                        }
+                        $('#shareable').find("option[value='0']").text(result.shareText);
+                        $('#permission').find("option[value='0']").text(result.permissionText);
+                        $('#downloadable').find("option[value='0']").text(result.downloadText);
+                        permissionSelect2();
+                        shareableSelect2();
+                        downloadableSelect2();
+                        // $('#shareable').empty();
+                        // $('#downloadable').empty();
+                        // var oldShareable=$('#shareable').data('old');
+                        // var oldDownloadable=$('#downloadable').data('old');
+                        // $('#shareable').select2({
+                        //     theme: 'bootstrap4',
+                        //     language:'zh-CN',
+                        //     minimumResultsForSearch: -1,
+                        //     data:result.shareable
+                        // });
+                        // $('#downloadable').select2({
+                        //     theme: 'bootstrap4',
+                        //     language:'zh-CN',
+                        //     minimumResultsForSearch: -1,
+                        //     data:result.downloadable
+                        // });
+                        // $('#permission').select2({
+                        //     theme: 'bootstrap4',
+                        //     language:'zh-CN',77777777777777
+                        //     minimumResultsForSearch: -1,
+                        //     data:result.permissions
+                        // });
+                        // if(oldShareable!==''){
+                        //     $('#shareable').val(oldShareable).trigger('change');
+                        // }
+                        // if(oldDownloadable!==''){
+                        //     $('#downloadable').val(oldDownloadable).trigger('change');
+                        // }
+                        // if(oldPermission!==''){
+                        //     $('#permission').val(oldPermission).trigger('change');
+                        // }
                     }
                 });
             }
-            initSDSelect($('#albumOwner').val());
+            //initSDSelect($('#albumOwner').val());
             $('#albumOwner').on('select2:select', function (e) {
                 var data = e.params.data;
-                initSDSelect(data.id);
+                showInheritInfo(data.id);
             });
             $('#btnTest').on('click',function(){
                 console.log($('#shareable').html());

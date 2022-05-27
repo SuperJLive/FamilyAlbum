@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Album;
 use App\Models\AlbumOwner;
 use App\BLL\AlbumOwnerBLL;
+use App\Models\Permission;
 use App\Utility\PermissionDic;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -32,59 +33,19 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        $permissions = PermissionDic::permissionSelectAll();
+        $pd=new PermissionDic();
+        $permissions = $pd->permissionAlbumSelect();
+        $shares=$pd->shareableCollect();
+        $downloads=$pd->downloadableCollect();
         $albumOwners = AlbumOwnerBLL::getSelect();
         return view("Admin.Album.Create", [
             'permissions' => $permissions,
-            'albumOwners' => $albumOwners
+            'albumOwners' => $albumOwners,
+            'shares'=>$shares,
+            'downloads'=>$downloads
         ]);
     }
-    public function getSDSelectItem($ownerId)
-    {
-        //$ownerId = $request->route('ownerId');
-        $data = AlbumOwner::where('id', '=', $ownerId)->select('downloadable', 'shareable')->first();
-        if ($data->downloadable) {
-            $download = "(可下载)";
-        } else {
-            $download = "(禁止下载)";
-        }
-        if ($data->shareable) {
-            $share = '(可分享)';
-        } else {
-            $share = '(禁止分享)';
-        }
-        $sd = array(
-            'downloadable' => array(
-                0 => array(
-                    'id' => '-1',
-                    'text' => '继承' . $download
-                ),
-                1 => array(
-                    'id' => '0',
-                    'text' => '可下载'
-                ),
-                2 => array(
-                    'id' => '1',
-                    'text' => '禁止下载'
-                )
-            ),
-            'shareable' => array(
-                0 => array(
-                    'id' => '-1',
-                    'text' => '继承' . $share
-                ),
-                1 => array(
-                    'id' => '0',
-                    'text' => '可分享'
-                ),
-                2 => array(
-                    'id' => '1',
-                    'text' => '禁止分享'
-                )
-            )
-        );
-        return response()->json($sd);
-    }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -122,8 +83,8 @@ class AlbumController extends Controller
                 'permission' => $validated['permission'],
                 'password' => $validated['password'],
                 'tags' => $validated['tags'],
-                'min_takestamp' => $validated['minTakestamp'],
-                'max_takestamp' => $validated['maxTakestamp'],
+                'min_take_stamp' => $validated['minTakeStamp'],
+                'max_take_stamp' => $validated['maxTakeStamp'],
                 'shareable' => $validated['shareable'],
                 'downloadable' => $validated['downloadable'],
                 'description' => $validated['description']

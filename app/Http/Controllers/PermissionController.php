@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use App\Models\AlbumOwner;
+use App\Utility\PermissionDic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -139,5 +141,86 @@ class PermissionController extends Controller
         return response()->json([
             'success' => 1
         ]);
+    }
+    public function getAlbumInheritText(int $ownerId)
+    {
+        $data = AlbumOwner::where('id', '=', $ownerId)->select('downloadable', 'shareable','permission')->first();
+        if ($data->downloadable) {
+            $downloadText = "继承(可下载)";
+        } else {
+            $downloadText = "继承(禁止下载)";
+        }
+        if ($data->shareable) {
+            $shareText = '继承(可分享)';
+        } else {
+            $shareText = '继承(禁止分享)';
+        }
+        $pd=new PermissionDic();
+        $permissions=$pd->permissionCollect();
+        $permission=$permissions->where('id','=',$data->permission)->first();
+        $permissionText='继承('.$permission['text'].')';
+        $text=collect([
+            'permissionText'=>$permissionText,
+            'downloadText'=>$downloadText,
+            'shareText'=>$shareText
+        ]);
+        return response()->json($text);
+    }
+    public function getSDSelectItem($ownerId)
+    {
+        //$ownerId = $request->route('ownerId');
+        $data = AlbumOwner::where('id', '=', $ownerId)->select('downloadable', 'shareable','permission')->first();
+        if ($data->downloadable) {
+            $download = "(可下载)";
+        } else {
+            $download = "(禁止下载)";
+        }
+        if ($data->shareable) {
+            $share = '(可分享)';
+        } else {
+            $share = '(禁止分享)';
+        }
+        $pd=new PermissionDic();
+        $permissions=$pd->permissionOwnerSelect();
+        $temp=$data->permission;
+        if($temp==-1){$temp=7;}
+        $permissionText=$permissions[$temp]['text'];
+        $permissions[0]['text'].='('.$permissionText.')';
+        $sd = array(
+            'downloadable' => array(
+                0 => array(
+                    'id' => '-1',
+                    'text' => '继承' . $download
+                ),
+                1 => array(
+                    'id' => '0',
+                    'text' => '可下载'
+                ),
+                2 => array(
+                    'id' => '1',
+                    'text' => '禁止下载'
+                )
+            ),
+            'shareable' => array(
+                0 => array(
+                    'id' => '-1',
+                    'text' => '继承' . $share
+                ),
+                1 => array(
+                    'id' => '0',
+                    'text' => '可分享'
+                ),
+                2 => array(
+                    'id' => '1',
+                    'text' => '禁止分享'
+                )
+            ),
+            'permission'=>$permissions
+        );
+        return response()->json($sd);
+    }
+    public function getPhotoPermissionText()
+    {
+        
     }
 }

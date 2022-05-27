@@ -14,6 +14,21 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    <label for="owner" class="col-sm-2 col-form-label text-right">图片权限</label>
+                    <div class="col-sm-6">
+                        <select id="permission" name="permission" required data-msg-required="权限必须选择"
+                            class="form-control @error('permission') is-invalid @enderror" style="width: 100%;">
+                            @foreach ($permissions as $item)
+                            <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                                {{$item['text']}}</option>
+                            @endforeach
+                        </select>
+                        @error('permission')
+                        <span id="permission-error" class="error invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
                     <div class="col-sm-12">
                         <input id="uploadMedia" name="uploadMedia[]" type="file" class="file"
                             data-browse-on-zone-click="true" multiple>

@@ -8,6 +8,7 @@ use App\Http\Controllers\AlbumOwnerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TestController;
 use App\Models\AlbumOwner;
 use Illuminate\Support\Facades\File;
 //use phpDocumentor\Reflection\Types\Resource_;
@@ -43,7 +44,7 @@ Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);
     Route::post('Album/Store', [AlbumController::class, 'Store']);
     Route::get('Album/Index', [AlbumController::class, 'Index']);
-    Route::get('Album/getSDSelectItem/{ownerId}', [AlbumController::class, 'getSDSelectItem']);
+    
 
     Route::get('Photo/Create',[PhotoController::class, 'Create']);
     Route::get('Photo/Index/{AlbumId}',[PhotoController::class, 'Index']);
@@ -59,13 +60,15 @@ Route::prefix('Admin')->group(function () {
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
     Route::post('Permission/Destroy', [PermissionController::class, 'Destroy']);
     Route::post('Permission/Update/{id}', [PermissionController::class, 'Update']);
+    //Route::get('Permission/getSDSelectItem/{ownerId}', [PermissionController::class, 'getSDSelectItem']);
+    Route::get('Permission/getAlbumInheritText/{ownerId}', [PermissionController::class, 'getAlbumInheritText']);
 
     Route::get('User/Index',[UserController::class, 'Index']);
     Route::post('User/GetList',[UserController::class, 'GetList']);
 
     Route::post('/User/GetUserSelect',[UserController::class,'GetUserSelect']);
 
-
+    Route::get('/Test/Test1',[TestController::class,'Test1']);
 });
 
 Route::get('WeApp/test', [UserController::class, 'test']);
