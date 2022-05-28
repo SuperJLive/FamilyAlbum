@@ -38,7 +38,7 @@ Route::get('/',function(){
 //Route::get('wxprog/onlogin/{code}', [UserController::class, 'onLogin']);
 
 Route::prefix('WeApp')->group(function () {
-    Route::get('onlogin/{code}', [UserController::class, 'onLogin']);
+    Route::get('onLogin/{code}', [WeUserController::class, 'onLogin']);
 });
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);

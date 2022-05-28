@@ -14,8 +14,8 @@ class UserController extends Controller
     {
 
         //https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
-        //AppID(小程序ID)wx224848dcd0a8cf8b
-        //AppSecret(小程序密钥)b23a6352c88384e3de1da7da649b890a
+        //AppID(小程序ID)
+        //AppSecret(小程序密钥)
         $appId=env('AppID');
         $appSecret=env('AppSecret');
         $query_data = array(
@@ -39,19 +39,19 @@ class UserController extends Controller
             $unionid = null;
             if(property_exists($result,'unionid'))
             {
-                    //$unionid=$result.unionid;
+                    $unionid=$result->unionid;
             }
             $user=DB::table('user')->where('openid','=',$result->openid)->first();
-            if($user!=null){
+            if($user==null){
                 $useId=DB::table('user')->insertGetId(
                     [
                         'openid'=>$result->openid,
                         'session_key'=>$result->session_key,
-                         'unionid'=>$unionid
+                         'union_id'=>$unionid
                     ]);
             }else{
                 DB::table('user')->where('openid',$result->openid)
-                ->update(['session_key',$result->session_key,'unionid'=>$unionid]);
+                ->update(['session_key'=>$result->session_key,'union_id'=>$unionid]);
             }
 
             //$user=User::
