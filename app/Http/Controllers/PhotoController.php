@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Album;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
+use App\Utility\PermissionDic;
 
 class PhotoController extends Controller
 {
@@ -15,11 +16,13 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($albumId)
     {
         //
-
-        return view('Admin.Photo.Index');
+        //$albumId=$request->
+        $pd=new PermissionDic();
+        $permissions=$pd->getPhotoPermissionSelect($albumId);
+        return view('Admin.Photo.Index',['permissions'=>$permissions]);
     }
     /**
      * 
@@ -32,9 +35,9 @@ class PhotoController extends Controller
         'b.permission as ownerPermission','b.shareable as ownerShareable','b.downloadable as ownerDownloadable')->first();
         if($data->permission==-1)
         {
-            $permissionText=
+            $permissionText=1;
         }
-        else
+      
     }
     /**
      * Show the form for creating a new resource.

@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         //
         $this->call(PermissionSeeder::class);
         $this->call(AlbumOwnerSeeder::class);
+        $this->call(AlbumSeeder::class);
     }
 }

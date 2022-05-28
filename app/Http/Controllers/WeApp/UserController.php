@@ -16,9 +16,11 @@ class UserController extends Controller
         //https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
         //AppID(小程序ID)wx224848dcd0a8cf8b
         //AppSecret(小程序密钥)b23a6352c88384e3de1da7da649b890a
+        $appId=env('AppID');
+        $appSecret=env('AppSecret');
         $query_data = array(
-            'appid' => 'wx224848dcd0a8cf8b',
-            'secret' => 'b23a6352c88384e3de1da7da649b890a',
+            'appid' => $appId,
+            'secret' => $appSecret,
             'js_code' => $code,
             'grant_type' => 'authorization_code'
         );

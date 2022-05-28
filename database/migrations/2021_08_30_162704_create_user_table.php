@@ -19,7 +19,7 @@ class CreateUserTable extends Migration
             $table->bigIncrements('id');
             $table->string('openid',128);
             $table->string('session_key',128)->nullable();
-            $table->string('unionid',128)->nullable();
+            $table->string('union_id',128)->nullable();
             $table->string('nick_name',50)->nullable();
             $table->integer('gender')->nullable();
             $table->string('language',20)->nullable();

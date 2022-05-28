@@ -60,8 +60,8 @@ class AlbumController extends Controller
             'permission' => 'required|integer',
             'password' => 'string|nullable|max:20',
             'tags' => 'string|nullable',
-            'minTakestamp' => 'date|nullable',
-            'maxTakestamp' => 'date|nullable',
+            'minTakeStamp' => 'date|nullable',
+            'maxTakeStamp' => 'date|nullable',
             'shareable' => 'required|integer|min:-1|max:1',
             'downloadable' => 'required|integer|min:-1|max:1',
             'description' => 'string|nullable|max:500'

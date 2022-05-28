@@ -10,7 +10,7 @@ class TestController extends Controller
     public function Test1()
     {
         $pd=new PermissionDic();
-        $text= $pd->getPhotoPermissionSelect(2);
+        $text= $pd->getPhotoPermissionSelect(1);
         dd($text);
     }
 }

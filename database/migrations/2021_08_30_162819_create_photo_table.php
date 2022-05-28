@@ -31,9 +31,12 @@ class CreatePhotoTable extends Migration
 			$table->string('size', 20)->default('');
             $table->boolean('is_show')->default(true);//是否展示
             $table->integer('cover')->default(0);//封面
-            $table->boolean('permission')->default(0);
+            $table->integer('permission')->default(0);
+            $table->integer('downloadable')->default(0);
+            $table->integer('shareable')->default(0);
+            $table->string('password', 100)->nullable()->default(null);//密码
             $table->string('description',500)->nullable();
-            $table->text('exif',2000)->nullable();
+            $table->json('exif')->nullable();
             $table->timestamps();
         });
     }

@@ -150,7 +150,7 @@ class PermissionDic
         }
         $permissionText=$this->getParentPermissionText($permissionId);
         if($data->shareable==0){
-            $shareableId=$data->ownerShareable==0?-1:1;//最顶层权限是否可分享为BOOL值1可分享，0为禁止分享转成-1
+            $shareableId=$data->ownerShareable?1:-1;//最顶层权限是否可分享为BOOL值1可分享，0为禁止分享转成-1
         }
         else{
             $shareableId=$data->shareable;
@@ -158,16 +158,47 @@ class PermissionDic
 
         $shareableText=$this->getParentShareableText($shareableId);
         if($data->downloadable==0){
-            $downloadableId=$data->ownerDownloadable==0?-1:1;//最顶层权限是否可下载为BOOL值1可下载，0为禁止下载转成-1
+            $downloadableId=$data->ownerDownloadable?1:-1;//最顶层权限是否可下载为BOOL值1可下载，0为禁止下载转成-1
         }
         else{
             $downloadableId=$data->downloadable;
         }
         $downloadableText=$this->getParentDownloadableText($downloadableId);
-
-        $this->permissionCollect()[0]['text'].='11';
-        $aa=$this->permissionCollect()[0]['text'];
-        //.='('.$permissionText.')'
-        dd($aa);
+        $colP=$this->permissionCollect();
+        $colP->transform(function ($item, $key) use ($permissionText) {
+            return array(
+                'id'=>$item['id'],
+                'text'=>$item['id']==0?($item['text'].'('.$permissionText.')'):$item['text']
+            );
+            //return $key==0?($item['text'].'('.$permissionText.')'):$item['text'];
+        });
+        $colS=$this->shareableCollect();
+        $colS->transform(function ($item, $key) use ($shareableText) {
+            return array(
+                'id'=>$item['id'],
+                'text'=>$item['id']==0?($item['text'].'('.$shareableText.')'):$item['text']
+            );
+            //return $key==0?($item['text'].'('.$shareableText.')'):$item['text'];
+        });
+        $colD=$this->downloadableCollect();
+        $colD->transform(function ($item, $key) use ($downloadableText) {
+            return array(
+                'id'=>$item['id'],
+                'text'=>$item['id']==0?($item['text'].'('.$downloadableText.')'):$item['text']
+            );
+            //return $key==0?($item['text'].'('.$downloadableText.')'):$item['text'];
+        });
+        $result=collect(
+            [
+                'permission'=> $colP,
+                'shareable'=>$colS,
+                'downloadable'=>$colD
+            ]
+        );
+        return $result;
+        // $this->permissionCollect()[0]['text'].='11';
+        // $aa=$this->permissionCollect()[0]['text'];
+        // //.='('.$permissionText.')'
+        // dd($aa);
     }
 }

@@ -34,8 +34,8 @@ class CreateAlbumTable extends Migration
             //$table->bigInteger('related_album_id')->default(null);//关联相册 改为多对多
             $table->Integer('permission');//权限
             $table->string('tags')->nullable();
-            $table->timestamp('min_takestamp')->nullable();
-			$table->timestamp('max_takestamp')->nullable();
+            $table->timestamp('min_take_stamp')->nullable();
+			$table->timestamp('max_take_stamp')->nullable();
             $table->integer('downloadable')->default(0);
             $table->integer('shareable')->default(0);
             $table->bigInteger('user_id')->default(0);//创建人
