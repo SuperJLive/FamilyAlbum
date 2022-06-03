@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers\WeApp;
 
+use App\Utility\WXBizDataCrypt;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -53,19 +55,44 @@ class UserController extends Controller
                 DB::table('user')->where('openid',$result->openid)
                 ->update(['session_key'=>$result->session_key,'union_id'=>$unionid]);
             }
-
-            //$user=User::
-
-
-            //$result.openid;
-        }
-        else{
             return $result;
         }
+        else{
+            return array('errMsg'=>"登录失败");
+        }
     }
-    public function SaveUserInfo()
-    {
 
+    public function checkLogin(Request $request)
+    {
+        $appId=env('AppID');
+        $openId=$request->input('openid');
+        $sessionKey=$request->input('sessionKey');
+        $user=User::query()->where('openid','=',$openId)->where('session_key','=',$sessionKey)->first();
+        if($user===null)
+        {
+            return response()->json(
+                ["success"=>0,"msg"=>"未找到用户登录失败"]
+            );
+        }
+        $rawData=$request->input('rawData');
+        $encryptedData=$request->input('encryptedData');
+        $iv=$request->input('iv');
+        $pc=new WXBizDataCrypt($appId,$sessionKey);
+        $errCode = $pc->decryptData($encryptedData, $iv, $data);
+        if($appId!=$data->watermark->appid)
+        {
+            return response()->json(
+                ["success"=>0,"msg"=>"登录加密数据有误。"]
+            );
+        }
+        else{
+            $user->nick_name=$data->nickName;
+            $user->avatar_url=$data->avatarUrl;
+            $user->save();
+            return response()->json(
+                ["success"=>1,"msg"=>"登录成功"]
+            );
+        }
     }
     function test()
     {
@@ -74,7 +101,7 @@ class UserController extends Controller
         return $name;
     }
     private function send_get($url, $query_data) {
-        $getdata = http_build_query($query_data);
+        $getData = http_build_query($query_data);
         $options = array(
             'http' => array(
                 'method' => 'GET',
@@ -86,7 +113,7 @@ class UserController extends Controller
         );
         $context = stream_context_create($options);
         //$url=$url.'?appid='.$query_data["appid"].'&secret='.$query_data['secret'].'&js_code='.$query_data["js_code"].'&grant_type='.$query_data["grant_type"];
-        $result = file_get_contents($url.'?'.$getdata,false,$context);
+        $result = file_get_contents($url.'?'.$getData,false,$context);
         return $result;
     }
 

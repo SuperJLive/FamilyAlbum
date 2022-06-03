@@ -24,7 +24,10 @@ class CreateAlbumOwnerTable extends Migration
             $table->boolean('downloadable')->default(false);
             $table->boolean('shareable')->default(false);
             $table->timestamp('birthday')->nullable();
-            $table->integer('max_show_age')->default(0);//0永远显示，-1不显示
+            $table->integer('max_show_age')->default(0);//0不显示
+            $table->string('icon')->nullable()->default('');
+            $table->string('style')->nullable()->default('');
+            $table->string('cover')->nullable()->default('');
             $table->string('description',500)->nullable();
             $table->integer('sorting_order')->default(0);
             $table->timestamps();

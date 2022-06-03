@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeApp\UserController as WeUserController;
+use App\Http\Controllers\WeApp\AlbumOwnerController as WeAlbumOwnerController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AlbumOwnerController;
@@ -39,6 +40,9 @@ Route::get('/',function(){
 
 Route::prefix('WeApp')->group(function () {
     Route::get('onLogin/{code}', [WeUserController::class, 'onLogin']);
+    Route::post('CheckLogin', [WeUserController::class, 'CheckLogin']);
+
+    Route::get('AlbumOwner/Index', [WeAlbumOwnerController::class, 'Index']);
 });
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);

@@ -12,6 +12,8 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
     protected $table = 'User';
     protected $guarded = [];
+    const CREATED_AT = 'first_login_time';
+    const UPDATED_AT = 'last_login_time';
     /**
      * The attributes that are mass assignable.
      *
