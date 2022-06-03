@@ -28,6 +28,19 @@ class AlbumSeeder extends Seeder
                 'user_id' => '1',
                 'password' => '00',
                 'description' => '相册概述'
+            ],
+            [
+                'title' => '游戏',
+                'owner_id' => '1',
+                'permission' => '0',
+                'tags' => 'tag1,tag2',
+                'min_take_stamp' => '2019-06-19',
+                'max_take_stamp' => '2019-06-21',
+                'downloadable' => '0',
+                'shareable' => '0',
+                'user_id' => '1',
+                'password' => '00',
+                'description' => '相册概述'
             ]
         ]);
     }
