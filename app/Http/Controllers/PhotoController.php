@@ -8,6 +8,8 @@ use App\Models\Album;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
 use App\Utility\PermissionDic;
+use App\Utility\GUID;
+use Ramsey\Uuid\Guid\Guid as GuidGuid;
 
 class PhotoController extends Controller
 {
@@ -25,7 +27,7 @@ class PhotoController extends Controller
         return view('Admin.Photo.Index',['permissions'=>$permissions]);
     }
     /**
-     * 
+     *
      */
     public function getPermissionSelect($albumId)
     {
@@ -37,7 +39,7 @@ class PhotoController extends Controller
         {
             $permissionText=1;
         }
-      
+
     }
     /**
      * Show the form for creating a new resource.
@@ -61,9 +63,13 @@ class PhotoController extends Controller
     {
         // $imageName = $request->fi
         $data = $request->all();
-        
+        $a=GUID::gen();
+        dd($a);
         $uploadedFile = $request->file('mediaFile');
-        
+        $destinationPath = 'upload';
+        $uploadedFile->move($destinationPath,$uploadedFile->getClientOriginalName());
+        //$a=Helper::test();
+        //dd($a);
         //$imageName = request()->file->getClientOriginalName();
 
         //request()->file->move(public_path('upload'), $imageName);
