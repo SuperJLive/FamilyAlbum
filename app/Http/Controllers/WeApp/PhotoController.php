@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\WeApp;
 
-use App\BLL\Downloadable;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Album;
-use App\Models\AlbumOwner;
-use App\Models\Permission;
-use App\Utility\PermissionDic;
 
 class PhotoController extends Controller
 {
@@ -16,29 +12,11 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($albumId)
+    public function index()
     {
         //
-        //$albumId=$request->
-        $pd=new PermissionDic();
-        $permissions=$pd->getPhotoPermissionSelect($albumId);
-        return view('Admin.Photo.Index',['permissions'=>$permissions]);
     }
-    /**
-     * 
-     */
-    public function getPermissionSelect($albumId)
-    {
-        //get parent permission
-        $data=Album::from('album as a')->join('AlbumOwner as b','a.owner_id','b.id')
-        ->where('a.id','=',$albumId)->select('a.permission','a.shareable','a.downloadable',
-        'b.permission as ownerPermission','b.shareable as ownerShareable','b.downloadable as ownerDownloadable')->first();
-        if($data->permission==-1)
-        {
-            $permissionText=1;
-        }
-      
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -47,8 +25,6 @@ class PhotoController extends Controller
     public function create()
     {
         //
-        echo 'create';
-        //return view('Admin.Photo.Create');
     }
 
     /**
@@ -59,16 +35,7 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        // $imageName = $request->fi
-        $data = $request->all();
-        
         $uploadedFile = $request->file('mediaFile');
-        
-        //$imageName = request()->file->getClientOriginalName();
-
-        //request()->file->move(public_path('upload'), $imageName);
-
-
         return response()->json(['success'=>1]);
     }
 
@@ -80,7 +47,6 @@ class PhotoController extends Controller
      */
     public function show($id)
     {
-        echo 'show';
         //
     }
 

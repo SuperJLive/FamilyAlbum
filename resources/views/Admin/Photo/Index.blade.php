@@ -68,8 +68,8 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <input id="uploadMedia" name="uploadMedia[]" type="file" class="file"
-                            data-browse-on-zone-click="true" multiple>
+                        <input id="mediaFile" name="mediaFile" type="file" class="file" data-browse-on-zone-click="true"
+                            multiple>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -98,25 +98,36 @@
 {{-- <script src="/plugins/bootstrap-fileinput/themes/bs5/theme.min.js"></script> --}}
 <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
 <script>
-    $("#uploadMedia").fileinput({'showUpload':false, 'previewFileType':'any',
+    var tModalLabel='kvFileinputModalLabel';
+    $("#mediaFile").fileinput({'showUpload':false, 'previewFileType':'any',
     language: 'zh',
-    uploadUrl: "/Admin/Photo/UploadMedia",
+    uploadUrl: "/Admin/Photo/Store",
+    ajaxSettings: { headers: {'x-csrf-token' : $("meta[name='csrf-token']").attr('content')} },
+    //extra: {id: 100,},
     autoReplace:false,
-    showDescriptionClose:true,
-    caption:'哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈',
-    zoomIcon: '<i class="bi-arrows-move"></i>',
-    actions: '<div class="file-actions">\n' +
-        '    <div class="file-footer-buttons">\n' +
-        '        {upload} {download} {delete} {zoom} {other}' +
-        '    </div>\n' +
-        '    {drag}\n' +
-        '    <div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>\n' +
-        '    <div class="clearfix"></div>\n' +
-        '</div>',
-        actionOther: '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>',
+    showUpload:true,//显示input里的上传，可以一次指上传
+    showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
     uploadExtraData: {
-            'uploadToken': 'SOME-TOKEN', // for access control / security
+        title:''
         },
+    layoutTemplates:{
+        modalMain: '<div id="kvFileinputModal" class="file-zoom-dialog modal fade" aria-labelledby="kvFileinputModalLabel" {tabIndexConfig}></div>',
+        modal: '<div class="modal-dialog modal-lg{rtl}" role="document">\n' +
+        '  <div class="modal-content">\n' +
+        '    <div class="modal-header kv-zoom-header">\n' +
+        '      <h6 class="modal-title kv-zoom-title" id="' + tModalLabel + '"><span class="kv-zoom-caption"></span> <span class="kv-zoom-size"></span></h6>\n' +
+        '      <div class="kv-zoom-actions">{toggleheader}{fullscreen}{borderless}{close}</div>\n' +
+        '    </div>\n' +
+        '    <div class="floating-buttons"></div>\n' +
+        '    <div class="row">\n' +
+        '    <div class="kv-zoom-body col-sm-5 file-zoom-content {zoomFrameClass}"></div>\n' + 
+        '     <div class="col-sm-5">aaa</div>\n' +
+        '{prev} {next}\n' +
+        '    <div class="kv-zoom-description"></div>\n' +
+        '    </div>\n' +
+        '  </div>\n' +
+        '</div>\n'
+    }
     });
 </script>
 @stop

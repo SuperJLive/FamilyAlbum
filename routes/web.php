@@ -54,6 +54,7 @@ Route::prefix('Admin')->group(function () {
 
 
     Route::get('Photo/Create',[PhotoController::class, 'Create']);
+    Route::post('Photo/Store',[PhotoController::class, 'Store']);
     Route::get('Photo/Index/{AlbumId}',[PhotoController::class, 'Index']);
 
     Route::get('Account/Create', [AccountController::class, 'Create']);
