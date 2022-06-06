@@ -64,7 +64,7 @@ class PhotoController extends Controller
         // $imageName = $request->fi
         $data = $request->all();
         $a=GUID::gen();
-        dd($a);
+        dd(phpinfo());
         $uploadedFile = $request->file('mediaFile');
         $destinationPath = 'upload';
         $uploadedFile->move($destinationPath,$uploadedFile->getClientOriginalName());
