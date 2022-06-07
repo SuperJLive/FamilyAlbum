@@ -8,9 +8,8 @@ use App\Models\Album;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
 use App\Utility\PermissionDic;
-use App\Utility\GUID;
-use Ramsey\Uuid\Guid\Guid as GuidGuid;
-
+use App\Utility\Guid;
+use Illuminate\Support\Facades\File;
 class PhotoController extends Controller
 {
     /**
@@ -24,7 +23,9 @@ class PhotoController extends Controller
         //$albumId=$request->
         $pd=new PermissionDic();
         $permissions=$pd->getPhotoPermissionSelect($albumId);
-        return view('Admin.Photo.Index',['permissions'=>$permissions]);
+        return view('Admin.Photo.Index',['permissions'=>$permissions,
+                                            'albumId'=>$albumId
+                                        ]);
     }
     /**
      *
@@ -63,11 +64,24 @@ class PhotoController extends Controller
     {
         // $imageName = $request->fi
         $data = $request->all();
-        $a=GUID::gen();
-        dd(phpinfo());
+        $fileName=Guid::gen();
+        $albumId=$request->input("albumId");
+        $query=Album::query()->where('id','=',$albumId);
+        $album=$query->first();
+        if($album===null)
+        {
+            return response()->json(['error'=>'上传的相册不存在']);
+        }
+
         $uploadedFile = $request->file('mediaFile');
-        $destinationPath = 'upload';
-        $uploadedFile->move($destinationPath,$uploadedFile->getClientOriginalName());
+        $fileNameExt=$uploadedFile->getClientOriginalExtension();
+        $fileName.='.'.$fileNameExt;
+        $destinationPath = 'upload/'.$album->owner_id .'/'.$album->id.'/';
+        if(!File::isDirectory($destinationPath)){
+            File::makeDirectory($destinationPath, 0777, true, true);
+        }
+
+        $uploadedFile->move($destinationPath,$fileName);
         //$a=Helper::test();
         //dd($a);
         //$imageName = request()->file->getClientOriginalName();

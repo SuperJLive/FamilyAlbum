@@ -20,6 +20,7 @@
                 <div class="form-group row">
                     <label for="owner" class="col-sm-1 col-form-label text-right">图片权限</label>
                     <div class="col-sm-3">
+                        <input id="albumId" type="hidden" value="{{$albumId}}">
                         <select id="permission" name="permission" required data-msg-required="权限必须选择"
                             class="form-control @error('permission') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['permission'] as $item)
@@ -98,36 +99,56 @@
 {{-- <script src="/plugins/bootstrap-fileinput/themes/bs5/theme.min.js"></script> --}}
 <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
 <script>
-    var tModalLabel='kvFileinputModalLabel';
-    $("#mediaFile").fileinput({'showUpload':false, 'previewFileType':'any',
-    language: 'zh',
-    uploadUrl: "/Admin/Photo/Store",
-    ajaxSettings: { headers: {'x-csrf-token' : $("meta[name='csrf-token']").attr('content')} },
-    //extra: {id: 100,},
-    autoReplace:false,
-    showUpload:true,//显示input里的上传，可以一次指上传
-    showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
-    uploadExtraData: {
-        title:''
-        },
-    layoutTemplates:{
-        modalMain: '<div id="kvFileinputModal" class="file-zoom-dialog modal fade" aria-labelledby="kvFileinputModalLabel" {tabIndexConfig}></div>',
-        modal: '<div class="modal-dialog modal-lg{rtl}" role="document">\n' +
-        '  <div class="modal-content">\n' +
-        '    <div class="modal-header kv-zoom-header">\n' +
-        '      <h6 class="modal-title kv-zoom-title" id="' + tModalLabel + '"><span class="kv-zoom-caption"></span> <span class="kv-zoom-size"></span></h6>\n' +
-        '      <div class="kv-zoom-actions">{toggleheader}{fullscreen}{borderless}{close}</div>\n' +
-        '    </div>\n' +
-        '    <div class="floating-buttons"></div>\n' +
-        '    <div class="row">\n' +
-        '    <div class="kv-zoom-body col-sm-5 file-zoom-content {zoomFrameClass}"></div>\n' + 
-        '     <div class="col-sm-5">aaa</div>\n' +
-        '{prev} {next}\n' +
-        '    <div class="kv-zoom-description"></div>\n' +
-        '    </div>\n' +
-        '  </div>\n' +
-        '</div>\n'
-    }
-    });
+    //$(function(){
+        var tModalLabel='kvFileinputModalLabel';
+        $("#mediaFile").fileinput({'showUpload':false, 'previewFileType':'any',
+        language: 'zh',
+        uploadUrl: "/Admin/Photo/Store",
+        ajaxSettings: { headers: {'x-csrf-token' : $("meta[name='csrf-token']").attr('content')} },
+        //extra: {id: 100,},
+        autoReplace:false,
+        showUpload:true,//显示input里的上传，可以一次指上传
+        showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
+        uploadExtraData: function(previewId, index){
+            var title="";
+            var albumId=$('#albumId').val();
+            console.log(previewId+'previewId');
+            console.log(index+'index');
+            return {'albumId':albumId,'previewId':previewId,'index':index};
+            },
+        layoutTemplates:{
+            modalMain: '<div id="kvFileinputModal" class="file-zoom-dialog modal fade" aria-labelledby="kvFileinputModalLabel" {tabIndexConfig}></div>',
+            modal: '<div class="modal-dialog modal-lg{rtl}" role="document">\n' +
+            '  <div class="modal-content">\n' +
+            '    <div class="modal-header kv-zoom-header">\n' +
+            '      <h6 class="modal-title kv-zoom-title" id="' + tModalLabel + '"><span class="kv-zoom-caption"></span> <span class="kv-zoom-size"></span></h6>\n' +
+            '      <div class="kv-zoom-actions">{toggleheader}{fullscreen}{borderless}{close}</div>\n' +
+            '    </div>\n' +
+            '    <div class="floating-buttons"></div>\n' +
+            '    <div class="row">\n' +
+            '    <div class="kv-zoom-body col-sm-5 file-zoom-content {zoomFrameClass}"></div>\n' +
+            '     <div class="col-sm-5">aaa</div>\n' +
+            '{prev} {next}\n' +
+            '    <div class="kv-zoom-description"></div>\n' +
+            '    </div>\n' +
+            '  </div>\n' +
+            '</div>\n'
+        }
+        });
+        $('#mediaFile').on('fileselect', function(event, numFiles, label) {
+                        console.log(numFiles);
+            console.log(label);
+        });
+        $('#mediaFile').on('fileloaded', function(event, file, previewId, fileId, index, reader) {
+            // console.log(file);
+            // console.log(previewId);
+            // console.log(fileId);
+            // console.log(index);
+            // console.log(reader);
+        });
+        $('#mediaFile').on('filepreajax', function(event, previewId, index) {
+            console.log('File pre ajax triggered');
+        });
+    //});
 </script>
 @stop
