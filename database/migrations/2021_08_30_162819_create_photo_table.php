@@ -19,18 +19,21 @@ class CreatePhotoTable extends Migration
             $table->bigInteger('album_id');//->references('id')->on('albums')->onDelete('cascade');
             $table->integer('user_id')->default(0);//创建人
             $table->string('title', 100);
-            $table->string('original_path',100);
-            $table->string('thumb_path',100);
+            $table->string('file_name',100);
+            $table->string('file_ext',10);
+            $table->string('file_path',100);
+            $table->string('origin_name',100);
+            //$table->string('thumb_path',100);
             $table->string('location',100)->nullable();
             $table->string('checksum',100)->nullable();
             $table->timestamp('take_stamp')->nullable();
-            $table->integer('star')->default(0);
-            $table->string('type', 30)->default('');//文件类型
+            //$table->integer('star')->default(0);
+            //$table->string('type', 30)->default('');//文件类型
 			$table->integer('width')->nullable();
 			$table->integer('height')->nullable();
-			$table->string('size', 20)->default('');
+			$table->bigInteger('size')->default('0');
             $table->boolean('is_show')->default(true);//是否展示
-            $table->integer('cover')->default(0);//封面
+            $table->boolean('cover')->default(0);//封面
             $table->integer('permission')->default(0);
             $table->integer('downloadable')->default(0);
             $table->integer('shareable')->default(0);

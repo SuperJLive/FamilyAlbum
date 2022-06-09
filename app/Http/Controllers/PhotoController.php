@@ -23,8 +23,12 @@ class PhotoController extends Controller
         //$albumId=$request->
         $pd=new PermissionDic();
         $permissions=$pd->getPhotoPermissionSelect($albumId);
+        $uploadMaxFilesize=((float)str_replace('M','',ini_get('upload_max_filesize')))*1024;
+        $postMaxSize=((float)str_replace('M','',ini_get('post_max_size')))*1024;
+        $maxFileSize=$uploadMaxFilesize<=$postMaxSize?$uploadMaxFilesize:$postMaxSize;
         return view('Admin.Photo.Index',['permissions'=>$permissions,
-                                            'albumId'=>$albumId
+                                            'albumId'=>$albumId,
+                                            'uploadMaxFilesize'=>$maxFileSize
                                         ]);
     }
     /**
@@ -74,13 +78,14 @@ class PhotoController extends Controller
         }
 
         $uploadedFile = $request->file('mediaFile');
+        dd($uploadedFile);
         $fileNameExt=$uploadedFile->getClientOriginalExtension();
         $fileName.='.'.$fileNameExt;
         $destinationPath = 'upload/'.$album->owner_id .'/'.$album->id.'/';
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
-
+        //dd(ini_get('upload_max_filesize'));
         $uploadedFile->move($destinationPath,$fileName);
         //$a=Helper::test();
         //dd($a);

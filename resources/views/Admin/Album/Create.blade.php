@@ -136,8 +136,8 @@
                             <textarea id="description" name="description"
                                 class="form-control @error('description') is-invalid @enderror" rows="3"
                                 placeholder="输入简述">{{old('description')}}</textarea>
-                            @error('downloadable')
-                            <span id="downloadable-error" class="error invalid-feedback">{{ $message }}</span>
+                            @error('description')
+                            <span id="description-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

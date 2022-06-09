@@ -33,7 +33,7 @@
                         @enderror
                     </div>
                     <div class="col-sm-2">
-                        <select id="shareable" name="shareable" required data-msg-required="权限必须选择"
+                        <select id="shareable" name="shareable" required data-msg-required="必须选择"
                             class="form-control @error('shareable') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['shareable'] as $item)
                             <option value="{{$item['id']}}" {{old('shareable')==$item['id'] ? 'selected' : '' }}>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="col-sm-2">
-                        <select id="downloadable" name="downloadable" required data-msg-required="权限必须选择"
+                        <select id="downloadable" name="downloadable" required data-msg-required="必须选择"
                             class="form-control @error('downloadable') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['downloadable'] as $item)
                             <option value="{{$item['id']}}" {{old('downloadable')==$item['id'] ? 'selected' : '' }}>
@@ -86,6 +86,71 @@
             </div>
         </div>
     </div>
+    <div id="zoomTemplate">
+        <div class="form-group col-sm-12">
+            <label for="title">标题</label>
+            <input type="text" class="form-control form-control-sm" id="title" name="title" placeholder="相册标题">
+            <label for="permissionPhoto">访问权限</label>
+            <select id="permissionPhoto" name="permissionPhoto" required data-msg-required="权限必须选择"
+                class="form-control form-control-sm @error('permission') is-invalid @enderror" style="width: 100%;">
+                @foreach ($permissions['permission'] as $item)
+                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                    {{$item['text']}}</option>
+                @endforeach
+            </select>
+            <label for="password">密码</label>
+            <input type="password" class="form-control form-control-sm" id="password" name="password"
+                placeholder="相册密码">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="shareablePhoto">是否可分享</label>
+                    <select id="shareablePhoto" name="shareablePhoto" required data-msg-required="权限必须选择"
+                        class="form-control form-control-sm @error('shareable') is-invalid @enderror"
+                        style="width: 100%;">
+                        @foreach ($permissions['shareable'] as $item)
+                        <option value="{{$item['id']}}" {{old('shareable')==$item['id'] ? 'selected' : '' }}>
+                            {{$item['text']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label for="downloadablePhoto">是否可下载</label>
+                    <select id="downloadablePhoto" name="downloadablePhoto" required data-msg-required="必须选择"
+                        class="form-control form-control-sm @error('downloadable') is-invalid @enderror"
+                        style="width: 100%;">
+                        @foreach ($permissions['downloadable'] as $item)
+                        <option value="{{$item['id']}}" {{old('downloadable')==$item['id'] ? 'selected' : '' }}>
+                            {{$item['text']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group clearfix  icheck-center col-sm-6">
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="isCover" name="isCover" value="1">
+                        <label for="isCover">设置为封面
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group clearfix  icheck-center col-sm-6">
+                    <div class="icheck-primary d-inline">
+                        <input type="checkbox" id="isShowPhoto" name="isShowPhoto" value="1" checked>
+                        <label for="isShowPhoto">是否展示
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">简述</label>
+                <textarea id="description" name="description"
+                    class="form-control form-control-sm @error('description') is-invalid @enderror" rows="3"
+                    placeholder="输入简述">{{old('description')}}</textarea>
+            </div><input type="hidden" id="previewId">
+            <button type="button" id="btnSavePhotoInfo" class="btn btn-primary">保存</button>
+
+        </div>
+    </div>
 </div>
 @stop
 @section('css')
@@ -101,20 +166,29 @@
 <script>
     //$(function(){
         var tModalLabel='kvFileinputModalLabel';
+        var zoomTemplate=$('#zoomTemplate').html();
+        $('#zoomTemplate').html('');
+        var photos=new Array();
         $("#mediaFile").fileinput({'showUpload':false, 'previewFileType':'any',
         language: 'zh',
         uploadUrl: "/Admin/Photo/Store",
         ajaxSettings: { headers: {'x-csrf-token' : $("meta[name='csrf-token']").attr('content')} },
+        maxFileSize:{{$uploadMaxFilesize}},
         //extra: {id: 100,},
         autoReplace:false,
         showUpload:true,//显示input里的上传，可以一次指上传
         showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
         uploadExtraData: function(previewId, index){
-            var title="";
-            var albumId=$('#albumId').val();
-            console.log(previewId+'previewId');
-            console.log(index+'index');
-            return {'albumId':albumId,'previewId':previewId,'index':index};
+            //console.log('uploadExtraData_previewId:'+previewId+",index:"+index)
+            if(photos.length>0)
+            {
+                var photo=photos.find(x=>x.fileId==previewId);
+                if(photo){
+                    //console.log(photo);
+                    return photo;
+                }
+            }
+            return null;
             },
         layoutTemplates:{
             modalMain: '<div id="kvFileinputModal" class="file-zoom-dialog modal fade" aria-labelledby="kvFileinputModalLabel" {tabIndexConfig}></div>',
@@ -125,30 +199,95 @@
             '      <div class="kv-zoom-actions">{toggleheader}{fullscreen}{borderless}{close}</div>\n' +
             '    </div>\n' +
             '    <div class="floating-buttons"></div>\n' +
-            '    <div class="row">\n' +
-            '    <div class="kv-zoom-body col-sm-5 file-zoom-content {zoomFrameClass}"></div>\n' +
-            '     <div class="col-sm-5">aaa</div>\n' +
-            '{prev} {next}\n' +
+            '    <div class="row room-image">\n' +
+            '    <div class="kv-zoom-body col-sm-6 file-zoom-content {zoomFrameClass}"></div>\n' +
+            '     <div class="col-sm-6" id="photoInfo">'+
+                zoomTemplate +
+                '</div>\n' +
+            '    {prev} {next}\n' +
             '    <div class="kv-zoom-description"></div>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '</div>\n'
         }
         });
-        $('#mediaFile').on('fileselect', function(event, numFiles, label) {
-                        console.log(numFiles);
-            console.log(label);
-        });
+        
         $('#mediaFile').on('fileloaded', function(event, file, previewId, fileId, index, reader) {
-            // console.log(file);
-            // console.log(previewId);
+            var permission=$('#permission option:selected').val();
+            var downloadable=$('#downloadable option:selected').val();
+            var shareable=$('#shareable option:selected').val();
+            var isShow=$('#isShow:checked').val()?true:false;
+            var albumId=$('#albumId').val();
+
+            var temp={'previewId':previewId,'fileId':fileId,'title':file.name,'permission':permission,
+                    'downloadable':downloadable,'shareable':shareable,'isShow':isShow,
+                    'description':'','albumId':albumId,take_stamp:null,
+                    'size':file.size,'isCover':false,'password':null
+                };
+            photos.push(temp);
+            //console.log(photos);
+            //console.log(file);
+            //console.log('fileloaded_previewId:'+previewId+",index:"+index)
             // console.log(fileId);
             // console.log(index);
             // console.log(reader);
         });
         $('#mediaFile').on('filepreajax', function(event, previewId, index) {
-            console.log('File pre ajax triggered');
+            
         });
+        $('#mediaFile').on('fileremoved', function(event, id, index) {
+            var photoIndex=photos.findIndex(x=>x.previewId==id);
+            photos.splice(photoIndex,1);
+        });
+        $('#mediaFile').on('fileclear', function(event) {
+            photos=[];
+        });
+        $('#mediaFile').on('filezoomshow', function(event, params) {
+            console.log('File zoom show ', params.sourceEvent, params.previewId, params.modal);
+            loadPhotoInfo(params.previewId);
+            
+        });
+        $('#mediaFile').on('filezoomshown', function(event, params) {
+        console.log('File zoom shown ', params.sourceEvent, params.previewId, params.modal);
+        });
+        $('#mediaFile').on('filezoomprev', function(event, params) {
+            console.log('File zoom previous ', params.previewId, params.modal);
+            loadPhotoInfo(params.previewId);
+        });
+        $('#mediaFile').on('filezoomnext', function(event, params) {
+            console.log('File zoom next ', params.previewId, params.modal);
+            loadPhotoInfo(params.previewId);
+        });
+        $('#btnSavePhotoInfo').on('click',function(){
+            
+            savePhotoInfo();
+        })
+        var loadPhotoInfo=function(previewId){
+            var photo=photos.find(x=>x.previewId==previewId);
+            console.log(photo);
+            $('#title').val(photo.title);
+            $('#permissionPhoto').val(photo.permission);
+            $('#password').val(photo.password);
+            $('#shareablePhoto').val(photo.shareable);
+            $('#downloadablePhoto').val(photo.downloadable);
+            $('#isCover').attr("checked", photo.isCover);
+            $('#isShowPhoto').attr("checked", photo.isShow);
+            $('#description').val(photo.description);
+            $('#previewId').val(photo.previewId);
+        }
+        var savePhotoInfo=function(){
+            var previewId=$('#previewId').val();
+            var i=photos.findIndex(x=>x.previewId==previewId);
+            photos[i].title=$('#title').val();
+            photos[i].permission=$('#permissionPhoto').val();
+            photos[i].password=$('#password').val();
+            photos[i].shareable=$('#shareablePhoto').val();
+            photos[i].downloadable=$('#downloadablePhoto').val();
+            photos[i].isCover=$('#isCover').prop("checked")?true:false;
+            photos[i].isShow=$('#isShowPhoto').prop("checked")?true:false;
+            photos[i].description=$('#description').val(photo.description);
+        }
+
     //});
 </script>
 @stop

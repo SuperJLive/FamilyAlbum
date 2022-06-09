@@ -13,3 +13,24 @@
     
 }
 
+
+.room-image{
+    margin-left: 38px;
+    margin-right: 38px;
+}
+#photoInfo label
+{
+    font-size: 12px;
+}
+#photoInfo label:not([class*=icheck-]>label)
+{
+    display: inline;
+}
+#zoomTemplate label
+{
+    font-size: 12px;
+}
+#zoomTemplate label:not([class*=icheck-]>label)
+{
+    display: inline;
+}
