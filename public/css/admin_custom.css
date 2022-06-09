@@ -10,7 +10,7 @@
 .invalid-icheck::before
 {
     border: 1px solid #ff0000 !important;
-    
+
 }
 
 
@@ -33,4 +33,19 @@
 #zoomTemplate label:not([class*=icheck-]>label)
 {
     display: inline;
+}
+
+.kv-zoom-photo-save-notice{
+    display: none;
+    position: absolute;
+    opacity: .8;
+    font-size: .8rem;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    color: #fff;
+    left: 10%;
+    right: 60%;
+    top: 15%;
 }

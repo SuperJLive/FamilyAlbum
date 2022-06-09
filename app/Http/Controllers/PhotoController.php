@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\BLL\Downloadable;
 use Illuminate\Http\Request;
 use App\Models\Album;
+use App\Models\Photo;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
 use App\Utility\PermissionDic;
 use App\Utility\Guid;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+
 class PhotoController extends Controller
 {
     /**
@@ -66,7 +69,7 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        // $imageName = $request->fi
+
         $data = $request->all();
         $fileName=Guid::gen();
         $albumId=$request->input("albumId");
@@ -76,24 +79,52 @@ class PhotoController extends Controller
         {
             return response()->json(['error'=>'上传的相册不存在']);
         }
-
+        //save uploaded media file
         $uploadedFile = $request->file('mediaFile');
-        dd($uploadedFile);
-        $fileNameExt=$uploadedFile->getClientOriginalExtension();
+        $fileNameExt='.'.$uploadedFile->getClientOriginalExtension();
         $fileName.='.'.$fileNameExt;
         $destinationPath = 'upload/'.$album->owner_id .'/'.$album->id.'/';
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
-        //dd(ini_get('upload_max_filesize'));
         $uploadedFile->move($destinationPath,$fileName);
-        //$a=Helper::test();
-        //dd($a);
-        //$imageName = request()->file->getClientOriginalName();
+        //get photo field
+        $rule = [
+            'title' => 'required|string|max:100',
+            'albumId' => 'required|integer|min:1',
+            'permission' => 'required|integer',
+            'isShow'=>'required|boolean',
+            'isCover'=>'required|boolean',
+            'password' => 'string|nullable|max:20',
+            'takeStamp' => 'date|nullable',
+            'shareable' => 'required|integer|min:-1|max:1',
+            'downloadable' => 'required|integer|min:-1|max:1',
+            'description' => 'string|nullable|max:500'
+        ];
 
-        //request()->file->move(public_path('upload'), $imageName);
+        $validator = Validator::make($request->all(), $rule);
+        if ($validator->fails()) {
+            $errors=array();
+            $messages=$validator->errors();
+            foreach($messages as $key=>$val){
+                array_push($errors,$val);
+            }
 
-
+            return response()->json( ['error'=>$errors]);
+        }
+        $validated = $validator->validated();
+        $rowNum = Photo::create([
+            'title' => $validated['title'],
+            'album_id' => $validated['albumId'],
+            'permission' => $validated['permission'],
+            'password' => $validated['password'],
+            'take_stamp'=> $validated['takeStamp'],
+            'shareable' => $validated['shareable'],
+            'downloadable' => $validated['downloadable'],
+            'is_show'=> $validated['isShow'],
+            'is_cover'=> $validated['isCover'],
+            'description' => $validated['description']
+        ]);
         return response()->json(['success'=>1]);
     }
 

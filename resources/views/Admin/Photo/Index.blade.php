@@ -24,7 +24,7 @@
                         <select id="permission" name="permission" required data-msg-required="权限必须选择"
                             class="form-control @error('permission') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['permission'] as $item)
-                            <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                            <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                                 {{$item['text']}}</option>
                             @endforeach
                         </select>
@@ -36,7 +36,7 @@
                         <select id="shareable" name="shareable" required data-msg-required="必须选择"
                             class="form-control @error('shareable') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['shareable'] as $item)
-                            <option value="{{$item['id']}}" {{old('shareable')==$item['id'] ? 'selected' : '' }}>
+                            <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                                 {{$item['text']}}</option>
                             @endforeach
                         </select>
@@ -49,7 +49,7 @@
                         <select id="downloadable" name="downloadable" required data-msg-required="必须选择"
                             class="form-control @error('downloadable') is-invalid @enderror" style="width: 100%;">
                             @foreach ($permissions['downloadable'] as $item)
-                            <option value="{{$item['id']}}" {{old('downloadable')==$item['id'] ? 'selected' : '' }}>
+                            <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                                 {{$item['text']}}</option>
                             @endforeach
                         </select>
@@ -94,7 +94,7 @@
             <select id="permissionPhoto" name="permissionPhoto" required data-msg-required="权限必须选择"
                 class="form-control form-control-sm @error('permission') is-invalid @enderror" style="width: 100%;">
                 @foreach ($permissions['permission'] as $item)
-                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                     {{$item['text']}}</option>
                 @endforeach
             </select>
@@ -105,10 +105,9 @@
                 <div class="col-sm-6">
                     <label for="shareablePhoto">是否可分享</label>
                     <select id="shareablePhoto" name="shareablePhoto" required data-msg-required="权限必须选择"
-                        class="form-control form-control-sm @error('shareable') is-invalid @enderror"
-                        style="width: 100%;">
+                        class="form-control form-control-sm" style="width: 100%;">
                         @foreach ($permissions['shareable'] as $item)
-                        <option value="{{$item['id']}}" {{old('shareable')==$item['id'] ? 'selected' : '' }}>
+                        <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                             {{$item['text']}}</option>
                         @endforeach
                     </select>
@@ -116,10 +115,9 @@
                 <div class="col-sm-6">
                     <label for="downloadablePhoto">是否可下载</label>
                     <select id="downloadablePhoto" name="downloadablePhoto" required data-msg-required="必须选择"
-                        class="form-control form-control-sm @error('downloadable') is-invalid @enderror"
-                        style="width: 100%;">
+                        class="form-control form-control-sm" style="width: 100%;">
                         @foreach ($permissions['downloadable'] as $item)
-                        <option value="{{$item['id']}}" {{old('downloadable')==$item['id'] ? 'selected' : '' }}>
+                        <option value="{{$item['id']}}" {{$item['id']==0 ? 'selected' : '' }}>
                             {{$item['text']}}</option>
                         @endforeach
                     </select>
@@ -165,6 +163,9 @@
 <script src="/plugins/bootstrap-fileinput/js/locales/zh.js"></script>
 <script>
     //$(function(){
+        var test=[{'id':1,'val':1},{'id':2,'val':2},{'id':3,'val':3}];
+        test[1].val=999;
+        console.log(test);
         var tModalLabel='kvFileinputModalLabel';
         var zoomTemplate=$('#zoomTemplate').html();
         $('#zoomTemplate').html('');
@@ -185,6 +186,7 @@
                 var photo=photos.find(x=>x.fileId==previewId);
                 if(photo){
                     //console.log(photo);
+                    delete photo.fileId;
                     return photo;
                 }
             }
@@ -206,23 +208,24 @@
                 '</div>\n' +
             '    {prev} {next}\n' +
             '    <div class="kv-zoom-description"></div>\n' +
+            '    <div class="kv-zoom-photo-save-notice"></div>\n' +
             '    </div>\n' +
             '  </div>\n' +
             '</div>\n'
         }
         });
-        
+
         $('#mediaFile').on('fileloaded', function(event, file, previewId, fileId, index, reader) {
             var permission=$('#permission option:selected').val();
             var downloadable=$('#downloadable option:selected').val();
             var shareable=$('#shareable option:selected').val();
-            var isShow=$('#isShow:checked').val()?true:false;
+            var isShow=$('#isShow:checked').val()?1:0;
             var albumId=$('#albumId').val();
 
-            var temp={'previewId':previewId,'fileId':fileId,'title':file.name,'permission':permission,
+            var temp={'previewId':previewId,'fileId':fileId,'title':'','permission':permission,
                     'downloadable':downloadable,'shareable':shareable,'isShow':isShow,
-                    'description':'','albumId':albumId,take_stamp:null,
-                    'size':file.size,'isCover':false,'password':null
+                    'description':'','albumId':albumId,'takeStamp':'',
+                    'size':file.size,'isCover':0,'password':''
                 };
             photos.push(temp);
             //console.log(photos);
@@ -233,7 +236,7 @@
             // console.log(reader);
         });
         $('#mediaFile').on('filepreajax', function(event, previewId, index) {
-            
+
         });
         $('#mediaFile').on('fileremoved', function(event, id, index) {
             var photoIndex=photos.findIndex(x=>x.previewId==id);
@@ -245,23 +248,31 @@
         $('#mediaFile').on('filezoomshow', function(event, params) {
             console.log('File zoom show ', params.sourceEvent, params.previewId, params.modal);
             loadPhotoInfo(params.previewId);
-            
+            $('#btnSavePhotoInfo').on('click',function(){
+                var saveNotice=$('.kv-zoom-photo-save-notice');
+                saveNotice.html('保存中...')
+                saveNotice.show();
+                savePhotoInfo();
+                saveNotice.html('保存成功')
+                saveNotice.fadeOut('normal');
+            })
         });
         $('#mediaFile').on('filezoomshown', function(event, params) {
         console.log('File zoom shown ', params.sourceEvent, params.previewId, params.modal);
         });
+        //get preview dom element id
         $('#mediaFile').on('filezoomprev', function(event, params) {
             console.log('File zoom previous ', params.previewId, params.modal);
-            loadPhotoInfo(params.previewId);
+            previewId=$('#'+params.previewId.replace('.','\\.')).prev().attr("id");
+            loadPhotoInfo(previewId);
         });
+        //get next dom element id
         $('#mediaFile').on('filezoomnext', function(event, params) {
             console.log('File zoom next ', params.previewId, params.modal);
-            loadPhotoInfo(params.previewId);
+            previewId=$('#'+params.previewId.replace('.','\\.')).next().attr("id");
+            loadPhotoInfo(previewId);
         });
-        $('#btnSavePhotoInfo').on('click',function(){
-            
-            savePhotoInfo();
-        })
+
         var loadPhotoInfo=function(previewId){
             var photo=photos.find(x=>x.previewId==previewId);
             console.log(photo);
@@ -270,8 +281,8 @@
             $('#password').val(photo.password);
             $('#shareablePhoto').val(photo.shareable);
             $('#downloadablePhoto').val(photo.downloadable);
-            $('#isCover').attr("checked", photo.isCover);
-            $('#isShowPhoto').attr("checked", photo.isShow);
+            $('#isCover').prop("checked", photo.isCover);
+            $('#isShowPhoto').prop("checked", photo.isShow);
             $('#description').val(photo.description);
             $('#previewId').val(photo.previewId);
         }
@@ -283,9 +294,9 @@
             photos[i].password=$('#password').val();
             photos[i].shareable=$('#shareablePhoto').val();
             photos[i].downloadable=$('#downloadablePhoto').val();
-            photos[i].isCover=$('#isCover').prop("checked")?true:false;
-            photos[i].isShow=$('#isShowPhoto').prop("checked")?true:false;
-            photos[i].description=$('#description').val(photo.description);
+            photos[i].isCover=$('#isCover').prop("checked")?1:0;
+            photos[i].isShow=$('#isShowPhoto').prop("checked")?1:0;
+            photos[i].description=$('#description').val();
         }
 
     //});

@@ -33,7 +33,7 @@ class CreatePhotoTable extends Migration
 			$table->integer('height')->nullable();
 			$table->bigInteger('size')->default('0');
             $table->boolean('is_show')->default(true);//是否展示
-            $table->boolean('cover')->default(0);//封面
+            $table->boolean('is_cover')->default(0);//封面
             $table->integer('permission')->default(0);
             $table->integer('downloadable')->default(0);
             $table->integer('shareable')->default(0);
