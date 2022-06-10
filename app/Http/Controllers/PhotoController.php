@@ -12,6 +12,7 @@ use App\Utility\PermissionDic;
 use App\Utility\Guid;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use App\Image\MediaFile;
 
 class PhotoController extends Controller
 {
@@ -82,15 +83,16 @@ class PhotoController extends Controller
         //save uploaded media file
         $uploadedFile = $request->file('mediaFile');
         $fileNameExt='.'.$uploadedFile->getClientOriginalExtension();
-        $fileName.='.'.$fileNameExt;
+        $originName=$uploadedFile->getClientOriginalName();
+        $fileName.=$fileNameExt;
         $destinationPath = 'upload/'.$album->owner_id .'/'.$album->id.'/';
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
-        $uploadedFile->move($destinationPath,$fileName);
+        
         //get photo field
         $rule = [
-            'title' => 'required|string|max:100',
+            'title' => 'string|nullable|max:100',
             'albumId' => 'required|integer|min:1',
             'permission' => 'required|integer',
             'isShow'=>'required|boolean',
@@ -105,13 +107,26 @@ class PhotoController extends Controller
         $validator = Validator::make($request->all(), $rule);
         if ($validator->fails()) {
             $errors=array();
-            $messages=$validator->errors();
+            $messages=$validator->errors()->all();
             foreach($messages as $key=>$val){
                 array_push($errors,$val);
             }
 
             return response()->json( ['error'=>$errors]);
         }
+        $uploadedFile->move($destinationPath,$fileName);
+        $newFilePath=$destinationPath.$fileName;
+        $a=MediaFile::GetJsonExifInfo($newFilePath);
+        dd($a);
+        $jsona=json_encode($a);
+        //implode($array)
+        //$current_encode = mb_detect_encoding(implode($aaaaa), array("ASCII","GB2312","GBK",'BIG5','UTF-8')); 
+        dd($jsona);
+        dd(json_last_error_msg());
+        
+        // checksum
+        // size
+        // exif
         $validated = $validator->validated();
         $rowNum = Photo::create([
             'title' => $validated['title'],
@@ -123,7 +138,11 @@ class PhotoController extends Controller
             'downloadable' => $validated['downloadable'],
             'is_show'=> $validated['isShow'],
             'is_cover'=> $validated['isCover'],
-            'description' => $validated['description']
+            'description' => $validated['description'],
+            'file_name'=>$fileName,
+            'file_ext'=>$fileNameExt,
+            'file_path'=>$destinationPath,
+            'origin_name'=>$originName
         ]);
         return response()->json(['success'=>1]);
     }

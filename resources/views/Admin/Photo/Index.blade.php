@@ -180,14 +180,13 @@
         showUpload:true,//显示input里的上传，可以一次指上传
         showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
         uploadExtraData: function(previewId, index){
-            //console.log('uploadExtraData_previewId:'+previewId+",index:"+index)
-            if(photos.length>0)
-            {
-                var photo=photos.find(x=>x.fileId==previewId);
-                if(photo){
-                    //console.log(photo);
-                    delete photo.fileId;
-                    return photo;
+            if(previewId){
+                if(photos.length>0)
+                {
+                    var photo=photos.find(x=>x.uploadFileId==previewId);
+                    if(photo){
+                        return photo;
+                    }
                 }
             }
             return null;
@@ -222,7 +221,7 @@
             var isShow=$('#isShow:checked').val()?1:0;
             var albumId=$('#albumId').val();
 
-            var temp={'previewId':previewId,'fileId':fileId,'title':'','permission':permission,
+            var temp={'previewId':previewId,'uploadFileId':fileId,'title':'','permission':permission,
                     'downloadable':downloadable,'shareable':shareable,'isShow':isShow,
                     'description':'','albumId':albumId,'takeStamp':'',
                     'size':file.size,'isCover':0,'password':''

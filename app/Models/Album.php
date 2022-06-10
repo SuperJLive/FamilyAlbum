@@ -9,6 +9,6 @@ class Album extends Model
 {
     use HasFactory;
     protected $table = 'album';
-    protected $fillable = ['title','owner_id','permission','password','tags','min_takestamp','max_takestamp',
+    protected $fillable = ['title','owner_id','permission','password','tags','min_take_stamp','max_take_stamp',
     'shareable','downloadable','description'];
 }
