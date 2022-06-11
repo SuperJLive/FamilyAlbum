@@ -116,18 +116,27 @@ class PhotoController extends Controller
         }
         $uploadedFile->move($destinationPath,$fileName);
         $newFilePath=$destinationPath.$fileName;
-        $a=MediaFile::GetJsonExifInfo($newFilePath);
-        dd($a);
-        $jsona=json_encode($a);
+        $mediaFile=new MediaFile($newFilePath);
+        $exifJson=$mediaFile->GetJsonExifInfo();
+        $size=$mediaFile->getFileSize();
+        $imageSize=$mediaFile->getImageSize();
+        dd($imageSize);
+        //dd($size.'|||'. $request->input('size'));
+
+        
         //implode($array)
         //$current_encode = mb_detect_encoding(implode($aaaaa), array("ASCII","GB2312","GBK",'BIG5','UTF-8')); 
-        dd($jsona);
-        dd(json_last_error_msg());
+        
+        //dd(json_last_error_msg());
         
         // checksum
         // size
         // exif
         $validated = $validator->validated();
+        if($validated['title']===null)
+        {
+            $validated['title']=$originName;
+        }
         $rowNum = Photo::create([
             'title' => $validated['title'],
             'album_id' => $validated['albumId'],

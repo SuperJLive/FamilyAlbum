@@ -3,12 +3,18 @@ namespace App\Image;
 
 class MediaFile
 {
-    public function GetJsonExifInfo($filePath)
+    protected string $filePath;
+
+    public function __construct(string $filePath)
     {
-        
-        $exif=exif_read_data($filePath,0,true);
+        $this->filePath=$filePath;
+    
+    }
+    public function getJsonExifInfo()
+    {
+        $exif=exif_read_data($this->filePath,0,true);
         if($exif===false){
-            return array(
+            $result = array(
                 'Exif'=>false
             );
         }
@@ -16,10 +22,10 @@ class MediaFile
             $result=json_encode($exif);
         }
         if($result===false){
-            $this->reloadExif($exif);
+            $result = array('Exif'=>'Convert Error');
+            //$this->reloadExif($exif);
         }
         return $result;
-        # code...
     }
     public function reloadExif($exif){
         foreach ($exif as $key => $section) {
@@ -27,5 +33,11 @@ class MediaFile
 
             }
         }
+    }
+    public function getFileSize(){
+         return filesize($this->filePath);
+    }
+    public function getImageSize(){
+        return getImageSize($this->filePath);
     }
 }
