@@ -101,6 +101,8 @@
             <label for="password">密码</label>
             <input type="password" class="form-control form-control-sm" id="password" name="password"
                 placeholder="相册密码">
+            <label for="title">拍摄地点</label>
+            <input type="text" class="form-control form-control-sm" id="location" name="location" placeholder="拍摄地点">
             <div class="row">
                 <div class="col-sm-6">
                     <label for="shareablePhoto">是否可分享</label>
@@ -179,6 +181,11 @@
         autoReplace:false,
         showUpload:true,//显示input里的上传，可以一次指上传
         showUploadedThumbs:true,//当input显示上传这条才有作用，上传完仍然显示缩略图。
+        // enableResumableUpload: true,
+        // resumableUploadOptions: {
+        //     testUrl: "/Admin/ChunkUploadFile/Upload",
+        //     chunkSize: 2048, // 2 MB chunk size
+        // },
         uploadExtraData: function(previewId, index){
             if(previewId){
                 if(photos.length>0)
@@ -220,10 +227,10 @@
             var shareable=$('#shareable option:selected').val();
             var isShow=$('#isShow:checked').val()?1:0;
             var albumId=$('#albumId').val();
-
+            var location=$('#location').val();
             var temp={'previewId':previewId,'uploadFileId':fileId,'title':'','permission':permission,
                     'downloadable':downloadable,'shareable':shareable,'isShow':isShow,
-                    'description':'','albumId':albumId,'takeStamp':'',
+                    'description':'','albumId':albumId,'takeStamp':'','location':'',
                     'size':file.size,'isCover':0,'password':''
                 };
             photos.push(temp);
@@ -278,6 +285,7 @@
             $('#title').val(photo.title);
             $('#permissionPhoto').val(photo.permission);
             $('#password').val(photo.password);
+            $('#location').val(photo.location);
             $('#shareablePhoto').val(photo.shareable);
             $('#downloadablePhoto').val(photo.downloadable);
             $('#isCover').prop("checked", photo.isCover);
@@ -291,6 +299,7 @@
             photos[i].title=$('#title').val();
             photos[i].permission=$('#permissionPhoto').val();
             photos[i].password=$('#password').val();
+            photos[i].location=$('#location').val();
             photos[i].shareable=$('#shareablePhoto').val();
             photos[i].downloadable=$('#downloadablePhoto').val();
             photos[i].isCover=$('#isCover').prop("checked")?1:0;

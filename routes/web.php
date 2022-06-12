@@ -57,6 +57,8 @@ Route::prefix('Admin')->group(function () {
     Route::post('Photo/Store',[PhotoController::class, 'Store']);
     Route::get('Photo/Index/{AlbumId}',[PhotoController::class, 'Index']);
 
+    Route::any('ChunkUploadFile/Upload',[ChunkUploadFileController::class, 'Upload']);
+
     Route::get('Account/Create', [AccountController::class, 'Create']);
 
     Route::get('AlbumOwner/Create', [AlbumOwnerController::class, 'Create']);

@@ -12,8 +12,8 @@ use App\Utility\PermissionDic;
 use App\Utility\Guid;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
-use App\Image\MediaFile;
-
+use App\Media\MediaFile;
+use App\Media\ImageHandler;
 class PhotoController extends Controller
 {
     /**
@@ -89,7 +89,7 @@ class PhotoController extends Controller
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
-        
+
         //get photo field
         $rule = [
             'title' => 'string|nullable|max:100',
@@ -99,6 +99,7 @@ class PhotoController extends Controller
             'isCover'=>'required|boolean',
             'password' => 'string|nullable|max:20',
             'takeStamp' => 'date|nullable',
+            'location'=>'string|nullable|max:20',
             'shareable' => 'required|integer|min:-1|max:1',
             'downloadable' => 'required|integer|min:-1|max:1',
             'description' => 'string|nullable|max:500'
@@ -114,35 +115,37 @@ class PhotoController extends Controller
 
             return response()->json( ['error'=>$errors]);
         }
+        //move upload file
         $uploadedFile->move($destinationPath,$fileName);
         $newFilePath=$destinationPath.$fileName;
         $mediaFile=new MediaFile($newFilePath);
-        $exifJson=$mediaFile->GetJsonExifInfo();
+        //get upoad file size
         $size=$mediaFile->getFileSize();
+        //get image size
         $imageSize=$mediaFile->getImageSize();
-        dd($imageSize);
-        //dd($size.'|||'. $request->input('size'));
-
-        
-        //implode($array)
-        //$current_encode = mb_detect_encoding(implode($aaaaa), array("ASCII","GB2312","GBK",'BIG5','UTF-8')); 
-        
-        //dd(json_last_error_msg());
-        
-        // checksum
-        // size
-        // exif
-        $validated = $validator->validated();
-        if($validated['title']===null)
+        $width=0;$height=0;
+        if($imageSize)
         {
-            $validated['title']=$originName;
+            $width=$imageSize[0];
+            $height=$imageSize[1];
         }
+        //get exif json
+        $exifJson=$mediaFile->GetJsonExifInfo($takeTime);
+        //get check sum
+        $checksum = sha1_file($newFilePath);
+        //generate compression
+        $imageHandle=new ImageHandler($newFilePath);
+        $imageHandle->compress();
+        dd('r');
+        $validated = $validator->validated();
+
         $rowNum = Photo::create([
             'title' => $validated['title'],
             'album_id' => $validated['albumId'],
             'permission' => $validated['permission'],
             'password' => $validated['password'],
-            'take_stamp'=> $validated['takeStamp'],
+            'take_stamp'=> $validated['takeStamp']==null?$takeTime:$validated['takeStamp'],
+            'location'=>$validated['location'],
             'shareable' => $validated['shareable'],
             'downloadable' => $validated['downloadable'],
             'is_show'=> $validated['isShow'],
@@ -151,7 +154,12 @@ class PhotoController extends Controller
             'file_name'=>$fileName,
             'file_ext'=>$fileNameExt,
             'file_path'=>$destinationPath,
-            'origin_name'=>$originName
+            'origin_name'=>$originName,
+            'width'=>$width,
+            'height'=>$height,
+            'size'=>$size,
+            'checksum'=>$checksum,
+            'exif'=>$exifJson
         ]);
         return response()->json(['success'=>1]);
     }
