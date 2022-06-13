@@ -255,22 +255,18 @@ return [
         ],
         ['header' => '相册设置'],
         [
-            'text' => '访问权限设置',
-            'url'  => 'Admin/Permission/Index',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
             'text' => '创建相册',
             'url'  => 'Admin/Album/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => '增加图片',
-            'url'  => 'Admin/Photo/Create',
+            'text' => '相册管理',
+            'url'  => 'Admin/Album/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
+        ['header' => '相册集设置'],
         [
-            'text' => '创建相册所有者',
+            'text' => '创建相册所有人',
             'url'  => 'Admin/AlbumOwner/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
@@ -279,11 +275,30 @@ return [
             'url'  => 'Admin/AlbumOwner/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
+        ['header' => '用户设置'],
         [
             'text' => '用户管理',
             'url'  => 'Admin/User/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
+        [
+            'text' => '用户组管理',
+            'url'  => 'Admin/UserGroup/Index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => '访问权限设置',
+            'url'  => 'Admin/Permission/Index',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        
+        [
+            'text' => '增加图片',
+            'url'  => 'Admin/Photo/Create',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        
+        
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

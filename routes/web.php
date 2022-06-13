@@ -10,6 +10,7 @@ use App\Http\Controllers\AlbumOwnerController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserGroupController;
 use App\Http\Controllers\TestController;
 use App\Models\AlbumOwner;
 use Illuminate\Support\Facades\File;
@@ -75,8 +76,12 @@ Route::prefix('Admin')->group(function () {
 
     Route::get('User/Index',[UserController::class, 'Index']);
     Route::post('User/GetList',[UserController::class, 'GetList']);
-
     Route::post('/User/GetUserSelect',[UserController::class,'GetUserSelect']);
+
+    Route::get('UserGroup/Index', [UserGroupController::class, 'Index']);
+    Route::post('UserGroup/Store', [UserGroupController::class, 'Store']);
+    Route::post('UserGroup/Destroy', [UserGroupController::class, 'Destroy']);
+    Route::post('UserGroup/Update/{id}', [UserGroupController::class, 'Update']);
 
     Route::get('/Test/Test1',[TestController::class,'Test1']);
 });

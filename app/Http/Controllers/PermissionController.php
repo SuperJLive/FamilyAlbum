@@ -103,7 +103,6 @@ class PermissionController extends Controller
     public function update(Request $request)
     {
         //
-        $dddd=$request->isUsable;
         $rule=[
             'permissionName' => 'required|string|max:100',
             'description' => 'string|nullable|max:500',
