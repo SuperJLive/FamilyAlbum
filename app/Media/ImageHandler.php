@@ -18,12 +18,23 @@ class ImageHandler implements MediaHandlerInterface
     {
 
         $imagick = new Imagick();
-        $realPath=realpath($this->sourceFilePath);
+        
         $imagick->readImage($this->sourceFilePath);
-
         $w = $imagick->getImageWidth();
-        dd($w);
         $h = $imagick->getImageHeight();
+        $newCQ=$imagick->getImageCompressionQuality() * 0.75;
+        $profiles = $imagick->getImageProfiles('icc', true);
+        if($newCQ==0){
+            $newCQ=75;
+        }
+        $imagick->setImageCompressionQuality($newCQ);
+        $imagick->stripImage();
+        if (!empty($profiles)) {
+            $imagick->profileImage('icc', $profiles['icc']);
+        }
 
+        $imagick->writeImage($destination);
+        $imagick->clear();
+        $imagick->destroy();
     }
 }
