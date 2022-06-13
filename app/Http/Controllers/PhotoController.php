@@ -27,10 +27,15 @@ class PhotoController extends Controller
         //$albumId=$request->
         $pd=new PermissionDic();
         $permissions=$pd->getPhotoPermissionSelect($albumId);
+        //query photo
+        $query=Photo::query()->where('album_id','=',$albumId)->orderby('created_at');
+        $photos=$query->get();
+        //get max upload size
         $uploadMaxFilesize=((float)str_replace('M','',ini_get('upload_max_filesize')))*1024;
         $postMaxSize=((float)str_replace('M','',ini_get('post_max_size')))*1024;
         $maxFileSize=$uploadMaxFilesize<=$postMaxSize?$uploadMaxFilesize:$postMaxSize;
         return view('Admin.Photo.Index',['permissions'=>$permissions,
+                                            'photos'=>$photos,
                                             'albumId'=>$albumId,
                                             'uploadMaxFilesize'=>$maxFileSize
                                         ]);
@@ -85,7 +90,7 @@ class PhotoController extends Controller
         $fileNameExt='.'.$uploadedFile->getClientOriginalExtension();
         $originName=$uploadedFile->getClientOriginalName();
         $fileName.=$fileNameExt;
-        $destinationPath = 'upload/'.$album->owner_id .'/'.$album->id.'/';
+        $destinationPath = '//upload/'.$album->owner_id .'/'.$album->id.'/';
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
@@ -136,7 +141,7 @@ class PhotoController extends Controller
         //generate compression
         $imageHandle=new ImageHandler($newFilePath);
         $imageHandle->compress();
-        dd('r');
+
         $validated = $validator->validated();
 
         $rowNum = Photo::create([
@@ -151,9 +156,7 @@ class PhotoController extends Controller
             'is_show'=> $validated['isShow'],
             'is_cover'=> $validated['isCover'],
             'description' => $validated['description'],
-            'file_name'=>$fileName,
-            'file_ext'=>$fileNameExt,
-            'file_path'=>$destinationPath,
+            'file_path'=>$destinationPath.$fileName,
             'origin_name'=>$originName,
             'width'=>$width,
             'height'=>$height,
@@ -161,7 +164,7 @@ class PhotoController extends Controller
             'checksum'=>$checksum,
             'exif'=>$exifJson
         ]);
-        return response()->json(['success'=>1]);
+        return response()->json(['success'=>$rowNum]);
     }
 
     /**

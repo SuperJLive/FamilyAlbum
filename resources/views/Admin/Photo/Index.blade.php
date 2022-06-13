@@ -74,19 +74,23 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    @if(isset($photos))
+                    @foreach($photos as $item)
                     <div class="col-sm-2">
                         <div class="card">
-                            <img class="card-img-top" src="/images/image-1.jpg" alt="Card image cap">
+                            <img class="card-img-top" src="{{$item->thumb_File_Path}}" alt="Card image cap">
                             <div class="card-body">
                                 <p class="card-text"></p>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-    <div id="zoomTemplate">
+    <div id="zoomTemplate" style="display: none;">
         <div class="form-group col-sm-12">
             <label for="title">标题</label>
             <input type="text" class="form-control form-control-sm" id="title" name="title" placeholder="相册标题">

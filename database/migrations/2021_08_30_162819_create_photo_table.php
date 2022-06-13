@@ -19,9 +19,7 @@ class CreatePhotoTable extends Migration
             $table->bigInteger('album_id');//->references('id')->on('albums')->onDelete('cascade');
             $table->integer('user_id')->default(0);//创建人
             $table->string('title', 100)->nullable();
-            $table->string('file_name',100);
-            $table->string('file_ext',10);
-            $table->string('file_path',100);
+            $table->string('file_path',150);
             $table->string('origin_name',100);
             //$table->string('thumb_path',100);
             $table->string('location',100)->nullable();
