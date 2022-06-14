@@ -15,7 +15,7 @@ class Photo extends Model
     'file_path','height','id','is_cover','is_show','location',
     'origin_name','password','permission','shareable','size','take_stamp','title','user_id','width'];
 
-    protected $appends = ['thumb_File_Path'];
+    protected $appends = ['thumb_file_path'];
     protected function thumbFilePath():Attribute
     {
         $pathinfo=pathinfo($this->file_path);

@@ -90,7 +90,7 @@ class PhotoController extends Controller
         $fileNameExt='.'.$uploadedFile->getClientOriginalExtension();
         $originName=$uploadedFile->getClientOriginalName();
         $fileName.=$fileNameExt;
-        $destinationPath = '//upload/'.$album->owner_id .'/'.$album->id.'/';
+        $destinationPath = '/upload/'.$album->owner_id .'/'.$album->id.'/';
         if(!File::isDirectory($destinationPath)){
             File::makeDirectory($destinationPath, 0777, true, true);
         }
