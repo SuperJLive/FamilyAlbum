@@ -6,6 +6,7 @@ use Imagick;
 use ImagickException;
 use ImagickPixel;
 use App\Media\MediaHandlerInterface;
+use App\Exceptions\MediaFileOperationException;
 
 class ImageHandler implements MediaHandlerInterface
 {
