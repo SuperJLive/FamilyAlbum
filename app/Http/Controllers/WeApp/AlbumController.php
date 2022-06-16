@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeApp;
 use App\Models\AlbumOwner;
 use App\Models\Album;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -48,11 +49,18 @@ class AlbumController extends Controller
      */
     public function show($ownerId)
     {
-        $query=Album::from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        $query=Album::query()->from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        ->leftJoin(DB::raw('(select * from
+         (
+             SELECT album_id,a.file_path,
+             row_number() OVER (PARTITION BY a.album_id ORDER BY a.is_cover DESC, a.created_at ASC) rowNum
+             FROM photo a
+         ) a where rowNum=1) as c'),'c.album_id','a.id')
         ->where('a.owner_id','=',$ownerId)
-        ->orderByDesc('a.min_take_stamp')->orderByDesc('a.id');
+        ->orderByDesc('a.id');
+        //$query->ddSql();
         $albums=$query->get();
-        //$query->dumpSql();
+        //dd($albums);
         return response()->json($albums);
     }
 

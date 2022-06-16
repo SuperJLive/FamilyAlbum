@@ -8,6 +8,7 @@ use App\BLL\AlbumOwnerBLL;
 use App\Models\Permission;
 use App\Utility\PermissionDic;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class AlbumController extends Controller
@@ -19,10 +20,23 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $query=Album::from('album as a')->join('album_owner as b','a.owner_id','b.id')
-        ->leftJoin('photo as c','c.album_id','a.id')
+        $query=Album::query()->from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        // ->from(DB::raw("select * from
+        // (
+        //     SELECT album_id,a.file_path,
+        //     row_number() OVER (PARTITION BY a.album_id ORDER BY a.is_cover DESC, a.created_at ASC) rowNum
+        //     FROM photo a
+        // ) a where rowNum=1"))
+        ->leftJoin(DB::raw('(select * from
+         (
+             SELECT album_id,a.file_path,
+             row_number() OVER (PARTITION BY a.album_id ORDER BY a.is_cover DESC, a.created_at ASC) rowNum
+             FROM photo a
+         ) a where rowNum=1) as c'),'c.album_id','a.id')
         ->orderByDesc('a.id');
+        //$query->ddSql();
         $albums=$query->get();
+        //dd($albums);
         return view("Admin.Album.Index",['albums'=>$albums]);
 
     }
