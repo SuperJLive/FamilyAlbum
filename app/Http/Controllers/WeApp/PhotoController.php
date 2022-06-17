@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\WeApp;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 
 class PhotoController extends Controller
@@ -12,9 +14,19 @@ class PhotoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($albumId)
     {
-        //
+
+        $album=Album::query()->find($albumId);
+        //query photo
+        $query=Photo::query()->where('album_id','=',$albumId)->orderby('id');
+        $photos=$query->get();
+        $result=[
+            'photos'=>$photos,
+            'album'=>$album
+        ];
+        //get max upload size
+        return response()->json($result);
     }
 
     /**

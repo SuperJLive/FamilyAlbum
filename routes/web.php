@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WeApp\UserController as WeUserController;
 use App\Http\Controllers\WeApp\AlbumOwnerController as WeAlbumOwnerController;
 use App\Http\Controllers\WeApp\AlbumController as WeAlbumController;
+use App\Http\Controllers\WeApp\PhotoController as WePhotoController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AlbumOwnerController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserGroupController;
 use App\Http\Controllers\TestController;
-use App\Models\AlbumOwner;
 use Illuminate\Support\Facades\File;
 //use phpDocumentor\Reflection\Types\Resource_;
 
@@ -47,6 +47,8 @@ Route::prefix('WeApp')->group(function () {
     Route::get('AlbumOwner/Index', [WeAlbumOwnerController::class, 'Index']);
 
     Route::get('Album/Show/{ownerId}', [WeAlbumController::class, 'Show']);
+
+    Route::get('Photo/Index/{albumId}', [WePhotoController::class, 'Index']);
 });
 Route::prefix('Admin')->group(function () {
     Route::get('Album/Create', [AlbumController::class, 'Create']);

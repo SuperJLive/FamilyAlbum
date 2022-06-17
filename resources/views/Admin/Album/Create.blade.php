@@ -84,20 +84,20 @@
                     <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label text-right">拍摄区间</label>
                         <div class="col-sm-2">
-                            <input type="text" name="minTakestamp"
-                                class="form-control @error('minTakestamp') is-invalid @enderror" id="minTakestamp"
+                            <input type="text" name="minTakeStamp"
+                                class="form-control @error('minTakeStamp') is-invalid @enderror" id="minTakeStamp"
                                 placeholder="最小拍摄时间">
-                            @error('minTakestamp')
-                            <span id="minTakestamp-error" class="error invalid-feedback">{{ $message }}</span>
+                            @error('minTakeStamp')
+                            <span id="minTakeStamp-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="col-sm-2">
-                            <input type="text" name="maxTakestamp"
-                                class="form-control @error('maxTakestamp') is-invalid @enderror" id="maxTakestamp"
+                            <input type="text" name="maxTakeStamp"
+                                class="form-control @error('maxTakeStamp') is-invalid @enderror" id="maxTakeStamp"
                                 placeholder="最大拍摄时间">
-                            @error('maxTakestamp')
-                            <span id="maxTakestamp-error" class="error invalid-feedback">{{ $message }}</span>
+                            @error('maxTakeStamp')
+                            <span id="maxTakeStamp-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

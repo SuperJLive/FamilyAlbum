@@ -26,7 +26,7 @@ class AlbumSeeder extends Seeder
                 'downloadable' => '0',
                 'shareable' => '0',
                 'user_id' => '1',
-                'password' => '00',
+                'password' => null,
                 'description' => '相册概述'
             ],
             [
@@ -39,7 +39,20 @@ class AlbumSeeder extends Seeder
                 'downloadable' => '0',
                 'shareable' => '0',
                 'user_id' => '1',
-                'password' => '00',
+                'password' => null,
+                'description' => '相册概述'
+            ],
+            [
+                'title' => '游玩',
+                'owner_id' => '2',
+                'permission' => '0',
+                'tags' => 'tag1,tag2',
+                'min_take_stamp' => '2019-08-19',
+                'max_take_stamp' => '2019-12-21',
+                'downloadable' => '0',
+                'shareable' => '0',
+                'user_id' => '1',
+                'password' => null,
                 'description' => '相册概述'
             ]
         ]);

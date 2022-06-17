@@ -16,7 +16,8 @@
                 @foreach($albums as $item)
                 <div class="col-sm-2">
                     <div class="card">
-                        <img class="card-img-top" src="{{$item->thumb_path}}" alt="Card image cap">
+                        <a href="{{'/Admin/Photo/Index/'.$item->id}}"><img class="card-img-top"
+                                src="{{$item->thumb_path}}" alt="Card image cap"></a>
                         <div class="card-body">
                             <p class="card-text">{{$item->title}}</p>
                         </div>

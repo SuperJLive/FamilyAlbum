@@ -21,12 +21,6 @@ class AlbumController extends Controller
     public function index()
     {
         $query=Album::query()->from('album as a')->join('album_owner as b','a.owner_id','b.id')
-        // ->from(DB::raw("select * from
-        // (
-        //     SELECT album_id,a.file_path,
-        //     row_number() OVER (PARTITION BY a.album_id ORDER BY a.is_cover DESC, a.created_at ASC) rowNum
-        //     FROM photo a
-        // ) a where rowNum=1"))
         ->leftJoin(DB::raw('(select * from
          (
              SELECT album_id,a.file_path,
@@ -38,9 +32,11 @@ class AlbumController extends Controller
         $albums=$query->get();
         //dd($albums);
         return view("Admin.Album.Index",['albums'=>$albums]);
+    }
+    public function getList(Request $request)
+    {
 
     }
-
     /**
      * Show the form for creating a new resource.
      *

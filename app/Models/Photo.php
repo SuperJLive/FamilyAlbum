@@ -18,10 +18,22 @@ class Photo extends Model
     protected $appends = ['thumb_path'];
     protected function thumbPath():Attribute
     {
-        $pathinfo=pathinfo($this->file_path);
+        $dirname='';
+        $filename='';
+        $extension='';
+        if($this->file_path){
+            $pathinfo=pathinfo($this->file_path);
+            $dirname=$pathinfo['dirname'];
+            $filename=$pathinfo['filename'];
+            $extension=$pathinfo['extension'];
+            $filePath=$dirname.'/'.$filename.'_thumb.'.$extension;
+        }
+        else{
+            $filePath='/images/weApp/nophoto2.png';
+        }
         //$newPath=$dirname[''];
         return new Attribute(
-            get: fn () => $pathinfo['dirname'].'/'.$pathinfo['filename'].'_thumb.'.$pathinfo['extension'],
+            get: fn () => $filePath,
         );
     }
 }

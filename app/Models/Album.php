@@ -13,7 +13,7 @@ class Album extends Model
     protected $fillable = ['title','owner_id','permission','password','tags','min_take_stamp','max_take_stamp',
     'shareable','downloadable','description'];
     protected $appends = ['thumb_path'];
-    
+
     protected function thumbPath():Attribute
     {
         $dirname='';
@@ -24,10 +24,14 @@ class Album extends Model
             $dirname=$pathinfo['dirname'];
             $filename=$pathinfo['filename'];
             $extension=$pathinfo['extension'];
+            $filePath=$dirname.'/'.$filename.'_thumb.'.$extension;
+        }
+        else{
+            $filePath='/images/weApp/nophoto2.png';
         }
         //$newPath=$dirname[''];
         return new Attribute(
-            get: fn () => $dirname.'/'.$filename.'_thumb.'.$extension,
+            get: fn () => $filePath,
         );
     }
 }
