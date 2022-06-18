@@ -66,6 +66,8 @@ Route::prefix('Admin')->group(function () {
 
     Route::get('AlbumOwner/Create', [AlbumOwnerController::class, 'Create']);
     Route::post('AlbumOwner/Store', [AlbumOwnerController::class, 'Store']);
+    Route::get('AlbumOwner/Edit/{id}', [AlbumOwnerController::class, 'Edit']);
+    Route::post('AlbumOwner/Update', [AlbumOwnerController::class, 'Update']);
     Route::get('AlbumOwner/Index', [AlbumOwnerController::class, 'Index']);
     Route::post('AlbumOwner/GetList', [AlbumOwnerController::class, 'GetList']);
 

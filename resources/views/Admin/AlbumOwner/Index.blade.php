@@ -22,12 +22,13 @@
                                 <div class="icheck-primary d-inline"><input type="checkbox" id="chkAll"><label
                                         for="chkAll"></label></div>
                             </th>
-                            <th>id</th>
+                            <th>序号</th>
                             <th>相册名称</th>
                             <th>相册所有人</th>
                             <th>访问权限</th>
-                            <th>创建日期</th>
-                            <th>更新日期</th>
+                            <th>可用/隐藏/下载/分享</th>
+                            <th>生日/年龄</th>
+                            <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,12 +37,13 @@
                     <tfoot>
                         <tr>
                             <th></th>
-                            <th>id</th>
-                            <th>openid</th>
-                            <th>Browser</th>
-                            <th>Platform(s)</th>
-                            <th>Engine version</th>
-                            <th>CSS grade</th>
+                            <th>序号</th>
+                            <th>相册名称</th>
+                            <th>相册所有人</th>
+                            <th>访问权限</th>
+                            <th>可用/隐藏/下载/分享</th>
+                            <th>生日/年龄</th>
+                            <th>操作</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -111,13 +113,49 @@
                         "data": "nick_name", "orderable": false, "visible": true
                     },
                     {
-                        "data": "permission", "orderable": false, "visible": true
+                        "data": "permisstion_text", "orderable": false, "visible": true
                     },
                     {
-                        "data": "created_at", "orderable": false, "visible": true
+                        "data": null, "orderable": false, "visible": true,"render": function (data, type, row) {
+                            var rowHtml;
+                            var chkId="chkId"+data;
+                            var isUsable=row.is_usable?'checked':'';
+                            var isVisible=row.is_visible?'checked':'';
+                            var downloadable=row.downloadable?'checked':'';
+                            var shareable=row.shareable?'checked':'';
+                            rowHtml = '<div class="icheck-primary d-inline">' +
+                                '<input type="checkbox" '+isUsable+'>' +
+                                '<label for="">' +'</label>' +'</div>' +
+                                '<div class="icheck-primary d-inline">' +
+                                '<input type="checkbox" '+isVisible+'>' +
+                                '<label for="">' +'</label>' +'</div>' +
+                                '<div class="icheck-primary d-inline">' +
+                                '<input type="checkbox" '+downloadable+'>' +
+                                '<label for="">' +'</label>' +'</div>' +
+                                '<div class="icheck-primary d-inline">' +
+                                '<input type="checkbox" '+shareable+'>' +
+                                '<label for="">' +'</label>' +'</div>' ;
+
+                            return rowHtml;
+                        }
                     },
                     {
-                        "data": "updated_at", "orderable": false, "visible": true
+                        "data": null, "orderable": false, "visible": true,"render": function (data, type, row) {
+                            var rowHtml;
+                            var chkId="chkId"+data;
+                            rowHtml = row.birthday+'/'+row.max_show_age
+
+                            return rowHtml;
+                        }
+                    },
+                    {
+                        "data": "id", "orderable": false, "visible": true,"render": function (data, type, row) {
+                            var rowHtml;
+                            var chkId="chkId"+data;
+                            rowHtml = '<a class="btn btn-primary btn-sm" href="/Admin/AlbumOwner/Edit/'+data+'">更新</a>'+
+                            '<a class="btn btn-primary btn-sm" href="/Admin/Album/Index/'+data+'">管理</a>'
+                            return rowHtml;
+                        }
                     }
                 ]
 

@@ -25,9 +25,9 @@ class AlbumOwnerController extends Controller
     public function getList(Request $request)
     {
         $draw=$request->input('draw');
-        $query=AlbumOwner::from('album_owner as a')->leftJoin('user as b','a.owner_id','=','b.id')->orderByDesc('a.id')
+        $query=AlbumOwner::from('album_owner as a')->leftJoin('user as b','a.owner_id','=','b.id')->orderBy('a.sorting_order')
         ->select('a.id','a.album_name','a.is_visible','a.is_usable',
-        'a.downloadable','a.shareable','b.nick_name','a.permission','a.created_at','a.updated_at');
+        'a.downloadable','a.shareable','b.nick_name','a.permission','a.birthday','a.max_show_age','a.created_at','a.updated_at');
         $albumOwners=$query->get();
         $data=[
             'draw'=>$draw,
@@ -123,7 +123,8 @@ class AlbumOwnerController extends Controller
      */
     public function edit(AlbumOwner $albumOwner)
     {
-        //
+        $entity=AlbumOwner::query()->find($albumOwner->id);
+        dd($entity);
     }
 
     /**
