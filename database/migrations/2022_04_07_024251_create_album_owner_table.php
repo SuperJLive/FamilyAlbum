@@ -28,7 +28,7 @@ class CreateAlbumOwnerTable extends Migration
             // $table->string('icon')->nullable()->default('');
             // $table->string('style')->nullable()->default('');
             // $table->string('cover')->nullable()->default('');
-            $table->string('extention')->nullable()->default('');
+            $table->string('extension')->nullable()->default('');
             $table->string('description',500)->nullable();
             $table->integer('sorting_order')->default(0);
             $table->timestamps();
