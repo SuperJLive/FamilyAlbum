@@ -8,6 +8,7 @@ use App\Http\Controllers\WeApp\PhotoController as WePhotoController;
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\AlbumsController;
+use App\Http\Controllers\AlbumsPermissionController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
@@ -71,7 +72,7 @@ Route::prefix('Admin')->group(function () {
     Route::get('Albums/Index', [AlbumsController::class, 'Index']);
     Route::post('Albums/GetList', [AlbumsController::class, 'GetList']);
 
-    Route::get('Permission/Index', [PermissionController::class, 'Index']);
+    Route::get('AlbumsPermission/ModalIndex/{albumsId}', [AlbumsPermissionController::class, 'ModalIndex']);
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
     Route::post('Permission/Destroy', [PermissionController::class, 'Destroy']);
     Route::post('Permission/Update/{id}', [PermissionController::class, 'Update']);

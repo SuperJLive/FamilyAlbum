@@ -266,12 +266,12 @@ return [
         ],
         ['header' => '相册集设置'],
         [
-            'text' => '创建相册所有人',
+            'text' => '创建相册集',
             'url'  => 'Admin/Albums/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => '相册所有人管理',
+            'text' => '相册集管理',
             'url'  => 'Admin/Albums/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
@@ -291,14 +291,14 @@ return [
             'url'  => 'Admin/Permission/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
-        
+
         [
             'text' => '增加图片',
             'url'  => 'Admin/Photo/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
-        
-        
+
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

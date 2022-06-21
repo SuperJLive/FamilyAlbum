@@ -18,7 +18,7 @@ class AlbumSeeder extends Seeder
         DB::table('album')->insert([
             [
                 'title' => '出生',
-                'owner_id' => '1',
+                'albums_id' => '1',
                 'permission' => '0',
                 'tags' => 'tag1,tag2',
                 'min_take_stamp' => '2019-05-19',
@@ -31,7 +31,7 @@ class AlbumSeeder extends Seeder
             ],
             [
                 'title' => '游戏',
-                'owner_id' => '1',
+                'albums_id' => '1',
                 'permission' => '0',
                 'tags' => 'tag1,tag2',
                 'min_take_stamp' => '2019-06-19',
@@ -44,7 +44,7 @@ class AlbumSeeder extends Seeder
             ],
             [
                 'title' => '游玩',
-                'owner_id' => '2',
+                'albums_id' => '2',
                 'permission' => '0',
                 'tags' => 'tag1,tag2',
                 'min_take_stamp' => '2019-08-19',

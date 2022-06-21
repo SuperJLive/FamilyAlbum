@@ -20,7 +20,7 @@
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册集名称</label>
                         <div class="col-sm-6">
-                            <input type="hidden" name="id" value="{{$albums->id}}">
+                            <input type="hidden" id="albumsId" name="id" value="{{$albums->id}}">
                             <input type="text" class="form-control @error('albumsName') is-invalid @enderror"
                                 id="albumsName" name="albumsName" placeholder="请填写标题" required
                                 data-msg-required="相册集名称必须填写"
@@ -50,7 +50,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="owner" class="col-sm-2 col-form-label text-right">相册权限</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <select id="permission" name="permission" class="form-control" style="width: 100%;">
                                 @foreach ($permissions as $item)
                                 <option value="{{$item['id']}}" {{(old('permission')===null?$albums->
@@ -61,6 +61,10 @@
                             @error('permission')
                             <span id="permission-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="permissionSetup" type="button" data-toggle="modal"
+                                data-target="#modal-permission" class="btn btn-info">设置</button>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -177,6 +181,25 @@
             </form>
         </div>
     </div>
+    <div class="modal fade" id="modal-permission">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">选择允许访问的用户组</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-content"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @stop
 
     @section('css')
@@ -196,9 +219,16 @@
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script type="text/javascript">
         $(function(){
+            $('#modal-permission').on('show.bs.modal', function () {
+                $.get("/Admin/AlbumsPermission/ModalIndex/"+$('#albumsId').val(),
+                function(data,status){
+                    console.log(data);
+                    $('#modal-content').html(data);
+                });
+            });
             $('#form-create').validate().resetForm();
             $('#form-create').removeData("validator");
-            $('#form-create1').validate({
+            $('#form-create').validate({
                 // rules:{
                 //     // title:{
                 //     //     required:true,
