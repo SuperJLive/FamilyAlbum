@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use App\Models\AlbumOwner;
 use App\Models\Permission;
 use Illuminate\Http\Request;
@@ -71,6 +72,7 @@ class AlbumOwnerController extends Controller
             'birthday'=>'date',
             'order'=>'required|integer|min:0|max:9999',
             'description' => 'string|nullable|max:500',
+            'extension'=>'string|nullable|max:500'
         ];
         $message=[
             //'albumName.required'=>'相册名称必须填写！'
@@ -95,6 +97,7 @@ class AlbumOwnerController extends Controller
                 'downloadable'=> $validated['downloadable'],
                 'birthday'=> $validated['birthday'],
                 'max_show_age'=> $validated['maxShowAge'],
+                'extension'=> $validated['extension'],
                 'sorting_order' => $validated['order'],
                 'description' => $validated['description'],
             ]
@@ -121,10 +124,14 @@ class AlbumOwnerController extends Controller
      * @param  \App\Models\AlbumOwner  $albumOwner
      * @return \Illuminate\Http\Response
      */
-    public function edit(AlbumOwner $albumOwner)
+    public function edit($id)
     {
-        $entity=AlbumOwner::query()->find($albumOwner->id);
-        dd($entity);
+        $entity=AlbumOwner::query()->find($id);
+        //dd(old('albumName'));
+        $pd=new PermissionDic();
+        $permissions=$pd->permissionOwnerSelect();
+        return view("Admin.AlbumOwner.Edit",['albumOwner'=>$entity,
+                                              'permissions'=>$permissions]);
     }
 
     /**
@@ -134,9 +141,58 @@ class AlbumOwnerController extends Controller
      * @param  \App\Models\AlbumOwner  $albumOwner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AlbumOwner $albumOwner)
+    public function update(Request $request)
     {
-        //
+        $rule=[
+            'albumName' => 'required|string|max:100',
+            'albumOwner'=> 'integer',
+            'permission'=>'required|integer',
+            'password'=>'string|nullable|max:20',
+            'isVisible'=>'required|Boolean',
+            'isUsable'=>'required|Boolean',
+            'shareable'=>'required|Boolean',
+            'downloadable'=>'required|Boolean',
+            'maxShowAge'=>'required|integer|min:0|max:150',
+            'birthday'=>'date',
+            'order'=>'required|integer|min:0|max:9999',
+            'description' => 'string|nullable|max:500',
+            'extension'=>'string|nullable|max:500'
+        ];
+        $message=[
+            //'albumName.required'=>'相册名称必须填写！'
+        ];
+        $validator = Validator::make($request->all(), $rule,$message);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                        ->withInput();
+        }
+        // 获取通过验证的数据...
+        $validated = $validator->validated();
+        $id=$request->input('id');
+        $albumOwner=AlbumOwner::find($id);
+        if($albumOwner!==null)
+        {
+            $albumOwner->album_name = $validated['albumName'];
+            $albumOwner->owner_id = $validated['albumOwner'];
+            $albumOwner->permission=$validated['permission'];
+            $albumOwner->password = $validated['password'];
+            $albumOwner->is_visible= $validated['isVisible'];
+            $albumOwner->is_usable= $validated['isUsable'];
+            $albumOwner->shareable= $validated['shareable'];
+            $albumOwner->downloadable= $validated['downloadable'];
+            $albumOwner->birthday= $validated['birthday'];
+            $albumOwner->max_show_age= $validated['maxShowAge'];
+            $albumOwner->extension= $validated['extension'];
+            $albumOwner->sorting_order = $validated['order'];
+            $albumOwner->description = $validated['description'];
+            $albumOwner->save();
+        }
+        else{
+
+        }
+
+        //echo $request['permissionName'];
+        return redirect()->action([$this::class,'Index']);
     }
 
     /**

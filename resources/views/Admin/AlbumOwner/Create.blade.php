@@ -73,18 +73,18 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label text-right">其它选项</label>
                         <div class="col-sm-6 icheck-center">
-                            <input type="hidden" name="isVisible" value="0">
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="isVisible" name="isVisible" value="1"
-                                    {{(old('isVisible')==null || old('isVisible')==true)?'checked':''}}>
-                                <label for="isVisible" class="@error('isVisible') invalid-icheck @enderror">是否可见
-                                </label>
-                            </div>
                             <input type="hidden" name="isUsable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="isUsable" name="isUsable" value="1" {{(old('isUsable')==null
                                     || old('isUsable')==true)?'checked':''}}>
                                 <label for="isUsable" class="@error('isUsable') invalid-icheck @enderror">是否可用
+                                </label>
+                            </div>
+                            <input type="hidden" name="isVisible" value="0">
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="isVisible" name="isVisible" value="1"
+                                    {{(old('isVisible')==null || old('isVisible')==true)?'checked':''}}>
+                                <label for="isVisible" class="@error('isVisible') invalid-icheck @enderror">是否可见
                                 </label>
                             </div>
                             <input type="hidden" name="shareable" value="0">
@@ -137,6 +137,17 @@
                                 value="{{old('order')==null?0:old('order')}}">
                             @error('order')
                             <span id="order-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="extension" class="col-sm-2 col-form-label text-right">扩展设置</label>
+                        <div class="col-sm-6">
+                            <textarea id="extension" name="extension"
+                                class="form-control @error('extension') is-invalid @enderror" rows="3"
+                                placeholder="扩展设置">{{old('extension')===null?'{"icon":"","style":"","cover":""}':old('extension')}}</textarea>
+                            @error('extension')
+                            <span id="extension-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>

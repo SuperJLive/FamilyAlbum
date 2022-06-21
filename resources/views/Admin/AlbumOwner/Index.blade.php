@@ -26,7 +26,7 @@
                             <th>相册名称</th>
                             <th>相册所有人</th>
                             <th>访问权限</th>
-                            <th>可用/隐藏/下载/分享</th>
+                            <th>可用/隐藏/分享/下载</th>
                             <th>生日/年龄</th>
                             <th>操作</th>
                         </tr>
@@ -41,7 +41,7 @@
                             <th>相册名称</th>
                             <th>相册所有人</th>
                             <th>访问权限</th>
-                            <th>可用/隐藏/下载/分享</th>
+                            <th>可用/隐藏/分享/下载</th>
                             <th>生日/年龄</th>
                             <th>操作</th>
                         </tr>
@@ -130,11 +130,11 @@
                                 '<input type="checkbox" '+isVisible+'>' +
                                 '<label for="">' +'</label>' +'</div>' +
                                 '<div class="icheck-primary d-inline">' +
-                                '<input type="checkbox" '+downloadable+'>' +
+                                '<input type="checkbox" '+shareable+'>' +
                                 '<label for="">' +'</label>' +'</div>' +
                                 '<div class="icheck-primary d-inline">' +
-                                '<input type="checkbox" '+shareable+'>' +
-                                '<label for="">' +'</label>' +'</div>' ;
+                                '<input type="checkbox" '+downloadable+'>' +
+                                '<label for="">' +'</label>' +'</div>';
 
                             return rowHtml;
                         }

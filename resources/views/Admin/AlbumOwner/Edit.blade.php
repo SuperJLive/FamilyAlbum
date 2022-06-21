@@ -2,7 +2,7 @@
 @section('title', '创建相册用户')
 
 @section('content_header')
-<h1>创建相册所有者</h1>
+<h1>修改相册集</h1>
 @stop
 
 @section('content')
@@ -14,15 +14,17 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="form-create" method="post" action="/Admin/AlbumOwner/Store">
+            <form class="form-horizontal" id="form-create" method="post" action="/Admin/AlbumOwner/Update">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
                         <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
                         <div class="col-sm-6">
+                            <input type="hidden" name="id" value="{{$albumOwner->id}}">
                             <input type="text" class="form-control @error('albumName') is-invalid @enderror"
                                 id="albumName" name="albumName" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写" value="{{old('albumName')}}">
+                                data-msg-required="相册名称必须填写"
+                                value="{{old('albumName')===null?$albumOwner->album_name:old('albumName')}}">
                             @error('albumName')
                             <span id="albumName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -51,7 +53,8 @@
                         <div class="col-sm-6">
                             <select id="permission" name="permission" class="form-control" style="width: 100%;">
                                 @foreach ($permissions as $item)
-                                <option value="{{$item['id']}}" {{old('permission')==$item['id'] ? 'selected' : '' }}>
+                                <option value="{{$item['id']}}" {{(old('permission')===null?$albumOwner->
+                                    permission:old('permission'))==$item['id'] ? 'selected' : '' }}>
                                     {{$item['text']}}</option>
                                 @endforeach
                             </select>
@@ -64,7 +67,8 @@
                         <label for="password" class="col-sm-2 col-form-label text-right">相册密码</label>
                         <div class="col-sm-3">
                             <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                id="password" name="password" placeholder="请填写密码" value="{{old('password')}}">
+                                id="password" name="password" placeholder="请填写密码"
+                                value="{{old('password')===null?$albumOwner->password:old('password')===null}}">
                             @error('password')
                             <span id="password-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -73,31 +77,31 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label text-right">其它选项</label>
                         <div class="col-sm-6 icheck-center">
+                            <input type="hidden" name="isUsable" value="0">
+                            <div class="icheck-primary d-inline">
+                                <input type="checkbox" id="isUsable" name="isUsable" value="1"
+                                    {{old('isUsable')===null?($albumOwner->is_usable?'checked':''):(old('isUsable')?'checked':'')}}>
+                                <label for="isUsable" class="@error('isUsable') invalid-icheck @enderror">是否可用
+                                </label>
+                            </div>
                             <input type="hidden" name="isVisible" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="isVisible" name="isVisible" value="1"
-                                    {{(old('isVisible')==null || old('isVisible')==true)?'checked':''}}>
+                                    {{old('isVisible')===null?($albumOwner->is_visible?'checked':''):(old('isVisible')?'checked':'')}}>
                                 <label for="isVisible" class="@error('isVisible') invalid-icheck @enderror">是否可见
-                                </label>
-                            </div>
-                            <input type="hidden" name="isUsable" value="0">
-                            <div class="icheck-primary d-inline">
-                                <input type="checkbox" id="isUsable" name="isUsable" value="1" {{(old('isUsable')==null
-                                    || old('isUsable')==true)?'checked':''}}>
-                                <label for="isUsable" class="@error('isUsable') invalid-icheck @enderror">是否可用
                                 </label>
                             </div>
                             <input type="hidden" name="shareable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="shareable" name="shareable" value="1"
-                                    {{old('shareable')==true?'checked':''}}>
+                                    {{old('shareable')===null?($albumOwner->shareable?'checked':''):(old('shareable')?'checked':'')}}>
                                 <label for="shareable" class="@error('shareable') invalid-icheck @enderror">可分享
                                 </label>
                             </div>
                             <input type="hidden" name="downloadable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="downloadable" name="downloadable" value="1"
-                                    {{old('downloadable')==true?'checked':''}}>
+                                    {{old('downloadable')===null?($albumOwner->downloadable?'checked':''):(old('downloadable')?'checked':'')}}>
                                 <label for="downloadable" class="@error('downloadable') invalid-icheck @enderror">可下载
                                 </label>
                             </div>
@@ -108,7 +112,7 @@
                         <div class="col-sm-3">
                             <input type="text" class="form-control @error('maxShowAge') is-invalid @enderror"
                                 id="maxShowAge" name="maxShowAge" placeholder="请填写最大显示年龄"
-                                value="{{old('maxShowAge')==null?0:old('maxShowAge')}}">
+                                value="{{old('maxShowAge')==null?$albumOwner->max_show_age:old('maxShowAge')}}">
                             @error('maxShowAge')
                             <span id="maxShowAge-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -118,7 +122,8 @@
                             <div class="input-group date" id="divBirthday" data-target-input="nearest">
                                 <input type="text"
                                     class="form-control datetimepicker-input @error('birthday') is-invalid @enderror"
-                                    id="birthday" name="birthday" placeholder="请填写生日" value="{{old('birthday')}}"
+                                    id="birthday" name="birthday" placeholder="请填写生日"
+                                    value="{{old('birthday')===null?$albumOwner->birthday:old('birthday')}}"
                                     data-target="#divBirthday">
                                 <div class="input-group-append" data-target="#divBirthday" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -134,9 +139,20 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control @error('order') is-invalid @enderror" id="order"
                                 name="order" placeholder="请填写排序数字" required data-msg-required="排序必须填写"
-                                value="{{old('order')==null?0:old('order')}}">
+                                value="{{old('order')==null?$albumOwner->sorting_order:old('order')}}">
                             @error('order')
                             <span id="order-error" class="error invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="extension" class="col-sm-2 col-form-label text-right">扩展设置</label>
+                        <div class="col-sm-6">
+                            <textarea id="extension" name="extension"
+                                class="form-control @error('extension') is-invalid @enderror" rows="3"
+                                placeholder="扩展设置">{{old('extension')===null?$albumOwner->extinesion:old('extension')}}</textarea>
+                            @error('extension')
+                            <span id="extension-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -145,7 +161,7 @@
                         <div class="col-sm-6">
                             <textarea id="description" name="description"
                                 class="form-control @error('description') is-invalid @enderror" rows="3"
-                                placeholder="输入简介">{{old('description')}}</textarea>
+                                placeholder="输入简介">{{old('description')===null?$albumOwner->description:old('description')}}</textarea>
                             @error('description')
                             <span id="description-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
