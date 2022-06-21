@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Utility\PermissionDic;
 
-class AlbumOwner extends Model
+class Albums extends Model
 {
     use HasFactory;
-    protected $table = 'album_owner';
-    protected $fillable = ['album_name','owner_id','permission','password','is_visible','is_usable','downloadable',
+    protected $table = 'albums';
+    protected $fillable = ['albums_name','owner_id','permission','password','is_visible','is_usable','downloadable',
     'shareable','birthday','max_show_age','sorting_order','description'];
 
 
-    protected $appends = ['permisstion_text'];
+    protected $appends = ['permission_text'];
     protected $casts = [
         'birthday' => 'datetime:Y-m-d',
     ];
-    protected function permisstionText():Attribute
+    protected function permissionText():Attribute
     {
         $permissionDic=new permissionDic();
         $permissions=$permissionDic->permissionCollect();

@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class AlbumOwnerSeeder extends Seeder
+class AlbumsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,10 +18,10 @@ class AlbumOwnerSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('album_owner')->insert(
+        DB::table('albums')->insert(
             [
                 [
-                    'album_name' => '宝宝相册',
+                    'albums_name' => '宝宝相册',
                     'owner_id'=>0,
                     'permission' => 1,
                     'is_usable' => true,
@@ -37,7 +37,7 @@ class AlbumOwnerSeeder extends Seeder
                     'updated_at'=>date("Y-m-d H:i:s")
                 ],
                 [
-                    'album_name' => '宝妈相册',
+                    'albums_name' => '宝妈相册',
                     'owner_id'=>0,
                     'permission' => 2,
                     'is_usable' => true,
@@ -53,7 +53,7 @@ class AlbumOwnerSeeder extends Seeder
                     'updated_at'=>date("Y-m-d H:i:s")
                 ],
                 [
-                    'album_name' => '宝爸相册',
+                    'albums_name' => '宝爸相册',
                     'owner_id'=>0,
                     'permission' => 1,
                     'is_usable' => true,

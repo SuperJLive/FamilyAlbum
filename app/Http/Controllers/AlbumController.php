@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
-use App\Models\AlbumOwner;
-use App\BLL\AlbumOwnerBLL;
+use App\Models\Albums;
+use App\BLL\AlbumsBLL;
 use App\Models\Permission;
 use App\Utility\PermissionDic;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +20,7 @@ class AlbumController extends Controller
      */
     public function index()
     {
-        $query=Album::query()->from('album as a')->join('album_owner as b','a.owner_id','b.id')
+        $query=Album::query()->from('album as a')->join('albums as b','a.owner_id','b.id')
         ->leftJoin(DB::raw('(select * from
          (
              SELECT album_id,a.file_path,
@@ -48,7 +48,7 @@ class AlbumController extends Controller
         $permissions = $pd->permissionAlbumSelect();
         $shares=$pd->shareableCollect();
         $downloads=$pd->downloadableCollect();
-        $albumOwners = AlbumOwnerBLL::getSelect();
+        $albumOwners = AlbumsBLL::getSelect();
         return view("Admin.Album.Create", [
             'permissions' => $permissions,
             'albumOwners' => $albumOwners,
@@ -67,7 +67,7 @@ class AlbumController extends Controller
     {
         $rule = [
             'title' => 'required|string|max:100',
-            'albumOwner' => 'required|integer|min:1',
+            'albums' => 'required|integer|min:1',
             'permission' => 'required|integer',
             'password' => 'string|nullable|max:20',
             'tags' => 'string|nullable',
@@ -89,7 +89,7 @@ class AlbumController extends Controller
         $rowNum = Album::create(
             [
                 'title' => $validated['title'],
-                'owner_id' => $validated['albumOwner'],
+                'albums_id' => $validated['albums'],
                 'permission' => $validated['permission'],
                 'password' => $validated['password'],
                 'tags' => $validated['tags'],

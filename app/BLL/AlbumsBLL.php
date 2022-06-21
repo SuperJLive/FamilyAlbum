@@ -1,12 +1,12 @@
 <?php
 namespace App\BLL;
-use App\Models\AlbumOwner;
+use App\Models\Albums;
 
-class AlbumOwnerBLL
+class AlbumsBLL
 {
     public static function getSelect()
     {
-        $query=AlbumOwner::where('is_usable','=','1');
+        $query=Albums::where('is_usable','=','1');
         $owners=$query->get();
         //$users=User::where('nick_name','like','%uh%');
         //$ownerSelect=array();

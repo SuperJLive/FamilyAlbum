@@ -267,12 +267,12 @@ return [
         ['header' => '相册集设置'],
         [
             'text' => '创建相册所有人',
-            'url'  => 'Admin/AlbumOwner/Create',
+            'url'  => 'Admin/Albums/Create',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => '相册所有人管理',
-            'url'  => 'Admin/AlbumOwner/Index',
+            'url'  => 'Admin/Albums/Index',
             'icon' => 'fas fa-fw fa-user',
         ],
         ['header' => '用户设置'],

@@ -14,35 +14,35 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="form-create" method="post" action="/Admin/AlbumOwner/Store">
+            <form class="form-horizontal" id="form-create" method="post" action="/Admin/Albums/Store">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
+                        <label for="title" class="col-sm-2 col-form-label text-right">相册集名称</label>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control @error('albumName') is-invalid @enderror"
-                                id="albumName" name="albumName" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写" value="{{old('albumName')}}">
-                            @error('albumName')
-                            <span id="albumName-error" class="error invalid-feedback">{{ $message }}</span>
+                            <input type="text" class="form-control @error('albumsName') is-invalid @enderror"
+                                id="albumsName" name="albumsName" placeholder="请填写标题" required
+                                data-msg-required="相册集名称必须填写" value="{{old('albumsName')}}">
+                            @error('albumsName')
+                            <span id="albumsName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="albumOwner" class="col-sm-2 col-form-label text-right">关联用户</label>
+                        <label for="owner" class="col-sm-2 col-form-label text-right">关联用户</label>
                         <div class="col-sm-6">
-                            <input type="hidden" id='albumOwnerText' name='albumOwnerText'
-                                value="{{old('albumOwnerText')==null?'无':old('albumOwnerText')}}">
-                            <select id="albumOwner" name="albumOwner"
-                                class="form-control @error('albumOwner') is-invalid @enderror" style="width: 100%;">
-                                @if(old('albumOwner')!==null)
-                                <option value="{{old('albumOwner')}}" selected>{{old('albumOwnerText')}}</option>
+                            <input type="hidden" id='ownerText' name='ownerText'
+                                value="{{old('ownerText')==null?'无':old('ownerText')}}">
+                            <select id="owner" name="owner" class="form-control @error('owner') is-invalid @enderror"
+                                style="width: 100%;">
+                                @if(old('owner')!==null)
+                                <option value="{{old('owner')}}" selected>{{old('ownerText')}}</option>
                                 @else
                                 <option value="0" selected>无</option>
                                 @endif
                             </select>
-                            @error('albumOwner')
-                            <span id="albumOwner-error" class="error invalid-feedback">{{ $message }}</span>
+                            @error('owner')
+                            <span id="albums-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -235,12 +235,12 @@
             minimumResultsForSearch: -1
         });
 
-        $('#albumOwner').on('select2:select', function (e) {
+        $('#albums').on('select2:select', function (e) {
             var data = e.params.data;
-            $('#albumOwnerText').val(data.text);
+            $('#albumsText').val(data.text);
 
         });
-        $('#albumOwner').select2({
+        $('#albums').select2({
             theme: 'bootstrap4',
             language:'zh-CN',
             minimumInputLength :2,

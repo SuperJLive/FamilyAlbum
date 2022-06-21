@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
-use App\Models\AlbumOwner;
+use App\Models\Albums;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +11,7 @@ use App\Utility\PermissionDic;
 use Illuminate\Notifications\Action;
 use Illuminate\Support\Facades\DB;
 
-class AlbumOwnerController extends Controller
+class AlbumsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,18 +21,18 @@ class AlbumOwnerController extends Controller
     public function index()
     {
         //
-        return view('Admin.AlbumOwner.Index');
+        return view('Admin.Albums.Index');
     }
     public function getList(Request $request)
     {
         $draw=$request->input('draw');
-        $query=AlbumOwner::from('album_owner as a')->leftJoin('user as b','a.owner_id','=','b.id')->orderBy('a.sorting_order')
-        ->select('a.id','a.album_name','a.is_visible','a.is_usable',
+        $query=Albums::from('albums as a')->leftJoin('user as b','a.owner_id','=','b.id')->orderBy('a.sorting_order')
+        ->select('a.id','a.albums_name','a.is_visible','a.is_usable',
         'a.downloadable','a.shareable','b.nick_name','a.permission','a.birthday','a.max_show_age','a.created_at','a.updated_at');
-        $albumOwners=$query->get();
+        $albums=$query->get();
         $data=[
             'draw'=>$draw,
-            'data'=>$albumOwners,
+            'data'=>$albums,
             'recordsTotal'=>$query->count(),
             'recordsFiltered'=>$query->count()
         ];
@@ -48,7 +48,7 @@ class AlbumOwnerController extends Controller
         //
         $pd=new PermissionDic();
         $permissions=$pd->permissionOwnerSelect();
-        return view("Admin.AlbumOwner.Create",['permissions'=>$permissions]);
+        return view("Admin.Albums.Create",['permissions'=>$permissions]);
     }
     /**
      * Store a newly created resource in storage.
@@ -60,8 +60,8 @@ class AlbumOwnerController extends Controller
     {
         //$value = $request->get('approved', 0); // 注意第二个参数 0 为默认值
         $rule=[
-            'albumName' => 'required|string|max:100',
-            'albumOwner'=> 'integer',
+            'albumsName' => 'required|string|max:100',
+            'owner'=> 'integer',
             'permission'=>'required|integer',
             'password'=>'string|nullable|max:20',
             'isVisible'=>'required|Boolean',
@@ -85,10 +85,10 @@ class AlbumOwnerController extends Controller
 
         // 获取通过验证的数据...
         $validated = $validator->validated();
-        $rowNum = AlbumOwner::create(
+        $rowNum = Albums::create(
             [
-                'album_name' => $validated['albumName'],
-                'owner_id' => $validated['albumOwner'],
+                'albums_name' => $validated['albumsName'],
+                'owner_id' => $validated['owner'],
                 'permission'=>$validated['permission'],
                 'password' => $validated['password'],
                 'is_visible'=> $validated['isVisible'],
@@ -104,16 +104,16 @@ class AlbumOwnerController extends Controller
         );
         //echo $request['permissionName'];
         return redirect()->action([$this::class,'Index']);
-        //return redirect()->action([AlbumOwnerController::class,'Index']);
+        //return redirect()->action([AlbumsController::class,'Index']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AlbumOwner  $albumOwner
+     * @param  \App\Models\Albums  $albums
      * @return \Illuminate\Http\Response
      */
-    public function show(AlbumOwner $albumOwner)
+    public function show(Albums $albums)
     {
         //
     }
@@ -121,16 +121,16 @@ class AlbumOwnerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AlbumOwner  $albumOwner
+     * @param  \App\Models\Albums  $albums
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $entity=AlbumOwner::query()->find($id);
+        $entity=Albums::query()->find($id);
         //dd(old('albumName'));
         $pd=new PermissionDic();
         $permissions=$pd->permissionOwnerSelect();
-        return view("Admin.AlbumOwner.Edit",['albumOwner'=>$entity,
+        return view("Admin.Albums.Edit",['albums'=>$entity,
                                               'permissions'=>$permissions]);
     }
 
@@ -138,14 +138,14 @@ class AlbumOwnerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AlbumOwner  $albumOwner
+     * @param  \App\Models\Albums  $albums
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
         $rule=[
-            'albumName' => 'required|string|max:100',
-            'albumOwner'=> 'integer',
+            'albumsName' => 'required|string|max:100',
+            'owner'=> 'integer',
             'permission'=>'required|integer',
             'password'=>'string|nullable|max:20',
             'isVisible'=>'required|Boolean',
@@ -169,23 +169,23 @@ class AlbumOwnerController extends Controller
         // 获取通过验证的数据...
         $validated = $validator->validated();
         $id=$request->input('id');
-        $albumOwner=AlbumOwner::find($id);
-        if($albumOwner!==null)
+        $albums=Albums::find($id);
+        if($albums!==null)
         {
-            $albumOwner->album_name = $validated['albumName'];
-            $albumOwner->owner_id = $validated['albumOwner'];
-            $albumOwner->permission=$validated['permission'];
-            $albumOwner->password = $validated['password'];
-            $albumOwner->is_visible= $validated['isVisible'];
-            $albumOwner->is_usable= $validated['isUsable'];
-            $albumOwner->shareable= $validated['shareable'];
-            $albumOwner->downloadable= $validated['downloadable'];
-            $albumOwner->birthday= $validated['birthday'];
-            $albumOwner->max_show_age= $validated['maxShowAge'];
-            $albumOwner->extension= $validated['extension'];
-            $albumOwner->sorting_order = $validated['order'];
-            $albumOwner->description = $validated['description'];
-            $albumOwner->save();
+            $albums->albums_name = $validated['albumsName'];
+            $albums->owner_id = $validated['owner'];
+            $albums->permission=$validated['permission'];
+            $albums->password = $validated['password'];
+            $albums->is_visible= $validated['isVisible'];
+            $albums->is_usable= $validated['isUsable'];
+            $albums->shareable= $validated['shareable'];
+            $albums->downloadable= $validated['downloadable'];
+            $albums->birthday= $validated['birthday'];
+            $albums->max_show_age= $validated['maxShowAge'];
+            $albums->extension= $validated['extension'];
+            $albums->sorting_order = $validated['order'];
+            $albums->description = $validated['description'];
+            $albums->save();
         }
         else{
 
@@ -198,10 +198,10 @@ class AlbumOwnerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AlbumOwner  $albumOwner
+     * @param  \App\Models\Albums  $albums
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AlbumOwner $albumOwner)
+    public function destroy(Albums $albums)
     {
         //
     }

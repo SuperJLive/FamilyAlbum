@@ -30,7 +30,7 @@ class CreateAlbumTable extends Migration
             $table->bigIncrements('id');
             $table->string('title', 128)->default('');//标题
             //$table->bigInteger('cover_id')->default(0);//封面图片 放到图片里
-            $table->bigInteger('owner_id')->default(0);//所有者
+            $table->bigInteger('albums_id')->default(0);//所属相册集
             //$table->bigInteger('related_album_id')->default(null);//关联相册 改为多对多
             $table->Integer('permission');//权限
             $table->string('tags')->nullable();

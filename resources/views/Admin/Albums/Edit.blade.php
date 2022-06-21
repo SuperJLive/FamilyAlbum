@@ -14,37 +14,37 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form class="form-horizontal" id="form-create" method="post" action="/Admin/AlbumOwner/Update">
+            <form class="form-horizontal" id="form-create" method="post" action="/Admin/Albums/Update">
                 @csrf
                 <div class="card-body">
                     <div class="form-group row">
-                        <label for="title" class="col-sm-2 col-form-label text-right">相册名称</label>
+                        <label for="title" class="col-sm-2 col-form-label text-right">相册集名称</label>
                         <div class="col-sm-6">
-                            <input type="hidden" name="id" value="{{$albumOwner->id}}">
-                            <input type="text" class="form-control @error('albumName') is-invalid @enderror"
-                                id="albumName" name="albumName" placeholder="请填写标题" required
-                                data-msg-required="相册名称必须填写"
-                                value="{{old('albumName')===null?$albumOwner->album_name:old('albumName')}}">
-                            @error('albumName')
-                            <span id="albumName-error" class="error invalid-feedback">{{ $message }}</span>
+                            <input type="hidden" name="id" value="{{$albums->id}}">
+                            <input type="text" class="form-control @error('albumsName') is-invalid @enderror"
+                                id="albumsName" name="albumsName" placeholder="请填写标题" required
+                                data-msg-required="相册集名称必须填写"
+                                value="{{old('albumsName')===null?$albums->album_name:old('albumsName')}}">
+                            @error('albumsName')
+                            <span id="albumsName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="albumOwner" class="col-sm-2 col-form-label text-right">关联用户</label>
+                        <label for="owner" class="col-sm-2 col-form-label text-right">关联用户</label>
                         <div class="col-sm-6">
-                            <input type="hidden" id='albumOwnerText' name='albumOwnerText'
-                                value="{{old('albumOwnerText')==null?'无':old('albumOwnerText')}}">
-                            <select id="albumOwner" name="albumOwner"
-                                class="form-control @error('albumOwner') is-invalid @enderror" style="width: 100%;">
-                                @if(old('albumOwner')!==null)
-                                <option value="{{old('albumOwner')}}" selected>{{old('albumOwnerText')}}</option>
+                            <input type="hidden" id='ownerText' name='ownerText'
+                                value="{{old('albumsText')==null?'无':old('albumsText')}}">
+                            <select id="owner" name="owner" class="form-control @error('owner') is-invalid @enderror"
+                                style="width: 100%;">
+                                @if(old('owner')!==null)
+                                <option value="{{old('owner')}}" selected>{{old('ownerText')}}</option>
                                 @else
                                 <option value="0" selected>无</option>
                                 @endif
                             </select>
-                            @error('albumOwner')
-                            <span id="albumOwner-error" class="error invalid-feedback">{{ $message }}</span>
+                            @error('owner')
+                            <span id="owner-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <div class="col-sm-6">
                             <select id="permission" name="permission" class="form-control" style="width: 100%;">
                                 @foreach ($permissions as $item)
-                                <option value="{{$item['id']}}" {{(old('permission')===null?$albumOwner->
+                                <option value="{{$item['id']}}" {{(old('permission')===null?$albums->
                                     permission:old('permission'))==$item['id'] ? 'selected' : '' }}>
                                     {{$item['text']}}</option>
                                 @endforeach
@@ -68,7 +68,7 @@
                         <div class="col-sm-3">
                             <input type="password" class="form-control @error('password') is-invalid @enderror"
                                 id="password" name="password" placeholder="请填写密码"
-                                value="{{old('password')===null?$albumOwner->password:old('password')===null}}">
+                                value="{{old('password')===null?$albums->password:old('password')===null}}">
                             @error('password')
                             <span id="password-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -80,28 +80,28 @@
                             <input type="hidden" name="isUsable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="isUsable" name="isUsable" value="1"
-                                    {{old('isUsable')===null?($albumOwner->is_usable?'checked':''):(old('isUsable')?'checked':'')}}>
+                                    {{old('isUsable')===null?($albums->is_usable?'checked':''):(old('isUsable')?'checked':'')}}>
                                 <label for="isUsable" class="@error('isUsable') invalid-icheck @enderror">是否可用
                                 </label>
                             </div>
                             <input type="hidden" name="isVisible" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="isVisible" name="isVisible" value="1"
-                                    {{old('isVisible')===null?($albumOwner->is_visible?'checked':''):(old('isVisible')?'checked':'')}}>
+                                    {{old('isVisible')===null?($albums->is_visible?'checked':''):(old('isVisible')?'checked':'')}}>
                                 <label for="isVisible" class="@error('isVisible') invalid-icheck @enderror">是否可见
                                 </label>
                             </div>
                             <input type="hidden" name="shareable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="shareable" name="shareable" value="1"
-                                    {{old('shareable')===null?($albumOwner->shareable?'checked':''):(old('shareable')?'checked':'')}}>
+                                    {{old('shareable')===null?($albums->shareable?'checked':''):(old('shareable')?'checked':'')}}>
                                 <label for="shareable" class="@error('shareable') invalid-icheck @enderror">可分享
                                 </label>
                             </div>
                             <input type="hidden" name="downloadable" value="0">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" id="downloadable" name="downloadable" value="1"
-                                    {{old('downloadable')===null?($albumOwner->downloadable?'checked':''):(old('downloadable')?'checked':'')}}>
+                                    {{old('downloadable')===null?($albums->downloadable?'checked':''):(old('downloadable')?'checked':'')}}>
                                 <label for="downloadable" class="@error('downloadable') invalid-icheck @enderror">可下载
                                 </label>
                             </div>
@@ -112,7 +112,7 @@
                         <div class="col-sm-3">
                             <input type="text" class="form-control @error('maxShowAge') is-invalid @enderror"
                                 id="maxShowAge" name="maxShowAge" placeholder="请填写最大显示年龄"
-                                value="{{old('maxShowAge')==null?$albumOwner->max_show_age:old('maxShowAge')}}">
+                                value="{{old('maxShowAge')==null?$albums->max_show_age:old('maxShowAge')}}">
                             @error('maxShowAge')
                             <span id="maxShowAge-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -123,7 +123,7 @@
                                 <input type="text"
                                     class="form-control datetimepicker-input @error('birthday') is-invalid @enderror"
                                     id="birthday" name="birthday" placeholder="请填写生日"
-                                    value="{{old('birthday')===null?$albumOwner->birthday:old('birthday')}}"
+                                    value="{{old('birthday')===null?$albums->birthday:old('birthday')}}"
                                     data-target="#divBirthday">
                                 <div class="input-group-append" data-target="#divBirthday" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -139,7 +139,7 @@
                         <div class="col-sm-6">
                             <input type="text" class="form-control @error('order') is-invalid @enderror" id="order"
                                 name="order" placeholder="请填写排序数字" required data-msg-required="排序必须填写"
-                                value="{{old('order')==null?$albumOwner->sorting_order:old('order')}}">
+                                value="{{old('order')==null?$albums->sorting_order:old('order')}}">
                             @error('order')
                             <span id="order-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -150,7 +150,7 @@
                         <div class="col-sm-6">
                             <textarea id="extension" name="extension"
                                 class="form-control @error('extension') is-invalid @enderror" rows="3"
-                                placeholder="扩展设置">{{old('extension')===null?$albumOwner->extinesion:old('extension')}}</textarea>
+                                placeholder="扩展设置">{{old('extension')===null?$albums->extinesion:old('extension')}}</textarea>
                             @error('extension')
                             <span id="extension-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -161,7 +161,7 @@
                         <div class="col-sm-6">
                             <textarea id="description" name="description"
                                 class="form-control @error('description') is-invalid @enderror" rows="3"
-                                placeholder="输入简介">{{old('description')===null?$albumOwner->description:old('description')}}</textarea>
+                                placeholder="输入简介">{{old('description')===null?$albums->description:old('description')}}</textarea>
                             @error('description')
                             <span id="description-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -240,12 +240,12 @@
             minimumResultsForSearch: -1
         });
 
-        $('#albumOwner').on('select2:select', function (e) {
+        $('#albums').on('select2:select', function (e) {
             var data = e.params.data;
-            $('#albumOwnerText').val(data.text);
+            $('#albumsText').val(data.text);
 
         });
-        $('#albumOwner').select2({
+        $('#albums').select2({
             theme: 'bootstrap4',
             language:'zh-CN',
             minimumInputLength :2,

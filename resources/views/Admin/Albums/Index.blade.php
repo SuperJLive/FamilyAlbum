@@ -70,7 +70,7 @@
                 "serverSide": true,
                 "ajax": {
                     "type": "POST",
-                    "url": "/Admin/AlbumOwner/GetList",
+                    "url": "/Admin/Albums/GetList",
                     headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
                     "data": function (data) {
                         var searchValue = $("#hidSearchValue").val();
@@ -107,13 +107,13 @@
                         "data": "id", "orderable": true, "visible": true
                     },
                     {
-                        "data": "album_name", "orderable": true, "visible": true
+                        "data": "albums_name", "orderable": true, "visible": true
                     },
                     {
                         "data": "nick_name", "orderable": false, "visible": true
                     },
                     {
-                        "data": "permisstion_text", "orderable": false, "visible": true
+                        "data": "permission_text", "orderable": false, "visible": true
                     },
                     {
                         "data": null, "orderable": false, "visible": true,"render": function (data, type, row) {
@@ -135,7 +135,6 @@
                                 '<div class="icheck-primary d-inline">' +
                                 '<input type="checkbox" '+downloadable+'>' +
                                 '<label for="">' +'</label>' +'</div>';
-
                             return rowHtml;
                         }
                     },
@@ -152,7 +151,7 @@
                         "data": "id", "orderable": false, "visible": true,"render": function (data, type, row) {
                             var rowHtml;
                             var chkId="chkId"+data;
-                            rowHtml = '<a class="btn btn-primary btn-sm" href="/Admin/AlbumOwner/Edit/'+data+'">更新</a>'+
+                            rowHtml = '<a class="btn btn-primary btn-sm" href="/Admin/Albums/Edit/'+data+'">更新</a>'+
                             '<a class="btn btn-primary btn-sm" href="/Admin/Album/Index/'+data+'">管理</a>'
                             return rowHtml;
                         }
