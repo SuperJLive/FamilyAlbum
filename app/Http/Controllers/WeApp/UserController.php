@@ -94,11 +94,11 @@ class UserController extends Controller
             );
         }
     }
-    function test()
+    public function test(Request $request)
     {
         //$name = Request::input('appid');
-        $name = phpinfo();
-        return $name;
+        dd($request);
+        
     }
     private function send_get($url, $query_data) {
         $getData = http_build_query($query_data);

@@ -73,6 +73,8 @@ Route::prefix('Admin')->group(function () {
     Route::post('Albums/GetList', [AlbumsController::class, 'GetList']);
 
     Route::get('AlbumsPermission/ModalIndex/{albumsId}', [AlbumsPermissionController::class, 'ModalIndex']);
+    Route::post('AlbumsPermission/Store', [AlbumsPermissionController::class, 'Store']);
+
     Route::post('Permission/Store', [PermissionController::class, 'Store']);
     Route::post('Permission/Destroy', [PermissionController::class, 'Destroy']);
     Route::post('Permission/Update/{id}', [PermissionController::class, 'Update']);
@@ -91,6 +93,6 @@ Route::prefix('Admin')->group(function () {
     Route::get('/Test/Test1',[TestController::class,'Test1']);
 });
 
-Route::get('WeApp/test', [UserController::class, 'test']);
+Route::post('WeApp/test', [WeUserController::class, 'test']);
 
 //Route::resource('Admin/Photo', PhotoController::class);

@@ -24,7 +24,7 @@
                             <input type="text" class="form-control @error('albumsName') is-invalid @enderror"
                                 id="albumsName" name="albumsName" placeholder="请填写标题" required
                                 data-msg-required="相册集名称必须填写"
-                                value="{{old('albumsName')===null?$albums->album_name:old('albumsName')}}">
+                                value="{{old('albumsName')===null?$albums->albums_name:old('albumsName')}}">
                             @error('albumsName')
                             <span id="albumsName-error" class="error invalid-feedback">{{ $message }}</span>
                             @enderror
@@ -191,11 +191,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="modal-content"></div>
+                    <form id="form-group-permission" class="form-horizontal" method="POST"
+                        action="/Admin/AlbumsPermission/Store">
+                        <input type="hidden" id="modalAlbumsId" name="modalAlbumsId" value="{{$albums->id}}">
+                        <div id="modal-content"></div>
+                    </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="btnAlbumsPermission" type="button" class="btn btn-primary">保存</button>
                 </div>
             </div>
         </div>
@@ -219,10 +223,22 @@
     <script src="/plugins/select2/js/i18n/zh-CN.js"></script>
     <script type="text/javascript">
         $(function(){
-            $('#modal-permission').on('show.bs.modal', function () {
+            $('#btnAlbumsPermission').on('click',function(){
+                var temp=$("#form-group-permission").serializeArray();
+                console.log(temp);
+                $.post({url:"/Admin/AlbumsPermission/Store",
+                headers:{'x-csrf-token' : $("meta[name='csrf-token']").attr('content')},
+                dataType:'json',
+                    data:temp,success:function(data,status){
+                        if(data.success){
+                            $('#modal-permission').modal('hide');
+                        }
+                    }
+                });
+            });
+            $('#modal-permission').on('shown.bs.modal', function () {
                 $.get("/Admin/AlbumsPermission/ModalIndex/"+$('#albumsId').val(),
                 function(data,status){
-                    console.log(data);
                     $('#modal-content').html(data);
                 });
             });

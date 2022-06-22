@@ -9,5 +9,6 @@ class AlbumsPermission extends Model
 {
     use HasFactory;
     protected $table = 'albums_permission';
-    protected $fillable = ['albums_id','group_id'];
+    protected $fillable = ['albums_id','group_id','is_allow'];
+    public $timestamps = false;
 }
